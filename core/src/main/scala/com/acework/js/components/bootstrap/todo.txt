@@ -1,0 +1,14 @@
+Alert - done
+Button - done
+Jumbotron - done
+Label - done
+ListGroupItem - done
+ListGroup - done
+PageHeader -done
+Well - done
+Table - done
+Col - done
+Row - done
+
+TODO
+key and ref in as default properties

@@ -1,0 +1,61 @@
+package com.acework.js.components.bootstrap
+
+import Utils._
+import japgolly.scalajs.react._
+import japgolly.scalajs.react.vdom.prefix_<^._
+
+import scala.scalajs.js._
+
+/**
+ * Created by weiyin on 10/03/15.
+ */
+object MenuItem {
+
+
+  case class Props(header: UndefOr[Boolean] = undefined,
+                   divider: UndefOr[Boolean] = undefined,
+                   href: String = "#",
+                   title: UndefOr[String] = undefined,
+                   target: UndefOr[String] = undefined,
+                   eventKey: UndefOr[String] = undefined,
+                   onSelect: UndefOr[(String, String, String) => Unit] = undefined,
+                   key: UndefOr[String] = undefined,
+                   ref: UndefOr[Ref] = undefined,
+                   addClasses: String = "")
+
+  case class State()
+
+  class Backend($: BackendScope[Props, State]) {
+    def handleClick(e: ReactEvent): Unit = {
+      if ($.props.onSelect.isDefined) {
+        e.preventDefault()
+        $.props.onSelect.get($.props.eventKey.get, $.props.href, $.props.target.get)
+      }
+    }
+  }
+
+  val MenuItem = ReactComponentB[Props]("MenuItem")
+    .initialState(State())
+    .backend(new Backend(_))
+    .render { (P, C, S, B) =>
+
+    def renderAnchor(): ReactNode = {
+      <.a(^.onClick --> B.handleClick _, ^.href := P.href, ^.target := P.target, ^.title := P.title, ^.tabIndex := -1)(C)
+    }
+
+    val classes = Map("dropdown-header" -> P.header.getOrElse(false), "divider" -> P.divider.getOrElse(false))
+
+    val children: TagMod =
+      if (P.header.getOrElse(false))
+        C
+      else if (!P.divider.getOrElse(false))
+        renderAnchor()
+      else
+        EmptyTag
+
+    // TODO spread props
+    <.li(^.classSet1M(P.addClasses, classes), ^.role := "presentation")(children)
+  }.build
+
+  def apply(props: Props, children: ReactNode*) = MenuItem(props, children)
+}
