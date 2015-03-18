@@ -1,31 +1,42 @@
 package com.acework.js.components.bootstrap
 
-import Utils._
-import com.acework.js.logger._
-import japgolly.scalajs.react.Addons.ReactCloneWithProps
+import com.acework.js.components.bootstrap.Utils._
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
 
 import scala.scalajs.js
-import scala.scalajs.js.UndefOr
+import scala.scalajs.js.{UndefOr, undefined}
 
 /**
  * Created by weiyin on 11/03/15.
  */
 object ModalTrigger {
 
-  case class Props(modal: ReactNode)
+  class Container extends OverlayContainer {
+    override def getDOMNode = super.getDOMNode
+  }
+
+  case class Props(modal: ReactElement, container: OverlayContainer = new OverlayContainer {}) extends OverlayProps
 
   case class State(isOverlayShown: Boolean = false)
 
-  class Backend(scope: BackendScope[Props, State]) {
-    def show() = scope.modState(s => s.copy(isOverlayShown = true))
+  class Backend(val scope: BackendScope[Props, State]) extends OverlayMixin[Props, State] {
 
-    def hide() = scope.modState(s => s.copy(isOverlayShown = false))
+    def show() = scope.modState(_.copy(isOverlayShown = true))
+
+    def hide() = scope.modState(_.copy(isOverlayShown = false))
 
     def toggle() = {
-      log.debug("toggle called")
       scope.modState(s => s.copy(isOverlayShown = !s.isOverlayShown))
+    }
+
+    override def renderOverlay(): Option[ReactElement] = {
+      if (scope.state.isOverlayShown)
+        Some(cloneWithProps(scope.props.modal, (undefined, undefined),
+          Map("container" -> scope.props.container,
+            "onRequestHide" -> (() => hide()))))
+      else
+        Some(<.span())
     }
   }
 
@@ -34,23 +45,19 @@ object ModalTrigger {
     .backend(new Backend(_))
     .render((P, C, S, B) => {
 
-    def renderOverlay() = {
-      if (!S.isOverlayShown)
-        <.span()
-
-      ReactCloneWithProps(P.modal, Map("onRequestHide" -> B.hide))
-    }
-
     val child = React.Children.only(C)
-    val dynChild = child.asInstanceOf[js.Dynamic]
-    val childProps = dynChild.props
+    val childProps = getChildProps[Any](child).asInstanceOf[js.Dynamic]
+    val childOnClick: UndefOr[js.Any] = childProps.onClick
+    val jsChildOnClick: UndefOr[(ReactEvent) => (js.Any)] = if (childOnClick == null || childOnClick == undefined) undefined else childOnClick.asInstanceOf[(ReactEvent) => (js.Any)]
+    val toggle = ((e: ReactEvent) => B.toggle()).asInstanceOf[(ReactEvent) => (js.Any)]
+    val onClick = createChainedFunction1(jsChildOnClick, toggle)
 
-    val childOnClick = childProps.onClick
-    val jsChildOnClick: UndefOr[() => (js.Any)] = if (childOnClick == null || childOnClick == js.undefined) js.undefined else childOnClick.asInstanceOf[() => (js.Any)]
-    val toggle = (() => B.toggle()).asInstanceOf[() => (js.Any)]
-    val res = ReactCloneWithProps(child, Map("onClick" -> createChainedFunction0(jsChildOnClick, toggle)))
-    res
-  }).build
+    cloneWithProps(child, (undefined, undefined), Map("onClick" -> onClick))
+  })
+    .componentDidMount(scope => scope.backend.onComponentDidMount())
+    .componentDidUpdate((scope, nextProps, state) => scope.backend.onComponentDidUpdate())
+    .componentWillUnmount(scope => scope.backend.onComponentWillUnmount())
+    .build
 
   def apply(props: Props, children: ReactNode) = ModalTrigger(props, children)
 }

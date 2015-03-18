@@ -1,20 +1,25 @@
 package com.acework.js.components.bootstrap
 
-import Utils._
+import com.acework.js.utils.{Mappable, Mergeable}
 import japgolly.scalajs.react.Addons.ReactCloneWithProps
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
 import org.scalajs.dom.raw.HTMLElement
 
 import scala.collection.mutable.ArrayBuffer
-import scala.scalajs.js
-import scala.scalajs.js._
+import scala.scalajs.js.{Any => JAny, UndefOr, undefined}
 
 /**
  * Created by weiyin on 09/03/15.
  */
-object Panel extends BootstrapMixin {
-  type PROPS = Props
+
+object Panel extends BootstrapComponent {
+  override type P = Props
+  override type S = CollapsableState
+  override type B = Backend
+  override type N = TopNode
+
+  override def defaultProps = Props()
 
   case class Props(collapsable: UndefOr[Boolean] = undefined,
                    defaultExpanded: Boolean = false,
@@ -22,14 +27,17 @@ object Panel extends BootstrapMixin {
                    header: UndefOr[ReactNode] = undefined,
                    footer: UndefOr[String] = undefined,
                    eventKey: UndefOr[String] = undefined,
-                   key: UndefOr[JsNumberOrString] = undefined,
-                   ref: UndefOr[Ref] = undefined,
                    onSelect: UndefOr[(UndefOr[String]) => Unit] = undefined,
                    id: UndefOr[String] = undefined,
                    bsClass: UndefOr[Classes.Value] = Classes.panel,
                    bsStyle: UndefOr[Styles.Value] = Styles.default,
                    bsSize: UndefOr[Sizes.Value] = undefined,
-                   addClasses: String = "") extends BaseProps with CollapsableProps
+                   addClasses: String = "") extends BsProps with CollapsableProps with MergeableProps[Props] {
+
+    def merge(t: Map[String, Any]): Props = implicitly[Mergeable[Props]].merge(this, t)
+
+    def asMap: Map[String, Any] = implicitly[Mappable[Props]].toMap(this)
+  }
 
   class Backend(val scope: BackendScope[Props, CollapsableState]) extends CollapsableMixin[Props] {
     var _isChanging: Boolean = _
@@ -62,7 +70,7 @@ object Panel extends BootstrapMixin {
     }
   }
 
-  val component = ReactComponentB[Props]("Panel")
+  override val component = ReactComponentB[Props]("Panel")
     .initialStateP(P => CollapsableState(collapsing = false, isExpended = P.defaultExpanded))
     .backend(new Backend(_))
     .render { (P, C, S, B) =>
@@ -77,13 +85,13 @@ object Panel extends BootstrapMixin {
       if (P.header.isDefined) {
         if (React.isValidElement(P.header.get)) {
           val header = if (P.collapsable.getOrElse(false)) {
-            ReactCloneWithProps(P.header.get, Map[String, js.Any](
+            ReactCloneWithProps(P.header.get, Map[String, JAny](
               "className" -> "panel-title" // ,
               // FIXME "children" -> renderAnchor(P.header.props.children)
             ))
           }
           else {
-            ReactCloneWithProps(P.header.get, Map[String, js.Any]("className" -> "panel-title"))
+            ReactCloneWithProps(P.header.get, Map[String, JAny]("className" -> "panel-title"))
           }
           <.div(^.className := "panel-heading")(header)
         }
@@ -118,7 +126,7 @@ object Panel extends BootstrapMixin {
       def shouldRenderFill(c: ReactNode) =
         React.isValidElement(c) && false // TODO: c.props.fill != null
 
-      def getProps: Map[String, js.Any] = Map("key" -> bodyElements.length)
+      def getProps: Map[String, JAny] = Map("key" -> bodyElements.length)
 
       def addPanelChild(c: ReactNode) = {
         val node: ReactNode = ReactCloneWithProps(c, getProps)
@@ -165,8 +173,7 @@ object Panel extends BootstrapMixin {
       <.div(^.classSetM(B.getCollapsableClassSet("panel-collapse")), ^.id := P.id, ^.ref := panelRef)(renderBody())
     }
 
-    var classes = getBsClassSet(P)
-    classes += ("panel" -> true)
+    val classes = P.bsClassSet + ("panel" -> true)
 
     val hasId = !P.collapsable.getOrElse(false) && P.id.isDefined
     <.div(^.classSet1M(P.addClasses, classes), hasId ?= (^.id := P.id.get))(
@@ -178,9 +185,4 @@ object Panel extends BootstrapMixin {
     .shouldComponentUpdate(($, _, _) => !$.backend._isChanging)
     .build
 
-  def apply(props: Props, children: ReactNode*) = component(props, children)
-
-  def apply(children: ReactNode*) = component(Props(), children)
-
-  def apply() = component
 }

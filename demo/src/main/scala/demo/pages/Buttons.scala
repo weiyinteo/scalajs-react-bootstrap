@@ -1,6 +1,6 @@
 package demo.pages
 
-import com.acework.js.components.bootstrap.{Sizes, Styles, Button, ButtonToolbar}
+import com.acework.js.components.bootstrap._
 import demo.examples.util.CodeContent
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
@@ -14,13 +14,13 @@ object Buttons {
   val optionsSource =
     """
       |ButtonToolbar(
-      |      Button("Default"),
-      |      Button(Button.Props(bsStyle = Styles.primary), "Primary"),
-      |      Button(Button.Props(bsStyle = Styles.success), "Success"),
-      |      Button(Button.Props(bsStyle = Styles.info), "Info"),
-      |      Button(Button.Props(bsStyle = Styles.warning), "Warning"),
-      |      Button(Button.Props(bsStyle = Styles.danger), "Danger"),
-      |      Button(Button.Props(bsStyle = Styles.link), "Link"))
+      |  Button("Default"),
+      |  Button(Button.Props(bsStyle = Styles.primary), "Primary"),
+      |  Button(Button.Props(bsStyle = Styles.success), "Success"),
+      |  Button(Button.Props(bsStyle = Styles.info), "Info"),
+      |  Button(Button.Props(bsStyle = Styles.warning), "Warning"),
+      |  Button(Button.Props(bsStyle = Styles.danger), "Danger"),
+      |  Button(Button.Props(bsStyle = Styles.link), "Link"))
     """.stripMargin
 
   def optionsContent = CodeContent.Content(optionsSource,
@@ -37,44 +37,45 @@ object Buttons {
 
   val sizesSource =
     """
-      |ButtonToolbar(
-      |      Button(Button.Props(bsStyle = Styles.primary, bsSize = Sizes.lg), "Large button"),
-      |      Button(Button.Props(bsSize = Sizes.lg), "Large button")),
-      |ButtonToolbar(
-      |      Button(Button.Props(bsStyle = Styles.primary), "Default button"),
-      |      Button("Default button")),
-      |ButtonToolbar(
-      |      Button(Button.Props(bsStyle = Styles.primary, bsSize = Sizes.sm), "Small button"),
-      |      Button(Button.Props(bsSize = Sizes.sm), "Small button")),
-      |ButtonToolbar(
-      |      Button(Button.Props(bsStyle = Styles.primary, bsSize = Sizes.xs), "Extra small button"),
-      |      Button(Button.Props(bsSize = Sizes.xs), "Extra small button"))
+      |<.div(
+      |  ButtonToolbar(
+      |    Button(Button.Props(bsStyle = Styles.primary, bsSize = Sizes.lg), "Large button"),
+      |    Button(Button.Props(bsSize = Sizes.lg), "Large button")),
+      |  ButtonToolbar(
+      |    Button(Button.Props(bsStyle = Styles.primary), "Default button"),
+      |    Button("Default button")),
+      |  ButtonToolbar(
+      |    Button(Button.Props(bsStyle = Styles.primary, bsSize = Sizes.sm), "Small button"),
+      |    Button(Button.Props(bsSize = Sizes.sm), "Small button")),
+      |  ButtonToolbar(
+      |    Button(Button.Props(bsStyle = Styles.primary, bsSize = Sizes.xs), "Extra small button"),
+      |    Button(Button.Props(bsSize = Sizes.xs), "Extra small button"))
+      |)
     """.stripMargin
 
   val sizesContent = CodeContent.Content(sizesSource,
-    ButtonToolbar(
-      Button(Button.Props(bsStyle = Styles.primary, bsSize = Sizes.lg), "Large button"),
-      Button(Button.Props(bsSize = Sizes.lg), "Large button")
-    ),
-    ButtonToolbar(
-      Button(Button.Props(bsStyle = Styles.primary), "Default button"),
-      Button("Default button")
-    ),
-    ButtonToolbar(
-      Button(Button.Props(bsStyle = Styles.primary, bsSize = Sizes.sm), "Small button"),
-      Button(Button.Props(bsSize = Sizes.sm), "Small button")
-    ),
-    ButtonToolbar(
-      Button(Button.Props(bsStyle = Styles.primary, bsSize = Sizes.xs), "Extra small button"),
-      Button(Button.Props(bsSize = Sizes.xs), "Extra small button")
+    <.div(
+      ButtonToolbar(
+        Button(Button.Props(bsStyle = Styles.primary, bsSize = Sizes.lg), "Large button"),
+        Button(Button.Props(bsSize = Sizes.lg), "Large button")),
+      ButtonToolbar(
+        Button(Button.Props(bsStyle = Styles.primary), "Default button"),
+        Button("Default button")),
+      ButtonToolbar(
+        Button(Button.Props(bsStyle = Styles.primary, bsSize = Sizes.sm), "Small button"),
+        Button(Button.Props(bsSize = Sizes.sm), "Small button")),
+      ButtonToolbar(
+        Button(Button.Props(bsStyle = Styles.primary, bsSize = Sizes.xs), "Extra small button"),
+        Button(Button.Props(bsSize = Sizes.xs), "Extra small button"))
     )
   )
 
   val blockSource =
     """
       |<.div(^.className := "well", ^.maxWidth := 400, ^.margin := "0 auto 10px",
-      |      Button(Button.Props(bsStyle = Styles.primary, bsSize = Sizes.lg, block = true), "Block level button"),
-      |      Button(Button.Props(bsSize = Sizes.lg, block = true), "Block level button"))
+      |  Button(Button.Props(bsStyle = Styles.primary, bsSize = Sizes.lg, block = true), "Block level button"),
+      |  Button(Button.Props(bsSize = Sizes.lg, block = true), "Block level button")
+      |)
     """.stripMargin
 
   val blockContent = CodeContent.Content(blockSource,
@@ -87,8 +88,8 @@ object Buttons {
   val activeStateSource =
     """
       |ButtonToolbar(
-      |      Button(Button.Props(bsStyle = Styles.primary, bsSize = Sizes.lg, active = true), "Primary button"),
-      |      Button(Button.Props(bsSize = Sizes.lg, active = true), "Button"))
+      |  Button(Button.Props(bsStyle = Styles.primary, bsSize = Sizes.lg, active = true), "Primary button"),
+      |  Button(Button.Props(bsSize = Sizes.lg, active = true), "Button"))
     """.stripMargin
 
   val activeStateContent = CodeContent.Content(activeStateSource,
@@ -101,8 +102,8 @@ object Buttons {
   val disabledStateSource =
     """
       |ButtonToolbar(
-      |      Button(Button.Props(bsStyle = Styles.primary, bsSize = Sizes.lg, disabled = true), "Primary button"),
-      |      Button(Button.Props(bsSize = Sizes.lg, disabled = true), "Button"))
+      |  Button(Button.Props(bsStyle = Styles.primary, bsSize = Sizes.lg, disabled = true), "Primary button"),
+      |  Button(Button.Props(bsSize = Sizes.lg, disabled = true), "Button"))
     """.stripMargin
 
   val disabledStateContent = CodeContent.Content(disabledStateSource,
@@ -114,8 +115,8 @@ object Buttons {
   val tagsSource =
     """
       |ButtonToolbar(
-      |    Button(Button.Props(href = "#"), "Link"),
-      |    Button("Button"))
+      |  Button(Button.Props(href = "#"), "Link"),
+      |  Button("Button"))
     """.stripMargin
 
   val tagsContent = CodeContent.Content(tagsSource,

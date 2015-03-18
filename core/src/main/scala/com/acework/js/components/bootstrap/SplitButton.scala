@@ -1,10 +1,7 @@
 package com.acework.js.components.bootstrap
 
-import com.acework.js.components.bootstrap.Utils._
-import japgolly.scalajs.react.Addons.ReactCloneWithProps
+import com.acework.js.utils.{Mappable, Mergeable}
 import japgolly.scalajs.react.Ref
-
-import scala.scalajs.js
 
 /**
  * Created by weiyin on 11/03/15.
@@ -15,7 +12,13 @@ import japgolly.scalajs.react.vdom.prefix_<^._
 
 import scala.scalajs.js.{UndefOr, undefined}
 
-object SplitButton extends BootstrapMixin {
+object SplitButton extends BootstrapComponent {
+  override type P = Props
+  override type S = DropdownState
+  override type B = Backend
+  override type N = TopNode
+
+  override def defaultProps = Props()
 
   case class Props(
                     /*==  start react bootstraps  ==*/
@@ -33,12 +36,13 @@ object SplitButton extends BootstrapMixin {
                     bsClass: UndefOr[Classes.Value] = Classes.btn,
                     bsStyle: UndefOr[Styles.Value] = Styles.default,
                     bsSize: UndefOr[Sizes.Value] = undefined,
-                    key: UndefOr[String] = undefined,
-                    ref: UndefOr[Ref] = undefined,
                     addClasses: String = "")
-    extends BaseProps
+    extends BsProps with MergeableProps[Props] {
 
-  type PROPS = Props
+    def merge(t: Map[String, Any]): Props = implicitly[Mergeable[Props]].merge(this, t)
+
+    def asMap: Map[String, Any] = implicitly[Mappable[Props]].toMap(this)
+  }
 
   class Backend(val scope: BackendScope[Props, DropdownState]) extends DropdownStateMixin[Props] {
     def handleButtonClick(e: ReactEvent) = {
@@ -62,18 +66,18 @@ object SplitButton extends BootstrapMixin {
     }
   }
 
-  val SplitButton = ReactComponentB[Props]("SplitButton")
+  override val component = ReactComponentB[Props]("SplitButton")
     .initialState(DropdownState(open = false))
     .backend(new Backend(_))
     .render((P, C, S, B) => {
 
 
     val buttonRef = Ref("button")
-    val button = Button(Button.Props(ref = buttonRef, bsStyle = P.bsStyle, bsClass = P.bsClass,
+    val button = Button.withRef("button")(Button.Props(bsStyle = P.bsStyle, bsClass = P.bsClass,
       onClick = (e: ReactEvent) => B.handleButtonClick(e)), P.title.getOrElse(""): ReactNode)
 
     val dropdownButtonRef = Ref("dropdownButton")
-    val dropdownButton = Button(Button.Props(ref = dropdownButtonRef, bsStyle = P.bsStyle, bsClass = P.bsClass, addClasses = s"${P.addClasses} dropdown-toggle",
+    val dropdownButton = Button.withRef("dropdownButton")(Button.Props(bsStyle = P.bsStyle, bsClass = P.bsClass, addClasses = s"${P.addClasses} dropdown-toggle",
       onClick = (e: ReactEvent) => B.handleDropdownClick(e)),
       <.span(^.className := "sr-only", P.title),
       <.span(^.className := "caret"))
@@ -86,7 +90,7 @@ object SplitButton extends BootstrapMixin {
       groupClasses += " dropup"
 
     ButtonGroup(ButtonGroup.Props(bsSize = P.bsSize, id = P.id, addClasses = groupClasses), button, dropdownButton,
-      DropdownMenu(DropdownMenu.Props(ref = menuRef, pullRight = P.pullRight,
+      DropdownMenu.withRef("menu")(DropdownMenu.Props(pullRight = P.pullRight,
         ariaLabelledBy = P.id, onSelect = (key: String) => B.handleOptionSelect(key)), C)
     )
 
@@ -94,5 +98,4 @@ object SplitButton extends BootstrapMixin {
     .componentWillUnmount(_.backend.onComponentWillUnmount())
     .build
 
-  def apply(props: Props, children: ReactNode*) = SplitButton(props, children)
 }

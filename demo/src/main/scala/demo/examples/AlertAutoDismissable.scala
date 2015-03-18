@@ -1,6 +1,6 @@
 package demo.examples
 
-import com.acework.js.components.bootstrap.{Alert, Button, Styles}
+import com.acework.js.components.bootstrap.{Button, Alert, Styles}
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
 

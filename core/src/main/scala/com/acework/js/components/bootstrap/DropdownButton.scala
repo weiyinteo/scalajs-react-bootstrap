@@ -1,6 +1,7 @@
 package com.acework.js.components.bootstrap
 
-import Utils._
+import com.acework.js.components.bootstrap.Utils._
+import com.acework.js.utils.{Mappable, Mergeable}
 import japgolly.scalajs.react.Addons.ReactCloneWithProps
 import japgolly.scalajs.react.Ref
 
@@ -15,7 +16,13 @@ import japgolly.scalajs.react.vdom.prefix_<^._
 
 import scala.scalajs.js.{UndefOr, undefined}
 
-object DropdownButton extends BootstrapMixin {
+object DropdownButton extends BootstrapComponent {
+  override type P = Props
+  override type S = DropdownState
+  override type B = Backend
+  override type N = TopNode
+
+  override def defaultProps: P = Props()
 
   case class Props(
                     /*==  start react bootstraps  ==*/
@@ -24,6 +31,7 @@ object DropdownButton extends BootstrapMixin {
                     dropup: UndefOr[Boolean] = undefined,
                     title: UndefOr[ReactNode] = undefined,
                     href: UndefOr[String] = undefined,
+                    eventKey: UndefOr[String] = undefined,
                     navItem: UndefOr[Boolean] = undefined,
                     noCaret: UndefOr[Boolean] = undefined,
                     onClick: () => Unit = () => (),
@@ -32,12 +40,13 @@ object DropdownButton extends BootstrapMixin {
                     bsClass: UndefOr[Classes.Value] = Classes.btn,
                     bsStyle: UndefOr[Styles.Value] = Styles.default,
                     bsSize: UndefOr[Sizes.Value] = undefined,
-                    key: UndefOr[String] = undefined,
-                    ref: UndefOr[Ref] = undefined,
                     addClasses: String = "")
-    extends BaseProps
+    extends BsProps with MergeableProps[Props] {
 
-  type PROPS = Props
+    def merge(t: Map[String, Any]): Props = implicitly[Mergeable[Props]].merge(this, t)
+
+    def asMap: Map[String, Any] = implicitly[Mappable[Props]].toMap(this)
+  }
 
   class Backend(val scope: BackendScope[Props, DropdownState]) extends DropdownStateMixin[Props] {
 
@@ -52,7 +61,7 @@ object DropdownButton extends BootstrapMixin {
     }
   }
 
-  val DropdownButton = ReactComponentB[Props]("DropdownButton")
+  override val component = ReactComponentB[Props]("DropdownButton")
     .initialState(DropdownState(open = false))
     .backend(new Backend(_))
     .render((P, C, S, B) => {
@@ -82,10 +91,9 @@ object DropdownButton extends BootstrapMixin {
     }
 
     val buttonRef = Ref("dropdownButton")
-    val buttonProps = Button.Props(ref = buttonRef,
+    val buttonProps = Button.Props(
       addClasses = "dropdown-toggle",
       onClick = (e: ReactEvent) => B.handleDropdownClick(e),
-      key = 0,
       navDropdown = P.navItem.getOrElse(false),
       bsStyle = P.bsStyle,
       bsSize = P.bsSize,
@@ -93,15 +101,15 @@ object DropdownButton extends BootstrapMixin {
     )
 
     val menuRef = Ref("menu")
-    val dropdownMenu = DropdownMenu(DropdownMenu.Props(ref = menuRef, ariaLabelledBy = P.id,
-      pullRight = P.pullRight, key = 1),
+    val dropdownMenu = DropdownMenu.withKey(1).withRef("menu")(DropdownMenu.Props(ariaLabelledBy = P.id,
+      pullRight = P.pullRight),
       ValidComponentChildren.map(C, renderMenuItem)
     )
 
     val button = if (P.noCaret.getOrElse(false))
-      Button(buttonProps, P.title.get)
+      Button.withKey(0).withRef("dropdownButton")(buttonProps, P.title.get)
     else
-      Button(buttonProps, P.title.get, " ", <.span(^.className := "caret"))
+      Button.withKey(0).withRef("dropdownButton")(buttonProps, P.title.get, " ", <.span(^.className := "caret"))
 
     if (P.navItem.getOrElse(false))
       renderNavItem(button, dropdownMenu)
@@ -111,5 +119,4 @@ object DropdownButton extends BootstrapMixin {
     .componentWillUnmount(_.backend.onComponentWillUnmount())
     .build
 
-  def apply(props: Props, children: ReactNode*) = DropdownButton(props, children)
 }

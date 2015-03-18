@@ -11,7 +11,7 @@ import org.scalajs.dom.ext.PimpedNodeList
  */
 object CodeContent {
 
-  case class Content(scalaSource: String, el: ReactNode*) {
+  case class Content(scalaSource: String, el: ReactNode, exampleClasses: String = "") {
     def apply() = component(this)
   }
 
@@ -42,7 +42,7 @@ object CodeContent {
     .backend(new Backend(_))
     .render((P, C, S, B) => {
     <.div(^.className := "playground",
-      <.div(^.className := "bs-example",
+      <.div(^.className := s"bs-example ${P.exampleClasses}",
         <.div(P.el)),
       if (S.showCode)
         <.div(

@@ -1,6 +1,7 @@
 package com.acework.js.components.bootstrap
 
-import Utils._
+import com.acework.js.components.bootstrap.Utils._
+import com.acework.js.utils.{Mappable, Mergeable}
 import japgolly.scalajs.react.Addons.ReactCloneWithProps
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
@@ -8,14 +9,18 @@ import org.scalajs.dom.raw.HTMLElement
 
 import scala.collection.mutable.ArrayBuffer
 import scala.scalajs.js
-import scala.scalajs.js._
+import scala.scalajs.js.{UndefOr, undefined}
 
 /**
  * Created by weiyin on 10/03/15.
  */
-object Carousel extends BootstrapMixin {
+object Carousel extends BootstrapComponent {
+  override type P = Props
+  override type S = State
+  override type B = Backend
+  override type N = TopNode
 
-  type PROPS = Props
+  override def defaultProps = Props()
 
   case class State(activeIndex: Int, previousActiveIndex: UndefOr[Int] = undefined, direction: UndefOr[Directions.Value] = undefined)
 
@@ -33,7 +38,12 @@ object Carousel extends BootstrapMixin {
                    bsClass: UndefOr[Classes.Value] = Classes.`btn-group`,
                    bsStyle: UndefOr[Styles.Value] = undefined,
                    bsSize: UndefOr[Sizes.Value] = undefined,
-                   addClasses: String = "") extends BaseProps
+                   addClasses: String = "") extends BsProps with MergeableProps[Props] {
+
+    def merge(t: Map[String, Any]): Props = implicitly[Mergeable[Props]].merge(this, t)
+
+    def asMap: Map[String, Any] = implicitly[Mappable[Props]].toMap(this)
+  }
 
   class Backend($: BackendScope[Props, State]) {
     var timer: js.UndefOr[js.timers.SetTimeoutHandle] = js.undefined
@@ -46,17 +56,47 @@ object Carousel extends BootstrapMixin {
         $.state.activeIndex
     }
 
-    def onMouseOver(e: ReactEvent): Unit = ???
+    def clearTimeout() = {
+      if (timer.isDefined) {
+        js.timers.clearTimeout(timer.get)
+        timer = undefined
+      }
+    }
 
-    def onMouseOut(e: ReactEvent): Unit = ???
+    def pause() = {
+      isPaused = true
+      clearTimeout()
+    }
 
-    def getDirection(i: Int, j: Int): Directions.Value = ???
+    def play() = {
+      isPaused = false
+      waitForNext()
+    }
+
+    def onMouseOver(e: ReactEvent): Unit = {
+      if ($.props.pauseOnHover.getOrElse(false))
+        pause()
+    }
+
+    def onMouseOut(e: ReactEvent): Unit = {
+      if (isPaused)
+        play()
+    }
+
+    def getDirection(prevIndex: Int, index: Int): UndefOr[Directions.Value] = {
+      if (prevIndex == index)
+        undefined
+      else if (prevIndex > index)
+        Directions.prev
+      else
+        Directions.next
+    }
 
     def handleSelect(index: Int)(direction: UndefOr[Directions.Value]): Unit = {
-      js.timers.clearTimeout(timer.get)
+      clearTimeout()
 
       val previousActiveIndex = activeIndex
-      val newDirection: Directions.Value = direction.getOrElse(getDirection(previousActiveIndex, index))
+      val newDirection = if (direction.isDefined) direction else getDirection(previousActiveIndex, index)
 
       if ($.props.onSelect.isDefined)
         $.props.onSelect.get(index, direction)
@@ -72,8 +112,9 @@ object Carousel extends BootstrapMixin {
     }
 
     def waitForNext() = {
-      if (isPaused && $.props.slide.getOrElse(false) && $.props.interval.isDefined && $.props.activeIndex.isEmpty)
-        timer = js.timers.setTimeout($.props.interval.get)(next(_: ReactEvent))
+      if (!isPaused && $.props.slide.getOrElse(false) && $.props.interval.isDefined && $.props.activeIndex.isEmpty) {
+        timer = js.timers.setTimeout($.props.interval.get)(next(null))
+      }
     }
 
     def handleItemAnimateOutEnd(): Unit = {
@@ -82,11 +123,13 @@ object Carousel extends BootstrapMixin {
         if ($.props.onSlideEnd.isDefined)
           $.props.onSlideEnd.get()
       }
+
       $.modState(s => s.copy(previousActiveIndex = undefined, direction = undefined), cb)
     }
 
     def prev(e: ReactEvent): Unit = {
-      e.preventDefault()
+      if (e != null)
+        e.preventDefault()
 
       var index = activeIndex - 1
       if (index < 0)
@@ -100,7 +143,8 @@ object Carousel extends BootstrapMixin {
     }
 
     def next(e: ReactEvent): Unit = {
-      e.preventDefault()
+      if (e != null)
+        e.preventDefault()
 
       var index = activeIndex + 1
       val count = ValidComponentChildren.numberOfValidComponents($.propsChildren)
@@ -115,15 +159,13 @@ object Carousel extends BootstrapMixin {
     }
   }
 
-
-  val Carousel = ReactComponentB[Props]("Carousel")
+  override val component = ReactComponentB[Props]("Carousel")
     .initialStateP(P => State(activeIndex = if (P.defaultActiveIndex.isEmpty) 0 else P.defaultActiveIndex.get))
     .backend(new Backend(_))
-    .render { (P, C, S, B) =>
-
+    .render((P, C, S, B) => {
 
     def renderIndicator(child: ReactNode, index: Int) = {
-      <.li(^.key := index, ^.classSet("active" -> (index == B.activeIndex)), ^.onClick --> B.handleSelect(index) _)
+      <.li(^.key := index, ^.classSet("active" -> (index == B.activeIndex)), ^.onClick ==> B.handleSelect(index))
     }
 
     def renderIndicators() = {
@@ -131,6 +173,8 @@ object Carousel extends BootstrapMixin {
 
       ValidComponentChildren.forEach2(C, (child, index) => {
         indicators += renderIndicator(child, index)
+        // Force whitespace between indicator elements, bootstrap
+        // requires this for correct spacing of elements.
         indicators += " "
       })
       <.ol(^.className := "carousel-indicators",
@@ -139,13 +183,13 @@ object Carousel extends BootstrapMixin {
     }
 
     def renderPrev() = {
-      <.a(^.className := "left carousel-control", ^.href := "#prev", ^.key := 0, ^.onClick --> B.prev _,
+      <.a(^.className := "left carousel-control", ^.href := "#prev", ^.key := 0, ^.onClick ==> B.prev,
         <.span(^.className := "glyphicon glyphicon-chevron-left")
       )
     }
 
     def renderNext() = {
-      <.a(^.className := "right carousel-control", ^.href := "#next", ^.key := 1, ^.onClick --> B.next _,
+      <.a(^.className := "right carousel-control", ^.href := "#next", ^.key := 1, ^.onClick ==> B.next,
         <.span(^.className := "glyphicon glyphicon-chevron-right")
       )
     }
@@ -153,24 +197,27 @@ object Carousel extends BootstrapMixin {
     def renderItem(child: ReactNode, index: Int) = {
       val isActive = B.activeIndex == index
       val isPreviousActive = S.previousActiveIndex.isDefined && S.previousActiveIndex.get == index && P.slide.get
-      val onAnimatedOutEnd: UndefOr[() => Unit] = if (isPreviousActive) (B.handleItemAnimateOutEnd _) else undefined
+      val onAnimatedOutEnd: UndefOr[(Int) => Unit] = if (isPreviousActive) (x: Int) => B.handleItemAnimateOutEnd() else (x: Int) => ()
 
-      ReactCloneWithProps(child, getChildKeyAndRef(child, index) ++
-        Map[String, js.Any]("active" -> isActive,
-          "index" -> index,
-          "animateOut" -> isPreviousActive,
-          "animateIn" -> (isActive && S.previousActiveIndex.isDefined && P.slide.get),
-          "direction" -> S.direction.toString,
-          "onAnimateOutEnd" -> onAnimatedOutEnd
-        ))
+      val keyAndRef = getChildKeyAndRef2(child, index)
+      val propsMap = Map[String, Any](
+        "active" -> isActive,
+        "index" -> index,
+        "animateOut" -> isPreviousActive,
+        "animateIn" -> (isActive && S.previousActiveIndex.isDefined && P.slide.getOrElse(false)),
+        "direction" -> S.direction,
+        "onAnimateOutEnd" -> onAnimatedOutEnd
+      )
+      cloneWithProps(child, keyAndRef, propsMap)
     }
 
     def renderControl() = {
       if (P.wrap.getOrElse(false)) {
+        val activeIndex = B.activeIndex
         val count = ValidComponentChildren.numberOfValidComponents(C)
         Seq(
-          if (B.activeIndex != 0) renderPrev() else EmptyTag,
-          if (B.activeIndex != count - 1) renderNext() else EmptyTag
+          if (activeIndex != 0) renderPrev() else EmptyTag,
+          if (activeIndex != count - 1) renderNext() else EmptyTag
         )
       }
       else {
@@ -182,12 +229,31 @@ object Carousel extends BootstrapMixin {
     val innerRef = Ref[HTMLElement]("inner")
     // TODO spread props
     <.div(^.classSet1M(P.addClasses, classes),
-      ^.onMouseOver --> B.onMouseOver _,
-      ^.onMouseOut --> B.onMouseOut _,
+      ^.onMouseOver ==> B.onMouseOver,
+      ^.onMouseOut ==> B.onMouseOut,
       renderIndicators(),
-      <.div(^.className := "carousel-inner", ^.ref := innerRef)(ValidComponentChildren.map(C, renderItem)),
+      <.div(^.className := "carousel-inner", ^.ref := innerRef,
+        ValidComponentChildren.map(C, renderItem)),
       renderControl()
     )
-
-  }.build
+  })
+    .componentWillReceiveProps(($, nextProps) => {
+    val activeIndex = $.backend.activeIndex
+    if (nextProps.activeIndex.isDefined && nextProps.activeIndex.get != activeIndex) {
+      val nextDirection: UndefOr[Directions.Value] =
+        if (nextProps.direction.isDefined)
+          nextProps.direction
+        else
+          $.backend.getDirection(activeIndex, nextProps.activeIndex.getOrElse(0))
+      $.backend.clearTimeout()
+      $.modState(s => s.copy(previousActiveIndex = activeIndex: UndefOr[Int], direction = nextDirection))
+    }
+  })
+    .componentDidMount($ => {
+    $.backend.waitForNext()
+  })
+    .componentWillUnmount($ => {
+    $.backend.clearTimeout()
+  })
+    .build
 }

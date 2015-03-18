@@ -1,20 +1,26 @@
 package com.acework.js.components.bootstrap
 
-import Utils._
+import com.acework.js.components.bootstrap.Utils._
+import com.acework.js.utils.{Mappable, Mergeable}
 import japgolly.scalajs.react.Addons.ReactCloneWithProps
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
 
 import scala.scalajs.js
-import scala.scalajs.js._
+import scala.scalajs.js.{UndefOr, undefined}
 
 
 /**
  * Created by weiyin on 09/03/15.
  */
 
-object NavBar extends BootstrapMixin {
-  type PROPS = Props
+object NavBar extends BootstrapComponent {
+  override type P = Props
+  override type S = State
+  override type B = Backend
+  override type N = TopNode
+
+  override def defaultProps = Props()
 
   case class Props(
                     /*==  start react bootstraps  ==*/
@@ -34,10 +40,12 @@ object NavBar extends BootstrapMixin {
                     bsClass: UndefOr[Classes.Value] = Classes.navbar,
                     bsStyle: UndefOr[Styles.Value] = Styles.default,
                     bsSize: UndefOr[Sizes.Value] = undefined,
-                    key: UndefOr[String] = undefined,
-                    ref: UndefOr[Ref] = undefined,
-                    addClasses: String = "")
-    extends BaseProps
+                    addClasses: String = "") extends BsProps with MergeableProps[Props] {
+
+    def merge(t: Map[String, Any]): Props = implicitly[Mergeable[Props]].merge(this, t)
+
+    def asMap: Map[String, Any] = implicitly[Mappable[Props]].toMap(this)
+  }
 
   case class State(navExpanded: Boolean)
 
@@ -63,7 +71,7 @@ object NavBar extends BootstrapMixin {
   }
 
 
-  val NavBar = ReactComponentB[Props]("NavBar")
+  override val component = ReactComponentB[Props]("NavBar")
     .initialStateP(P => State(navExpanded = P.defaultNavExpanded.getOrElse(false)))
     .backend(new Backend(_))
     .render((P, C, S, B) => {
@@ -117,11 +125,11 @@ object NavBar extends BootstrapMixin {
     }
 
     val componentClass = P.componentClass.getOrElse("Nav").reactTag
-    var classes = getBsClassSet(P)
-    classes += ("navbar-fixed-top" -> P.fixedTop.getOrElse(false))
-    classes += ("navbar-fixed-bottom" -> P.fixedBottom.getOrElse(false))
-    classes += ("navbar-static-top" -> P.staticTop.getOrElse(false))
-    classes += ("navbar-inverse" -> P.inverse.getOrElse(false))
+    val classes = P.bsClassSet ++ Map(
+      "navbar-fixed-top" -> P.fixedTop.getOrElse(false),
+      "navbar-fixed-bottom" -> P.fixedBottom.getOrElse(false),
+      "navbar-static-top" -> P.staticTop.getOrElse(false),
+      "navbar-inverse" -> P.inverse.getOrElse(false))
 
     val header: TagMod =
       if (P.brand.isDefined || P.toggleButton.isDefined || P.toggleNavKey.isDefined)
@@ -139,6 +147,5 @@ object NavBar extends BootstrapMixin {
   }
     ).build
 
-  def apply(props: Props, children: ReactNode*) = NavBar(props, children)
 }
 

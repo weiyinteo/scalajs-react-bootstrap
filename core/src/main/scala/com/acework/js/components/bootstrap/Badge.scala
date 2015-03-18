@@ -1,6 +1,6 @@
 package com.acework.js.components.bootstrap
 
-import Utils.ValidComponentChildren
+import com.acework.js.components.bootstrap.Utils.ValidComponentChildren
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
 
@@ -9,11 +9,17 @@ import scala.scalajs.js._
 /**
  * Created by weiyin on 10/03/15.
  */
-object Badge {
+object Badge extends BootstrapComponent {
+  override type P = Props
+  override type S = Unit
+  override type B = Unit
+  override type N = TopNode
+
+  def defaultProps = Props()
 
   case class Props(pullRight: UndefOr[Boolean] = undefined, addClasses: String = "")
 
-  val Badge = ReactComponentB[Props]("Badge")
+  override val component = ReactComponentB[Props]("Badge")
     .render { (P, C) =>
 
     def hasContent = {
@@ -27,7 +33,4 @@ object Badge {
 
   }.build
 
-  def apply(props: Props, children: ReactNode) = Badge(props, children)
-
-  def apply(children: ReactNode) = Badge(Props(), children)
 }

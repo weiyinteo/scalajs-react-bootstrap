@@ -1,5 +1,7 @@
 package com.acework.js.components.bootstrap
 
+import com.acework.js.utils.{Mappable, Mergeable}
+import japgolly.scalajs.react.Addons.ReactCloneWithProps
 import japgolly.scalajs.react._
 
 import scala.scalajs.js
@@ -133,8 +135,95 @@ object Utils {
     Map("ref" -> ref, "key" -> newKey)
   }
 
+  def getChildKeyAndRef2(child: ReactNode, index: Int): (UndefOr[String], UndefOr[String]) = {
+    val childElement = child.asInstanceOf[ReactDOMElement]
+    val key = childElement.key
+    val ref = childElement.ref
+    val newKey: UndefOr[String] = if (key.isDefined) key else index.toString
+    (newKey, ref)
+  }
+
   def getChildEventKey(child: ReactNode): UndefOr[js.Any] = {
     val dynChild = child.asInstanceOf[js.Dynamic]
     if (dynChild.eventKey == null) js.undefined else dynChild.eventKey
+  }
+
+  def getChildProps[P](child: ReactNode): P = {
+    val childNode = child.asInstanceOf[ReactDOMElement]
+    childNode.props.asInstanceOf[WrapObj[P]]
+  }
+
+  def cloneWithProps[P <: MergeableProps[P]](child: ReactNode, keyAndRef: (UndefOr[String], UndefOr[String]) = (js.undefined, js.undefined),
+                                             propsMap: Map[String, Any] = Map.empty) = {
+
+    var newProps = Map[String, js.Any]().empty
+    if (keyAndRef._1.isDefined)
+      newProps += ("key" -> keyAndRef._1.get)
+
+    if (keyAndRef._2.isDefined)
+      newProps += ("ref" -> keyAndRef._2.get)
+
+    if (isScalaComponent(child)) {
+      val childElement = child.asInstanceOf[ReactDOMElement]
+      val childProps: MergeableProps[P] = childElement.props.asInstanceOf[WrapObj[MergeableProps[P]]]
+
+      var mergedProps = childProps
+      if (propsMap.nonEmpty)
+        mergedProps = mergedProps.merge(propsMap)
+
+      val newChild = ReactCloneWithProps(child, newProps)
+
+      val dynChild = newChild.asInstanceOf[js.Dynamic]
+      val newChildProps = dynChild.props
+      newChildProps.updateDynamic("v")(mergedProps.asInstanceOf[js.Any])
+      newChild
+    }
+    else {
+      for ((k, v) <- propsMap) {
+        unwrapUndefOrFunc1(v) match {
+          case Some(fn) =>
+            newProps += (k -> fn)
+          case None =>
+            newProps += (k -> v.asInstanceOf[js.Any])
+        }
+      }
+      val newChild = ReactCloneWithProps(child, newProps)
+      newChild
+    }
+  }
+
+  def unwrapUndefOrFunc1(v: Any): Option[Any => Any] = {
+    var result: Option[Any => Any] = None
+    val unwrapped = v.asInstanceOf[UndefOr[Any]]
+    if (unwrapped.isDefined) {
+      if (unwrapped.get.isInstanceOf[Function1[_, _]]) {
+        result = Some(unwrapped.get.asInstanceOf[Any => Any])
+      }
+    }
+    result
+  }
+
+  implicit class MergeableCaseClass[S: Mergeable](v: S) {
+    def merge(map: Map[String, Any]): S =
+      implicitly[Mergeable[S]].merge(v, map)
+
+    def mergeProps[T: Mappable](t: T): S = {
+      val m = implicitly[Mappable[T]].toMap(t)
+      merge(m)
+    }
+  }
+
+  def caseClass2Map[T: Mappable](t: T): Map[String, Any] = implicitly[Mappable[T]].toMap(t)
+
+  def isScalaComponent(node: ReactNode): Boolean = {
+    var scalaComponent = false
+    if (React.isValidElement(node)) {
+      val element = node.asInstanceOf[ReactDOMElement]
+      val childProps = element.props
+      // this is a hack, is there better way to find out if it is a
+      if (childProps.hasOwnProperty("v"))
+        scalaComponent = true
+    }
+    scalaComponent
   }
 }

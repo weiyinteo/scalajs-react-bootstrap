@@ -2,10 +2,10 @@ package com.acework.js.components.bootstrap
 
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
+import org.scalajs.dom.document
 
 import scala.scalajs.js
 import scala.scalajs.js.{UndefOr, undefined}
-import org.scalajs.dom.document
 
 /**
  * Created by weiyin on 10/03/15.

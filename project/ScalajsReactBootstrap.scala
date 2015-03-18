@@ -23,7 +23,7 @@ object ScalajsReactBootstrap extends Build {
         version := "0.0.1-SNAPSHOT",
         scalaVersion := Settings.versions.scala,
         scalacOptions ++= Seq("-deprecation", "-unchecked", "-feature",
-          "-language:postfixOps", "-language:implicitConversions",
+          "-language:postfixOps", "-language:implicitConversions", "-language:reflectiveCalls",
           "-language:higherKinds", "-language:existentials")
       )
 
@@ -59,6 +59,8 @@ object ScalajsReactBootstrap extends Build {
     _.settings(
       jsDependencies ++= Seq(
         "org.webjars" % "react" % "0.12.1" % scope / "react-with-addons.js" commonJSName "React"
+        , "org.webjars" % "jquery" % "1.11.1" / "jquery.min.js"
+        , "org.webjars" % "bootstrap" % "3.3.2" / "bootstrap.min.js" dependsOn "jquery.min.js"
         , "org.webjars" % "log4javascript" % "1.4.10" / "js/log4javascript_uncompressed.js"
       )
       , skip in packageJSDependencies := false
@@ -67,8 +69,16 @@ object ScalajsReactBootstrap extends Build {
   lazy val root = Project("root", file("."))
     .aggregate(core, test, demo)
 
+  lazy val macroSub = Project("macro", file("macro"))
+    .configure(commonSettings, publicationSettings)
+    .settings(name := "macro",
+      scalacOptions += "-language:experimental.macros"
+      , libraryDependencies += "org.scala-lang" % "scala-reflect" % Settings.versions.scala
+    )
+
   lazy val core = project
     .configure(commonSettings, publicationSettings)
+    .dependsOn(macroSub)
     .settings(
       name := "core",
       emitSourceMaps := true,

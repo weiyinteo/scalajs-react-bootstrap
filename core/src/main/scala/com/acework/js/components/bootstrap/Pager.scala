@@ -1,27 +1,54 @@
 package com.acework.js.components.bootstrap
 
-import Utils._
-import japgolly.scalajs.react.Addons.ReactCloneWithProps
+import com.acework.js.components.bootstrap.Utils._
+import com.acework.js.utils.{Mappable, Mergeable}
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
 
-import scala.scalajs.js
-import scala.scalajs.js._
+import scala.scalajs.js.{UndefOr, undefined}
 
 /**
  * Created by weiyin on 10/03/15.
  */
-object Pager {
+object Pager extends BootstrapComponent {
+  override type P = Pager
+  override type S = Unit
+  override type B = Unit
+  override type N = TopNode
 
-  case class Props(onSelect: UndefOr[() => Unit] = undefined, addClasses: String = "")
+  override def defaultProps = Pager()
 
-  val Pager = ReactComponentB[Props]("Pager")
+  case class Pager(onSelect: UndefOr[Seq[UndefOr[String]] => Unit] = undefined, addClasses: String = "")
+    extends MergeableProps[Pager] {
+
+    def merge(t: Map[String, Any]): Pager = implicitly[Mergeable[Pager]].merge(this, t)
+
+    def asMap: Map[String, Any] = implicitly[Mappable[Pager]].toMap(this)
+
+    def apply(children: ReactNode*) = component(this, children)
+
+    def apply() = component(this)
+  }
+
+  override val component = ReactComponentB[Pager]("Pager")
     .render { (P, C) =>
+
+    def getOnSelectProps(child: ReactNode): UndefOr[Seq[UndefOr[String]] => Unit] = {
+      val childPropsAny = getChildProps[Any](child)
+      childPropsAny match {
+        case props: NavItem.Props =>
+          if (props.onSelect.isDefined)
+            props.onSelect
+          else
+            P.onSelect
+        case _ => undefined
+      }
+    }
+
     def renderPageItem(child: ReactNode, index: Int) = {
-      ReactCloneWithProps(child, getChildKeyAndRef(child, index)
-        ++ Map[String, js.Any](
-        "onSelect" -> P.onSelect // FIXME create chain function
-      ))
+      val keyAndRef = getChildKeyAndRef2(child, index)
+      val propsMap = Map("onSelect" -> getOnSelectProps(child))
+      cloneWithProps(child, keyAndRef, propsMap)
     }
 
     <.ul(^.classSet1(P.addClasses, "pager" -> true))(

@@ -15,9 +15,9 @@ object ButtonGroups {
   val basicSource =
     """
       |ButtonGroup(
-      |      Button("Left"),
-      |      Button("Middle"),
-      |      Button("Right"))
+      |  Button("Left"),
+      |  Button("Middle"),
+      |  Button("Right"))
     """.stripMargin
 
   def basicContent = CodeContent.Content(basicSource,
@@ -29,23 +29,19 @@ object ButtonGroups {
 
   val buttonToolbarSource =
     """
-      | ButtonToolbar(
-      |      ButtonGroup(
-      |        Button("1"),
-      |        Button("2"),
-      |        Button("3"),
-      |        Button("4")
-      |      ),
-      |      ButtonGroup(
-      |        Button("5"),
-      |        Button("6"),
-      |        Button("7")
-      |      ),
-      |      ButtonGroup(
-      |        Button("8")
-      |      )
-      |    )
-      | )
+      |ButtonToolbar(
+      |  ButtonGroup(
+      |    Button("1"),
+      |    Button("2"),
+      |    Button("3"),
+      |    Button("4")),
+      |  ButtonGroup(
+      |    Button("5"),
+      |    Button("6"),
+      |    Button("7")),
+      |  ButtonGroup(
+      |    Button("8"))
+      |)
     """.stripMargin
 
   val buttonToolbarContent = CodeContent.Content(buttonToolbarSource,
@@ -54,13 +50,11 @@ object ButtonGroups {
         Button("1"),
         Button("2"),
         Button("3"),
-        Button("4")
-      ),
+        Button("4")),
       ButtonGroup(
         Button("5"),
         Button("6"),
-        Button("7")
-      ),
+        Button("7")),
       ButtonGroup(
         Button("8")
       )
@@ -69,69 +63,64 @@ object ButtonGroups {
 
   val sizingSource =
     """
-      | ButtonToolbar(
-      |      ButtonGroup(ButtonGroup.Props(bsSize = Sizes.lg),
-      |        Button("Left"),
-      |        Button("Middle"),
-      |        Button("Right")
-      |      )),
-      |    ButtonToolbar(
-      |      ButtonGroup(
-      |        Button("Left"),
-      |        Button("Middle"),
-      |        Button("Right")
-      |      )),
-      |    ButtonToolbar(
-      |      ButtonGroup(ButtonGroup.Props(bsSize = Sizes.sm),
-      |        Button("Left"),
-      |        Button("Middle"),
-      |        Button("Right")
-      |      )),
-      |    ButtonToolbar(
-      |      ButtonGroup(ButtonGroup.Props(bsSize = Sizes.xs),
-      |        Button("Left"),
-      |        Button("Middle"),
-      |        Button("Right")
-      |      ))
-      | )
+      |<.di(
+      |  ButtonToolbar(
+      |    ButtonGroup(ButtonGroup.Props(bsSize = Sizes.lg),
+      |      Button("Left"),
+      |      Button("Middle"),
+      |      Button("Right"))),
+      |  ButtonToolbar(
+      |    ButtonGroup(
+      |      Button("Left"),
+      |      Button("Middle"),
+      |      Button("Right"))),
+      |  ButtonToolbar(
+      |    ButtonGroup(ButtonGroup.Props(bsSize = Sizes.sm),
+      |      Button("Left"),
+      |      Button("Middle"),
+      |      Button("Right"))),
+      |  ButtonToolbar(
+      |    ButtonGroup(ButtonGroup.Props(bsSize = Sizes.xs),
+      |      Button("Left"),
+      |      Button("Middle"),
+      |      Button("Right")))
+      |)
     """.stripMargin
 
   val sizingContent = CodeContent.Content(sizingSource,
-    ButtonToolbar(
-      ButtonGroup(ButtonGroup.Props(bsSize = Sizes.lg),
-        Button("Left"),
-        Button("Middle"),
-        Button("Right")
-      )),
-    ButtonToolbar(
-      ButtonGroup(
-        Button("Left"),
-        Button("Middle"),
-        Button("Right")
-      )),
-    ButtonToolbar(
-      ButtonGroup(ButtonGroup.Props(bsSize = Sizes.sm),
-        Button("Left"),
-        Button("Middle"),
-        Button("Right")
-      )),
-    ButtonToolbar(
-      ButtonGroup(ButtonGroup.Props(bsSize = Sizes.xs),
-        Button("Left"),
-        Button("Middle"),
-        Button("Right")
-      ))
+    <.div(
+      ButtonToolbar(
+        ButtonGroup(ButtonGroup.Props(bsSize = Sizes.lg),
+          Button("Left"),
+          Button("Middle"),
+          Button("Right"))),
+      ButtonToolbar(
+        ButtonGroup(
+          Button("Left"),
+          Button("Middle"),
+          Button("Right"))),
+      ButtonToolbar(
+        ButtonGroup(ButtonGroup.Props(bsSize = Sizes.sm),
+          Button("Left"),
+          Button("Middle"),
+          Button("Right"))),
+      ButtonToolbar(
+        ButtonGroup(ButtonGroup.Props(bsSize = Sizes.xs),
+          Button("Left"),
+          Button("Middle"),
+          Button("Right")))
+    )
   )
 
   val nestingSource =
     """
       |ButtonGroup(
-      |      Button("1"),
-      |      Button("2"),
-      |      DropdownButton(DropdownButton.Props(title = "Dropdown"),
-      |        MenuItem(MenuItem.Props(eventKey = 1), "Dropdown link"),
-      |        MenuItem(MenuItem.Props(eventKey = 2), "Dropdown link")
-      |      )
+      |  Button("1"),
+      |  Button("2"),
+      |  DropdownButton(DropdownButton.Props(title = "Dropdown"),
+      |    MenuItem(MenuItem.Props(eventKey = 1), "Dropdown link"),
+      |    MenuItem(MenuItem.Props(eventKey = 2), "Dropdown link")
+      |  )
       |)
     """.stripMargin
 
@@ -149,24 +138,21 @@ object ButtonGroups {
   val verticalSource =
     """
       |ButtonGroup(ButtonGroup.Props(vertical = true),
-      |      Button("Button"),
-      |      Button("Button"),
-      |      DropdownButton(DropdownButton.Props(title = reactNodeInhabitableS("Dropdown")),
-      |        MenuItem(MenuItem.Props(eventKey = "1"), "Dropdown link"),
-      |        MenuItem(MenuItem.Props(eventKey = "2"), "Dropdown link")
-      |      ),
-      |      Button("Button"),
-      |      Button("Button"),
-      |      DropdownButton(DropdownButton.Props(title = reactNodeInhabitableS("Dropdown")),
-      |        MenuItem(MenuItem.Props(eventKey = "1"), "Dropdown link"),
-      |        MenuItem(MenuItem.Props(eventKey = "2"), "Dropdown link")
-      |      ),
-      |      Button("Button"),
-      |      Button("Button"),
-      |      DropdownButton(DropdownButton.Props(title = reactNodeInhabitableS("Dropdown")),
-      |        MenuItem(MenuItem.Props(eventKey = "1"), "Dropdown link"),
-      |        MenuItem(MenuItem.Props(eventKey = "2"), "Dropdown link")
-      |      )
+      |  Button("Button"),
+      |  Button("Button"),
+      |  DropdownButton(DropdownButton.Props(title = reactNodeInhabitableS("Dropdown")),
+      |    MenuItem(MenuItem.Props(eventKey = "1"), "Dropdown link"),
+      |    MenuItem(MenuItem.Props(eventKey = "2"), "Dropdown link")),
+      |  Button("Button"),
+      |  Button("Button"),
+      |  DropdownButton(DropdownButton.Props(title = reactNodeInhabitableS("Dropdown")),
+      |    MenuItem(MenuItem.Props(eventKey = "1"), "Dropdown link"),
+      |    MenuItem(MenuItem.Props(eventKey = "2"), "Dropdown link")),
+      |  Button("Button"),
+      |  Button("Button"),
+      |  DropdownButton(DropdownButton.Props(title = reactNodeInhabitableS("Dropdown")),
+      |    MenuItem(MenuItem.Props(eventKey = "1"), "Dropdown link"),
+      |    MenuItem(MenuItem.Props(eventKey = "2"), "Dropdown link"))
       |)
     """.stripMargin
 
@@ -176,32 +162,28 @@ object ButtonGroups {
       Button("Button"),
       DropdownButton(DropdownButton.Props(title = reactNodeInhabitableS("Dropdown")),
         MenuItem(MenuItem.Props(eventKey = "1"), "Dropdown link"),
-        MenuItem(MenuItem.Props(eventKey = "2"), "Dropdown link")
-      ),
+        MenuItem(MenuItem.Props(eventKey = "2"), "Dropdown link")),
       Button("Button"),
       Button("Button"),
       DropdownButton(DropdownButton.Props(title = reactNodeInhabitableS("Dropdown")),
         MenuItem(MenuItem.Props(eventKey = "1"), "Dropdown link"),
-        MenuItem(MenuItem.Props(eventKey = "2"), "Dropdown link")
-      ),
+        MenuItem(MenuItem.Props(eventKey = "2"), "Dropdown link")),
       Button("Button"),
       Button("Button"),
       DropdownButton(DropdownButton.Props(title = reactNodeInhabitableS("Dropdown")),
         MenuItem(MenuItem.Props(eventKey = "1"), "Dropdown link"),
-        MenuItem(MenuItem.Props(eventKey = "2"), "Dropdown link")
-      )
+        MenuItem(MenuItem.Props(eventKey = "2"), "Dropdown link"))
     )
   )
 
   val justifiedSource =
     """
       |ButtonGroup(ButtonGroup.Props(justified = true),
-      |      Button(Button.Props(href = "#"), "Left"),
-      |      Button(Button.Props(href = "#"), "Middle"),
-      |      DropdownButton(DropdownButton.Props(title = reactNodeInhabitableS("Dropdown")),
-      |        MenuItem(MenuItem.Props(eventKey = "1"), "Dropdown link"),
-      |        MenuItem(MenuItem.Props(eventKey = "2"), "Dropdown link")
-      |      )
+      |  Button(Button.Props(href = "#"), "Left"),
+      |  Button(Button.Props(href = "#"), "Middle"),
+      |  DropdownButton(DropdownButton.Props(title = reactNodeInhabitableS("Dropdown")),
+      |    MenuItem(MenuItem.Props(eventKey = "1"), "Dropdown link"),
+      |    MenuItem(MenuItem.Props(eventKey = "2"), "Dropdown link"))
       |)
     """.stripMargin
 
@@ -211,8 +193,7 @@ object ButtonGroups {
       Button(Button.Props(href = "#"), "Middle"),
       DropdownButton(DropdownButton.Props(title = reactNodeInhabitableS("Dropdown")),
         MenuItem(MenuItem.Props(eventKey = "1"), "Dropdown link"),
-        MenuItem(MenuItem.Props(eventKey = "2"), "Dropdown link")
-      )
+        MenuItem(MenuItem.Props(eventKey = "2"), "Dropdown link"))
     )
   )
 

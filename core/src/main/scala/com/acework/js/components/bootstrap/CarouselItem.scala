@@ -1,53 +1,58 @@
 package com.acework.js.components.bootstrap
 
-import Utils._
+import com.acework.js.utils.{Mappable, Mergeable, TransitionEvent}
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
+import org.scalajs.dom.raw.Event
 
 import scala.scalajs.js
-import scala.scalajs.js._
+import scala.scalajs.js.{UndefOr, undefined}
 
 /**
  * Created by weiyin on 10/03/15.
  */
-object CarouselItem {
+object CarouselItem extends BootstrapComponent {
+  override type P = Props
+  override type S = State
+  override type B = Backend
+  override type N = TopNode
 
+  override def defaultProps = Props()
 
-  case class Props(index: Int,
-                   active: UndefOr[Boolean] = true,
+  case class Props(index: Int = 0,
+                   active: UndefOr[Boolean] = undefined,
                    animation: UndefOr[Boolean] = true,
                    animateIn: UndefOr[Boolean] = false,
                    animateOut: UndefOr[Boolean] = false,
-                   direction: Directions.Value = Directions.next,
-                   onAnimationOutEnd: UndefOr[(Int) => Unit] = undefined,
+                   direction: UndefOr[Directions.Value] = Directions.next,
+                   onAnimateOutEnd: UndefOr[(Int) => Unit] = undefined,
                    caption: UndefOr[String] = undefined,
-                   addClasses: String = "")
+                   addClasses: String = "") extends MergeableProps[Props] {
+
+    def merge(t: Map[String, Any]): Props = implicitly[Mergeable[Props]].merge(this, t)
+
+    def asMap: Map[String, Any] = implicitly[Mappable[Props]].toMap(this)
+  }
 
   case class State(direction: UndefOr[Directions.Value] = undefined)
 
   class Backend($: BackendScope[Props, State]) {
-    var animationTimer: js.UndefOr[js.timers.SetTimeoutHandle] =
-      js.undefined
 
-    def startAnimation(i: Int) = {
-      animationTimer = js.timers.setTimeout(i)(beginAnimation())
-    }
-
-    def endAnimation() = {
-      if ($.isMounted() && $.props.onAnimationOutEnd.isDefined)
-        $.props.onAnimationOutEnd.get($.props.index)
-    }
-
-    def beginAnimation() = {
+    def startAnimation() = {
       if ($.isMounted())
-        $.modState(s => s.copy(direction = if ($.props.direction == Directions.prev) Directions.right else Directions.left))
+        $.modState(s => s.copy(direction = if ($.props.direction.getOrElse(Directions.next) == Directions.prev) Directions.right else Directions.left))
+    }
+
+    def onAnimateOutEnd(e: Any) = {
+      if ($.isMounted() && $.props.onAnimateOutEnd.isDefined)
+        $.props.onAnimateOutEnd.get($.props.index)
     }
   }
 
-  val CarouselItem = ReactComponentB[Props]("CarouselItem")
+  val component = ReactComponentB[Props]("CarouselItem")
     .initialState(State())
     .backend(new Backend(_))
-    .render { (P, C, S, B) =>
+    .render((P, C, S, B) => {
 
     def renderCaption() = {
       if (P.caption.isDefined) {
@@ -59,7 +64,8 @@ object CarouselItem {
 
     var classes = Map("item" -> true,
       "active" -> (P.active.getOrElse(false) && !P.animateIn.getOrElse(false) || P.animateOut.getOrElse(false)),
-      "next" -> (P.active.getOrElse(false) && P.animateIn.getOrElse(false) && P.direction == Directions.next)
+      "next" -> (P.active.getOrElse(false) && P.animateIn.getOrElse(false) && P.direction.getOrElse(Directions.next) == Directions.next),
+      "prev" -> (P.active.getOrElse(false) && P.animateIn.getOrElse(false) && P.direction.getOrElse(Directions.next) == Directions.prev)
     )
 
     if (S.direction.isDefined && (P.animateIn.getOrElse(false) || P.animateOut.getOrElse(false)))
@@ -67,20 +73,19 @@ object CarouselItem {
 
     // TODO spread props
     <.div(^.classSet1M(P.addClasses, classes))(C, renderCaption())
-  }.componentWillReceiveProps(($, newProps) =>
+  })
+    .componentWillReceiveProps(($, newProps) =>
     if ($.props.active.getOrElse(false) != newProps.active.getOrElse(false))
-      $.modState(s => s.copy(direction = undefined))
+      $.modState(_.copy(direction = undefined))
     )
-    .componentDidUpdate { ($, previousProps, S) =>
-    if ($.props.active.getOrElse(false) && previousProps.active.getOrElse(false)) {
-      // FIXME transition event handling
+    .componentDidUpdate(($, previousProps, S) => {
+    if (!$.props.active.getOrElse(false) && previousProps.active.getOrElse(false)) {
+      TransitionEvent.addEndEventListener($.getDOMNode(), $.backend.onAnimateOutEnd)
     }
 
     if ($.props.active.getOrElse(false) != previousProps.active.getOrElse(false)) {
-      $.backend.startAnimation(20)
-
+      js.timers.setTimeout(20)($.backend.startAnimation())
     }
-  }
-
+  })
     .build
 }

@@ -1,6 +1,5 @@
 package com.acework.js.components.bootstrap
 
-import Utils._
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
 
@@ -8,19 +7,20 @@ import japgolly.scalajs.react.vdom.prefix_<^._
 /**
  * Created by weiyin on 10/03/15.
  */
-object PageHeader {
+object PageHeader extends BootstrapComponent {
+  override type P = Props
+  override type S = Unit
+  override type B = Unit
+  override type N = TopNode
+
+  override def defaultProps = Props()
 
   case class Props(addClasses: String = "")
 
-  val PageHeader = ReactComponentB[Props]("PageHeader")
+  override val component = ReactComponentB[Props]("PageHeader")
     .render { (P, C) =>
     <.div(^.classSet1(P.addClasses, "page-header" -> true),
       <.h1(C))
   }.build
 
-  def apply(props: Props, children: ReactNode*) = PageHeader(props, children)
-
-  def apply(children: ReactNode*) = PageHeader(Props(), children)
-
-  def apply() = PageHeader
 }

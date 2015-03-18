@@ -273,22 +273,20 @@ object Glyph {
     "menu - up")
 }
 
-object Glyphicon extends BootstrapMixin {
-
-  type PROPS = Props
+object Glyphicon {
 
   case class Props(glyph: UndefOr[String] = undefined,
                    bsClass: UndefOr[Classes.Value] = Classes.glyphicon,
                    bsStyle: UndefOr[Styles.Value] = Styles.info,
                    bsSize: UndefOr[Sizes.Value] = undefined,
-                   addClasses: String = "") extends BaseProps
+                   addClasses: String = "") extends BsProps
 
   val Glyphicon = ReactComponentB[Props]("Glyphicon")
     .stateless
     .render { (P, C, _) =>
 
     // TODO spread props
-    <.span(^.classSet1M(s"glyphicon-${P.glyph}", getBsClassSet(P)))(C)
+    <.span(^.classSet1M(s"glyphicon-${P.glyph}", P.bsClassSet))(C)
   }
     .build
 

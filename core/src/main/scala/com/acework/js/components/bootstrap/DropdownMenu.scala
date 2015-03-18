@@ -1,7 +1,7 @@
 package com.acework.js.components.bootstrap
 
+import com.acework.js.utils.{Mappable, Mergeable}
 import japgolly.scalajs.react.Addons.ReactCloneWithProps
-import japgolly.scalajs.react.Ref
 
 import scala.scalajs.js
 
@@ -9,13 +9,19 @@ import scala.scalajs.js
  * Created by weiyin on 11/03/15.
  */
 
-import Utils._
+import com.acework.js.components.bootstrap.Utils._
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
 
 import scala.scalajs.js.{UndefOr, undefined}
 
-object DropdownMenu {
+object DropdownMenu extends BootstrapComponent {
+  override type P = Props
+  override type S = Unit
+  override type B = Unit
+  override type N = TopNode
+
+  override def defaultProps = Props()
 
   case class Props(
                     /*==  start react bootstraps  ==*/
@@ -23,11 +29,14 @@ object DropdownMenu {
                     pullRight: UndefOr[Boolean] = undefined,
                     onSelect: UndefOr[(String) => Unit] = undefined,
                     /*==  end react bootstraps  ==*/
-                    key: UndefOr[JsNumberOrString] = undefined,
-                    ref: UndefOr[Ref] = undefined,
-                    addClasses: String = "")
+                    addClasses: String = "") extends MergeableProps[Props] {
 
-  val DropdownMenu = ReactComponentB[Props]("DropdownMenu")
+    def merge(t: Map[String, Any]): Props = implicitly[Mergeable[Props]].merge(this, t)
+
+    def asMap: Map[String, Any] = implicitly[Mappable[Props]].toMap(this)
+  }
+
+  override val component = ReactComponentB[Props]("DropdownMenu")
     .render((P, C) => {
 
     def renderMenuItem(child: ReactNode, index: Int) = {
@@ -43,10 +52,9 @@ object DropdownMenu {
 
     <.ul(^.classSet1("dropdown-menu", "dropdown-menu-right" -> P.pullRight.getOrElse(false)),
       ^.role := "menu", ^.aria.labelledby := P.ariaLabelledBy)(
-      ValidComponentChildren.map(C, renderMenuItem)
-    )
+        ValidComponentChildren.map(C, renderMenuItem)
+      )
   })
     .build
 
-  def apply(props: Props, children: ReactNode*) = DropdownMenu(props, children)
 }

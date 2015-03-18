@@ -1,6 +1,7 @@
 package com.acework.js.components.bootstrap
 
 import japgolly.scalajs.react.{BackendScope, TopNode}
+import org.scalajs.dom.raw.HTMLElement
 import org.scalajs.dom.{document, raw}
 
 import scala.scalajs.js
@@ -8,11 +9,11 @@ import scala.scalajs.js
 /**
  * Created by weiyin on 11/03/15.
  */
-trait FadeMixin[P, S] {
+trait FadeMixin[P <: OverlayProps, S] {
 
   def scope: BackendScope[P, S]
 
-  var fadeOutEl: raw.Element = _
+  var fadeOutEl: Option[raw.Element] = None
 
   def getElementAndSelf(root: TopNode, classes: Array[String]): Array[TopNode] = {
     val elements = root.querySelectorAll("." + classes.mkString("."))
@@ -38,7 +39,8 @@ trait FadeMixin[P, S] {
     if (scope.isMounted()) {
       val elements = getElementAndSelf(scope.getDOMNode(), Array("fade"))
       elements.foreach { el =>
-        el.className += " in"
+        val classes = el.className.split(" ").filter(_ != "in") ++ Seq("in")
+        el.className = classes.mkString(" ")
       }
     }
   }
@@ -51,7 +53,12 @@ trait FadeMixin[P, S] {
     js.timers.setTimeout(300)(handleFadeOutEnd())
   }
 
-  def handleFadeOutEnd(): Unit = ???
+  def handleFadeOutEnd(): Unit = {
+    fadeOutEl.map { fadeout =>
+      if (fadeout.parentNode != null)
+        fadeout.parentNode.removeChild(fadeout)
+    }
+  }
 
   def onComponentDidMount() = {
     // FIXME what does this mean? -- if(document.querySelectorAll)
@@ -65,11 +72,12 @@ trait FadeMixin[P, S] {
   def onComponentWillUnmount(): Unit = {
     val elements = getElementAndSelf(scope.getDOMNode(), Array("fade"))
     // TODO container
-    //val container = scope.props.container && scope.props.container.getDOMNode() || document.body
-    val container = document.body
+    val container = scope.props.container.getDOMNode
     if (elements.length > 0) {
-      fadeOutEl = document.createElement("div")
-      fadeOutEl.appendChild(scope.getDOMNode().cloneNode(true))
+      val fadeOut = document.createElement("div")
+      container.appendChild(fadeOut)
+      fadeOut.appendChild(scope.getDOMNode().cloneNode(deep = true))
+      fadeOutEl = Some(fadeOut)
       js.timers.setTimeout(20)(_fadeOut())
     }
   }

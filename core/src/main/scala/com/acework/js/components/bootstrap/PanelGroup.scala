@@ -1,18 +1,23 @@
 package com.acework.js.components.bootstrap
 
-import Utils._
-import japgolly.scalajs.react.Addons.ReactCloneWithProps
+import com.acework.js.components.bootstrap.Utils._
+import com.acework.js.utils.{Mappable, Mergeable}
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
 
 import scala.scalajs.js
-import scala.scalajs.js._
+import scala.scalajs.js.{UndefOr, undefined}
 
 /**
  * Created by weiyin on 10/03/15.
  */
-object PanelGroup extends BootstrapMixin {
-  type PROPS = Props
+object PanelGroup extends BootstrapComponent {
+  override type P = Props
+  override type S = State
+  override type B = Backend
+  override type N = TopNode
+
+  override def defaultProps = Props()
 
   case class State(activeKey: UndefOr[String])
 
@@ -21,11 +26,16 @@ object PanelGroup extends BootstrapMixin {
                    collapsable: UndefOr[Boolean] = undefined,
                    onSelect: UndefOr[(UndefOr[String]) => Unit] = undefined,
                    defaultActiveKey: UndefOr[String] = undefined,
-                   key: UndefOr[JsNumberOrString] = undefined,
                    bsClass: UndefOr[Classes.Value] = Classes.`panel-group`,
                    bsStyle: UndefOr[Styles.Value] = undefined,
                    bsSize: UndefOr[Sizes.Value] = undefined,
-                   addClasses: String = "") extends BaseProps
+                   addClasses: String = "") extends BsProps with MergeableProps[Props] {
+
+    def merge(t: Map[String, Any]): Props = implicitly[Mergeable[Props]].merge(this, t)
+
+    def asMap: Map[String, Any] = implicitly[Mappable[Props]].toMap(this)
+  }
+
 
   class Backend($: BackendScope[Props, State]) {
     def children: js.Any = $._props.asInstanceOf[js.Dynamic].children
@@ -46,42 +56,39 @@ object PanelGroup extends BootstrapMixin {
     }
   }
 
-  val PanelGroup = ReactComponentB[Props]("PanelGroup")
+  override val component = ReactComponentB[Props]("PanelGroup")
     .initialStateP(P => State(P.defaultActiveKey))
     .backend(new Backend(_))
     .render {
     (P, C, S, B) =>
 
       def renderPanel(child: ReactNode, index: Int) = {
-        val activeKey = if(P.activeKey.isDefined) P.activeKey else S.activeKey
+        val activeKey = if (P.activeKey.isDefined) P.activeKey else S.activeKey
 
-        // FIXME how to deal with the case where child is not Panel?
-        val el = child.asInstanceOf[ReactDOMElement]
-        val childProps: Panel.Props = el.props.asInstanceOf[WrapObj[Panel.Props]]
-        var props = if (!childProps.key.isDefined) childProps.copy(key = index) else childProps
+        val childPropsAny = getChildProps[Any](child)
 
-        if (!childProps.bsStyle.isDefined && P.bsStyle.isDefined)
-          props.copy(bsStyle = P.bsStyle)
+        val eventKey =
+          childPropsAny match {
+            case props: Panel.Props =>
+              props.eventKey
+            case _ => undefined
+          }
 
-        if (P.accordion.isDefined) {
-          val eventKey = childProps.eventKey
-          val childExpanded = eventKey.isDefined && eventKey.getOrElse(false) == activeKey.getOrElse(false)
-          props = props.copy(collapsable = true, expanded = childExpanded, onSelect = B.handleSelect _)
+        val keyAndRef = getChildKeyAndRef2(child, index)
+        if (P.accordion.getOrElse(false)) {
+          val propsMap = Map(
+            "collapsable" -> true,
+            "expanded" -> (eventKey.getOrElse("NA1") == activeKey.getOrElse("NA2")),
+            "onSelect" -> B.handleSelect _)
+          cloneWithProps(child, keyAndRef, propsMap)
         }
-        // FIXME ref
-        val newChild = ReactCloneWithProps(child, Map()) //,  Map[String, js.Any]("key" -> props.key))
-        val nc = newChild.asInstanceOf[js.Dynamic]
-        val ncProps = nc.props
-        ncProps.updateDynamic("v")(props.asInstanceOf[js.Any])
-        // unfortunately this does not work, as props.children will be lost
-        //nc.updateDynamic("props")(WrapObj(props))
-        newChild
+        else
+          cloneWithProps(child, keyAndRef)
       }
 
-      <.div(^.classSet1M(P.addClasses, getBsClassSet(P)))(
+      <.div(^.classSet1M(P.addClasses, P.bsClassSet))(
         ValidComponentChildren.map(C, renderPanel)
       )
   }.build
 
-  def apply(props: Props, children: ReactNode*) = PanelGroup(props, children)
 }

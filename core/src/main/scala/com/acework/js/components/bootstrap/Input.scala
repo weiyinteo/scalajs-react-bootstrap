@@ -1,17 +1,23 @@
 package com.acework.js.components.bootstrap
 
+import com.acework.js.utils.{Mappable, Mergeable}
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
 import org.scalajs.dom.raw.{HTMLInputElement, HTMLOptionElement}
 
 import scala.collection.mutable.ArrayBuffer
-import scala.scalajs.js._
-
+import scala.scalajs.js.{UndefOr, undefined}
 
 /**
  * Created by weiyin on 10/03/15.
  */
-object Input {
+object Input extends BootstrapComponent {
+  override type P = Props
+  override type S = Unit
+  override type B = Backend
+  override type N = TopNode
+
+  override def defaultProps = Props()
 
   val theInput = Ref[HTMLInputElement]("input")
 
@@ -38,7 +44,12 @@ object Input {
                    readOnly: UndefOr[Boolean] = undefined,
                    onChange: UndefOr[() => Unit] = undefined,
                    ref: UndefOr[Ref] = undefined,
-                   addClasses: String = "")
+                   addClasses: String = "") extends MergeableProps[Props] {
+
+    def merge(t: Map[String, Any]): Props = implicitly[Mergeable[Props]].merge(this, t)
+
+    def asMap: Map[String, Any] = implicitly[Mappable[Props]].toMap(this)
+  }
 
   class Backend(scope: BackendScope[Props, Unit]) {
     def getInputDOMNode = {
@@ -86,7 +97,7 @@ object Input {
   }
 
 
-  val Input = ReactComponentB[Props]("Input")
+  override val component = ReactComponentB[Props]("Input")
     .stateless
     .backend(new Backend(_))
     .render { (P, C, _, B) =>
@@ -111,9 +122,8 @@ object Input {
             <.p(^.classSet1M(s"form-control-static ${P.addClasses}", classes), ^.value := P.value,
               ^.tpe := P.`type`, ^.ref := theInput, ^.key := "input")(P.value)
           case "submit" =>
-            // FIXME ref and keys
-            Button(Button.Props(componentClass = "input", `type` = "submit", value = P.value,
-              ref = P.ref, key = "input"))
+            // FIXME ref
+            Button.withKey("input")(Button.Props(componentClass = "input", `type` = "submit", value = P.value))
           case _ =>
             // FIXME spread properties
             val className = if (B.isCheckboxOrRadio || B.isFile) "" else "form-control"
@@ -231,9 +241,4 @@ object Input {
     }
   }.build
 
-  def apply(props: Props, children: ReactNode*) = Input(props, children)
-
-  def apply(children: ReactNode*) = Input(Props(), children)
-
-  def apply() = Input(Props())
 }

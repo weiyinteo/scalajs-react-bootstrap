@@ -1,62 +1,65 @@
 package com.acework.js.components.bootstrap
 
-import Utils._
 import com.acework.js.logger._
-import com.acework.js.utils.EventListener
+import com.acework.js.utils.{EventListener, Mappable, Mergeable}
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
-import org.scalajs.dom.document
+import org.scalajs.dom.{MouseEvent, document}
 import org.scalajs.dom.raw.{HTMLElement, KeyboardEvent}
 
 import scala.scalajs.js
-import scala.scalajs.js._
+import scala.scalajs.js.{UndefOr, undefined}
 
 /**
  * Created by weiyin on 09/03/15.
  */
-object Modal extends BootstrapMixin {
-  type PROPS = Props
+object Modal extends BootstrapComponent {
+  override type P = Props
+  override type S = Unit
+  override type B = Backend
+  override type N = TopNode
+
+  override def defaultProps = throw new RuntimeException("noRequestHide must be provided")
 
   // header and footer are functions, so that they can get access to the the hide() function for their buttons
-  case class Props(backdrop: Boolean = true,
-                   keyboard: Boolean = true,
-                   animation: Boolean = true,
-                   closeButton: Boolean = true,
-                   bsClass: UndefOr[Classes.Value] = Classes.modal,
-                   bsStyle: UndefOr[Styles.Value] = Styles.default,
-                   bsSize: UndefOr[Sizes.Value] = undefined,
-                   onClick: () => Unit = () => (),
-                   onRequestHide: () => Unit = () => (),
-                   title: UndefOr[ReactNode] = undefined,
-                   footer: UndefOr[() => ReactNode] = undefined,
-                   closed: () => Unit = () => (),
-                   addClasses: String = "") extends BaseProps
+  case class Props(
+                    onRequestHide: () => Unit,
+                    backdrop: Boolean = true,
+                    keyboard: Boolean = true,
+                    animation: Boolean = true,
+                    closeButton: Boolean = true,
+                    container: OverlayContainer = new OverlayContainer {},
+                    bsClass: UndefOr[Classes.Value] = Classes.modal,
+                    bsStyle: UndefOr[Styles.Value] = Styles.default,
+                    bsSize: UndefOr[Sizes.Value] = undefined,
+                    onClick: (ReactEvent) => Unit = _ => (),
+                    title: UndefOr[ReactNode] = undefined,
+                    footer: UndefOr[() => ReactNode] = undefined,
+                    closed: () => Unit = () => (),
+                    addClasses: String = "") extends BsProps
+  with MergeableProps[Props] with OverlayProps {
+
+    def merge(t: Map[String, Any]): Props = implicitly[Mergeable[Props]].merge(this, t)
+
+    def asMap: Map[String, Any] = implicitly[Mappable[Props]].toMap(this)
+  }
+
 
   class Backend(val scope: BackendScope[Props, Unit]) extends FadeMixin[Props, Unit] {
-    def hide(): Unit = {
-      // instruct Bootstrap to hide the modal
-      jQuery(scope.getDOMNode()).modal("hide")
-    }
-
-    // jQuery event handler to be fired when the modal has been hidden
-    def hidden(e: JQueryEventObject): js.Any = {
-      // inform the owner of the component that the modal was closed/hidden
-      scope.props.closed()
-    }
-
+    var _onDocumentKeyupListener: Option[EventListener] = None
 
     def handleBackdropClick(e: ReactEvent): Unit = {
-      log.debug(s"handleBackdropClick: $e")
       if (e.target == e.currentTarget)
         scope.props.onRequestHide()
     }
 
     override def onComponentDidMount(): Unit = {
-      EventListener.listen(document, "keyup", handleDocumentKeyUp)
+      _onDocumentKeyupListener = Some(EventListener.listen(document, "keyup", handleDocumentKeyUp _))
 
-      // FIXME scope.props.container.getDOMNODE() || document.body
-      val container = document.body
-      container.className = if (container.className.nonEmpty) s"${container.className}} modal-open" else "modal-open"
+      val container = scope.props.container.getDOMNode
+      val containerClasses = container.className.split(" ")
+        .map(_.trim).filter(_ != "modal-open") ++ "modal-open"
+      container.className = containerClasses.mkString(" ")
 
       if (scope.props.backdrop)
         iosClickHack()
@@ -74,13 +77,18 @@ object Modal extends BootstrapMixin {
       // it considers 'clickable' - anchors, buttons, etc. We fake a click handler on the
       // DOM nodes themselves. Remove if handled by React: https://github.com/facebook/react/issues/1169
 
-      // TODO
-      // this.refs.modal.getDOMNode().onclick = function() {};
-      //this.refs.backdrop.getDOMNode().onclick = function() {};
+      /*
+      for (refName <- Seq("modal", "backdrop")) {
+        val ref = scope.refs(refName)
+        if (ref.isDefined) {
+          val element = ref.get.getDOMNode().asInstanceOf[HTMLElement]
+          element.onclick = (x: MouseEvent) => ()
+        }
+      } */
     }
   }
 
-  val component = ReactComponentB[Props]("Modal")
+  override val component = ReactComponentB[Props]("Modal")
     .stateless
     .backend(new Backend(_))
     .render((P, C, _, B) => {
@@ -122,11 +130,12 @@ object Modal extends BootstrapMixin {
           ^.classSet1("modal-backdrop", "fade" -> P.animation,
             "in" -> (!P.animation || true)), // FIXME document.querySelectorAll
           ^.ref := backdropRef,
-          ^.onClick ==> onClickHandler)(modal)
+          ^.onClick ==> onClickHandler),
+        modal
       )
     }
 
-    var dialogClasses = getBsClassSet(P).filter(p => p._1 != "modal")
+    var dialogClasses = P.bsClassSet.filter(p => p._1 != "modal")
     dialogClasses += ("modal-dialog" -> true)
 
     val modalRef = Ref("modal")
@@ -143,9 +152,10 @@ object Modal extends BootstrapMixin {
         ^.onClick ==> onClickHandler,
         ^.ref := modalRef,
         <.div(^.classSetM(dialogClasses),
-          <.div(^.className := "modal-content", ^.overflow := "hidden"),
-          if (P.title.isDefined) renderHeader() else EmptyTag,
-          C
+          <.div(^.className := "modal-content", ^.overflow := "hidden",
+            if (P.title.isDefined) renderHeader() else EmptyTag,
+            C
+          )
         )
       )
     if (P.backdrop)
@@ -154,24 +164,24 @@ object Modal extends BootstrapMixin {
       modal
   })
     .componentDidMount(scope => {
-    val P = scope.props
-
     scope.backend.onComponentDidMount()
-
-    import scala.language.implicitConversions
-    implicit def jq2bootstrap(jq: JQuery): BootstrapJQuery = jq.asInstanceOf[BootstrapJQuery]
-
-    // instruct Bootstrap to show the modal
-    jQuery(scope.getDOMNode()).modal(js.Dynamic.literal("backdrop" -> P.backdrop, "keyboard" -> P.keyboard, "show" -> true))
-
-    jQuery(scope.getDOMNode()).on("hidden.bs.modal", null, null, scope.backend.hidden _)
+  })
+    .componentDidUpdate((scope, prevProps, _) => {
+    if (scope.props.backdrop && scope.props.backdrop != prevProps.backdrop)
+      scope.backend.iosClickHack()
   })
     .componentWillUnmount(scope => {
+    if (scope.backend._onDocumentKeyupListener.isDefined) {
+      scope.backend._onDocumentKeyupListener.get.remove()
+      scope.backend._onDocumentKeyupListener = None
+    }
+
+    val container = scope.props.container.getDOMNode
+    val containerClasses = container.className.split(" ")
+      .map(_.trim).filter(_ != "modal-open")
+    container.className = containerClasses.mkString(" ")
 
   })
     .build
 
-  def apply(props: Props, children: ReactNode*) = component(props, children)
-
-  def apply() = component
 }

@@ -1,18 +1,24 @@
 package com.acework.js.components.bootstrap
 
-import Utils._
+import com.acework.js.utils.{Mappable, Mergeable}
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
 
 import scala.scalajs.js
-import scala.scalajs.js._
+import scala.scalajs.js.{UndefOr, undefined}
 
 /**
  * Created by weiyin on 10/03/15.
  */
-object PageItem {
+object PageItem extends BootstrapComponent {
+  override type P = PageItem
+  override type S = Unit
+  override type B = Unit
+  override type N = TopNode
 
-  case class Props(href: UndefOr[String] = "#",
+  override def defaultProps = PageItem()
+
+  case class PageItem(href: UndefOr[String] = "#",
                    title: UndefOr[String] = undefined,
                    target: UndefOr[String] = undefined,
                    disabled: UndefOr[Boolean] = undefined,
@@ -20,8 +26,18 @@ object PageItem {
                    next: UndefOr[Boolean] = undefined,
                    eventKey: UndefOr[js.Any] = undefined,
                    onSelect: UndefOr[(js.Any, String, String) => Unit] = undefined, addClasses: String = "")
+    extends MergeableProps[PageItem] {
 
-  val PageItem = ReactComponentB[Props]("PageItem")
+    def merge(t: Map[String, Any]): PageItem = implicitly[Mergeable[PageItem]].merge(this, t)
+
+    def asMap: Map[String, Any] = implicitly[Mappable[PageItem]].toMap(this)
+
+    def apply(children: ReactNode*) = component(this, children)
+
+    def apply() = component(this)
+  }
+
+  override val component = ReactComponentB[PageItem]("PageItem")
     .render { (P, C) =>
 
     def handleSelect(e: ReactEvent) = {
@@ -41,7 +57,8 @@ object PageItem {
     )
 
     <.li(^.classSet1M(P.addClasses, classes),
-      <.a(^.href := P.href, ^.title := P.title, ^.target := P.target, ^.onClick --> (handleSelect _))
+      <.a(^.href := P.href, ^.title := P.title, ^.target := P.target, ^.onClick ==> handleSelect,
+      C)
     )
   }.build
 }

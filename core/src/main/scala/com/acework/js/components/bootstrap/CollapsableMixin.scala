@@ -1,6 +1,6 @@
 package com.acework.js.components.bootstrap
 
-import japgolly.scalajs.react.{TopNode, BackendScope}
+import japgolly.scalajs.react.{BackendScope, TopNode}
 
 import scala.scalajs.js
 import scala.scalajs.js.UndefOr

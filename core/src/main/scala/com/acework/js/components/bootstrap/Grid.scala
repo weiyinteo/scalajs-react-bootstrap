@@ -1,6 +1,5 @@
 package com.acework.js.components.bootstrap
 
-import Utils._
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
 
@@ -24,4 +23,8 @@ object Grid {
     componentClass(^.classSet1M(P.addClasses, classes))(C)
 
   }.build
+
+  def apply(props: Props, children: ReactNode*) = Grid(props, children)
+
+  def apply(children: ReactNode*) = Grid(Props(), children)
 }

@@ -14,9 +14,7 @@ object DropdownButtons {
   val singleButtonSource =
     """
       |def renderButton(style: Styles.Value, key: Int): ReactNode = {
-      |      val titleNode: ReactNode = style.toString
-      |      val title: UndefOr[ReactNode] = titleNode
-      |      DropdownButton(DropdownButton.Props(bsStyle = style, title = style.toString: ReactNode, key = String.valueOf(key)),
+      |      DropdownButton.withKey(key)(DropdownButton.Props(bsStyle = style, title = style.toString: ReactNode),
       |        MenuItem(MenuItem.Props(eventKey = "1"), "Action")
       |        , MenuItem(MenuItem.Props(eventKey = "2"), "Another action")
       |        , MenuItem(MenuItem.Props(eventKey = "3"), "Something else here")
@@ -32,7 +30,7 @@ object DropdownButtons {
 
   val singleButtonContent = CodeContent.Content(singleButtonSource, {
     def renderButton(style: Styles.Value, key: Int): ReactNode = {
-      DropdownButton(DropdownButton.Props(bsStyle = style, title = style.toString: ReactNode, key = String.valueOf(key)),
+      DropdownButton.withKey(key)(DropdownButton.Props(bsStyle = style, title = style.toString: ReactNode),
         MenuItem(MenuItem.Props(eventKey = "1"), "Action")
         , MenuItem(MenuItem.Props(eventKey = "2"), "Another action")
         , MenuItem(MenuItem.Props(eventKey = "3"), "Something else here")
@@ -50,7 +48,7 @@ object DropdownButtons {
   val splitButtonSource =
     """
       |def renderButton(style: Styles.Value, key: Int): ReactNode = {
-      |      SplitButton(SplitButton.Props(bsStyle = style, title = style.toString: ReactNode, key = String.valueOf(key)),
+      |      SplitButton.withKey(key)(SplitButton.Props(bsStyle = style, title = style.toString: ReactNode),
       |        MenuItem(MenuItem.Props(eventKey = "1"), "Action")
       |        , MenuItem(MenuItem.Props(eventKey = "2"), "Another action")
       |        , MenuItem(MenuItem.Props(eventKey = "3"), "Something else here")
@@ -68,7 +66,7 @@ object DropdownButtons {
 
   val splitButtonContent = CodeContent.Content(splitButtonSource, {
     def renderButton(style: Styles.Value, key: Int): ReactNode = {
-      SplitButton(SplitButton.Props(bsStyle = style, title = style.toString: ReactNode, key = String.valueOf(key)),
+      SplitButton.withKey(key)(SplitButton.Props(bsStyle = style, title = style.toString: ReactNode),
         MenuItem(MenuItem.Props(eventKey = "1"), "Action")
         , MenuItem(MenuItem.Props(eventKey = "2"), "Another action")
         , MenuItem(MenuItem.Props(eventKey = "3"), "Something else here")

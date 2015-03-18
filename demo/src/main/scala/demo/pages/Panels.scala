@@ -100,28 +100,28 @@ object Panels {
 
   val controlledSource =
     """
-      |PanelGroup(PanelGroup.Props(ctiveKey = "1", key = "controlledPanel", accordion = true),
+      |PanelGroup.withKey("controlledPanel")(PanelGroup.Props(activeKey = "1", accordion = true),
       |      Panel(Panel.Props(header = "Panel 1": ReactNode, eventKey = "1"), "Panel 1 content")
       |      , Panel(Panel.Props(header = "Panel 2": ReactNode, eventKey = "2"), "Panel 2 content"))
     """.stripMargin
 
   val controlledContent = CodeContent.Content(controlledSource,
-    PanelGroup(PanelGroup.Props(activeKey = "1", key = "controlledPanel", accordion = true),
+    PanelGroup.withKey("controlledPanel")(PanelGroup.Props(activeKey = "1", accordion = true),
       Panel(Panel.Props(header = "Panel 1": ReactNode, eventKey = "1"), "Panel 1 content")
       , Panel(Panel.Props(header = "Panel 2": ReactNode, eventKey = "2"), "Panel 2 content"))
   )
 
   val uncontrolledSource =
     """
-      |PanelGroup(PanelGroup.Props(defaultActiveKey = "2", key = "controlledPanel", accordion = true),
+      |PanelGroup.withKey("controlledPanel")(PanelGroup.Props(defaultActiveKey = "2", accordion = true),
       |      Panel(Panel.Props(header = "Panel 1": ReactNode, eventKey = "1"), "Panel 1 content")
       |      , Panel(Panel.Props(header = "Panel 2": ReactNode, eventKey = "2"), "Panel 2 content"))
     """.stripMargin
 
   val uncontrolledContent = CodeContent.Content(uncontrolledSource,
-    PanelGroup(PanelGroup.Props(defaultActiveKey = "2", key = "controlledPanel", accordion = true),
-      Panel(Panel.Props(header = "Panel 1": ReactNode, eventKey = "1"), "Panel 1 content")
-      , Panel(Panel.Props(header = "Panel 2": ReactNode, eventKey = "2"), "Panel 2 content"))
+    PanelGroup.withKey("controlledPanel")(PanelGroup.Props(defaultActiveKey = "2", accordion = true),
+      Panel.withKey(1)(Panel.Props(header = "Panel 1": ReactNode, eventKey = "1"), "Panel 1 content")
+      , Panel.withKey(2)(Panel.Props(header = "Panel 2": ReactNode, eventKey = "2"), "Panel 2 content"))
   )
 
   val accordionSource =

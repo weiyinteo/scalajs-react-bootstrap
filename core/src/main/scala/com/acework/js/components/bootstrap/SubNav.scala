@@ -1,21 +1,26 @@
 package com.acework.js.components.bootstrap
 
+import com.acework.js.components.bootstrap.Utils._
+import com.acework.js.utils.{Mappable, Mergeable}
 import japgolly.scalajs.react.Addons.ReactCloneWithProps
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
 
 import scala.scalajs.js
-import scala.scalajs.js._
-import Utils._
+import scala.scalajs.js.{UndefOr, undefined}
 
 
 /**
  * Created by weiyin on 09/03/15.
  */
 
-object SubNav extends BootstrapMixin {
+object SubNav extends BootstrapComponent {
+  override type P = Props
+  override type S = Unit
+  override type B = Unit
+  override type N = TopNode
 
-  type PROPS = Props
+  override def defaultProps = Props()
 
   case class Props(active: Boolean = true,
                    disabled: Boolean = false,
@@ -23,19 +28,22 @@ object SubNav extends BootstrapMixin {
                    target: UndefOr[String] = undefined,
                    title: UndefOr[String] = undefined,
                    text: UndefOr[String] = undefined,
-                   key: UndefOr[JsNumberOrString] = undefined,
                    eventKey: UndefOr[String] = undefined,
-                   ref: UndefOr[Ref] = undefined,
                    onSelect: UndefOr[(String) => Unit] = undefined,
                    bsClass: UndefOr[Classes.Value] = Classes.nav,
                    bsStyle: UndefOr[Styles.Value] = undefined,
                    bsSize: UndefOr[Sizes.Value] = undefined,
-                   addClasses: String = "") extends BaseProps
+                   addClasses: String = "") extends BsProps with MergeableProps[Props] {
+
+    def merge(t: Map[String, Any]): Props = implicitly[Mergeable[Props]].merge(this, t)
+
+    def asMap: Map[String, Any] = implicitly[Mappable[Props]].toMap(this)
+  }
 
   // TODO
   def getChildActiveProp(child: ReactNode): Boolean = true
 
-  val SubNav = ReactComponentB[Props]("SubNav")
+  override val component = ReactComponentB[Props]("SubNav")
     .render((P, C) => {
 
     val handleClick = (e: ReactEvent) => {
@@ -68,6 +76,5 @@ object SubNav extends BootstrapMixin {
   }
     ).build
 
-  def apply(props: Props, children: ReactNode*) = SubNav(props, children)
 }
 

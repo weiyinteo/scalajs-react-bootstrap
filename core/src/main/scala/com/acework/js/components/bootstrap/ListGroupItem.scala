@@ -1,17 +1,22 @@
 package com.acework.js.components.bootstrap
 
-import Utils._
+import com.acework.js.utils.{Mappable, Mergeable}
 import japgolly.scalajs.react.Addons.ReactCloneWithProps
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
 
-import scala.scalajs.js._
+import scala.scalajs.js.{UndefOr, undefined}
 
 /**
  * Created by weiyin on 10/03/15.
  */
-object ListGroupItem extends BootstrapMixin {
-  type PROPS = Props
+object ListGroupItem extends BootstrapComponent {
+  override type P = Props
+  override type S = Unit
+  override type B = Unit
+  override type N = TopNode
+
+  override def defaultProps = Props()
 
   case class Props(active: UndefOr[Boolean] = undefined,
                    disabled: UndefOr[Boolean] = undefined,
@@ -24,10 +29,14 @@ object ListGroupItem extends BootstrapMixin {
                    bsClass: UndefOr[Classes.Value] = Classes.`list-group-item`,
                    bsStyle: UndefOr[Styles.Value] = undefined,
                    bsSize: UndefOr[Sizes.Value] = undefined,
-                   addClasses: String = "") extends BaseProps
+                   addClasses: String = "") extends BsProps with MergeableProps[Props] {
 
+    def merge(t: Map[String, Any]): Props = implicitly[Mergeable[Props]].merge(this, t)
 
-  val ListGroupItem = ReactComponentB[Props]("ListGroupItem")
+    def asMap: Map[String, Any] = implicitly[Mappable[Props]].toMap(this)
+  }
+
+  override val component = ReactComponentB[Props]("ListGroupItem")
     .render { (P, C) =>
 
     def renderAnchor(classes: Map[String, Boolean]) = {
@@ -57,7 +66,7 @@ object ListGroupItem extends BootstrapMixin {
       Seq(header, content)
     }
 
-    var classes = getBsClassSet(P)
+    var classes = P.bsClassSet
     classes += ("active" -> P.active.getOrElse(false))
     classes += ("disabled" -> P.disabled.getOrElse(false))
 
@@ -68,7 +77,4 @@ object ListGroupItem extends BootstrapMixin {
 
   }.build
 
-  def apply(props: Props, children: ReactNode*) = ListGroupItem(props, children)
-
-  def apply(children: ReactNode*) = ListGroupItem(Props(), children)
 }

@@ -1,16 +1,21 @@
 package com.acework.js.components.bootstrap
 
-import Utils._
+import com.acework.js.utils.{Mappable, Mergeable}
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
 
-import scala.scalajs.js._
+import scala.scalajs.js.{UndefOr, undefined}
 
 /**
  * Created by weiyin on 10/03/15.
  */
-object MenuItem {
+object MenuItem extends BootstrapComponent {
+  override type P = Props
+  override type S = Unit
+  override type B = Backend
+  override type N = TopNode
 
+  override def defaultProps = Props()
 
   case class Props(header: UndefOr[Boolean] = undefined,
                    divider: UndefOr[Boolean] = undefined,
@@ -19,13 +24,14 @@ object MenuItem {
                    target: UndefOr[String] = undefined,
                    eventKey: UndefOr[String] = undefined,
                    onSelect: UndefOr[(String, String, String) => Unit] = undefined,
-                   key: UndefOr[String] = undefined,
-                   ref: UndefOr[Ref] = undefined,
-                   addClasses: String = "")
+                   addClasses: String = "") extends MergeableProps[Props] {
 
-  case class State()
+    def merge(t: Map[String, Any]): Props = implicitly[Mergeable[Props]].merge(this, t)
 
-  class Backend($: BackendScope[Props, State]) {
+    def asMap: Map[String, Any] = implicitly[Mappable[Props]].toMap(this)
+  }
+
+  class Backend($: BackendScope[Props, Unit]) {
     def handleClick(e: ReactEvent): Unit = {
       if ($.props.onSelect.isDefined) {
         e.preventDefault()
@@ -34,8 +40,8 @@ object MenuItem {
     }
   }
 
-  val MenuItem = ReactComponentB[Props]("MenuItem")
-    .initialState(State())
+  override val component = ReactComponentB[Props]("MenuItem")
+    .stateless
     .backend(new Backend(_))
     .render { (P, C, S, B) =>
 
@@ -57,5 +63,4 @@ object MenuItem {
     <.li(^.classSet1M(P.addClasses, classes), ^.role := "presentation")(children)
   }.build
 
-  def apply(props: Props, children: ReactNode*) = MenuItem(props, children)
 }

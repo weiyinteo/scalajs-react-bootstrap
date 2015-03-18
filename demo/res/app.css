@@ -79,3 +79,10 @@ section.demo {
   padding-bottom: 4em;
 }
 
+.modal-container {
+    position: relative;
+}
+
+.modal-container .modal, .modal-container .modal-backdrop {
+    position: absolute;
+}
