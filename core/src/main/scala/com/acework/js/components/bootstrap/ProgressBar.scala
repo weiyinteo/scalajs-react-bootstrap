@@ -52,9 +52,14 @@ object ProgressBar extends BootstrapComponent {
         // TODO P.interpolateClass
         ""
       }
-      else
-        Interpolate(Interpolate.Props(now = P.now, min = P.min, max = P.max, percent = percentage,
-          bsStyle = P.bsStyle), P.label.get)
+      else {
+        if(P.label.isDefined)
+          Interpolate.Interpolate(now = P.now, min = P.min, max = P.max, percent = percentage,
+            bsStyle = P.bsStyle)(P.label.get)
+        else
+          Interpolate.Interpolate(now = P.now, min = P.min, max = P.max, percent = percentage,
+            bsStyle = P.bsStyle)()
+      }
     }
 
     def renderScreenReaderOnlyLabel(label: ReactNode) = {
@@ -68,7 +73,7 @@ object ProgressBar extends BootstrapComponent {
 
     def renderProgressBar() = {
       val percentage = getPercentage(P.now.getOrElse(0), P.min.getOrElse(0), P.max.getOrElse(100))
-      var label: ReactNode = if (React.isValidElement(P.label))
+      var label: ReactNode = if (!React.isValidElement(P.label))
         renderLabel(percentage)
       else
         P.label.getOrElse("")
