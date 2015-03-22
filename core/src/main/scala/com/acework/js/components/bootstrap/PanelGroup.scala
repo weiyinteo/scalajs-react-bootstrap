@@ -12,16 +12,16 @@ import scala.scalajs.js.{UndefOr, undefined}
  * Created by weiyin on 10/03/15.
  */
 object PanelGroup extends BootstrapComponent {
-  override type P = Props
+  override type P = PanelGroup
   override type S = State
   override type B = Backend
   override type N = TopNode
 
-  override def defaultProps = Props()
+  override def defaultProps = PanelGroup()
 
   case class State(activeKey: UndefOr[String])
 
-  case class Props(activeKey: UndefOr[String] = undefined,
+  case class PanelGroup(activeKey: UndefOr[String] = undefined,
                    accordion: UndefOr[Boolean] = undefined,
                    collapsable: UndefOr[Boolean] = undefined,
                    onSelect: UndefOr[(UndefOr[String]) => Unit] = undefined,
@@ -29,15 +29,19 @@ object PanelGroup extends BootstrapComponent {
                    bsClass: UndefOr[Classes.Value] = Classes.`panel-group`,
                    bsStyle: UndefOr[Styles.Value] = undefined,
                    bsSize: UndefOr[Sizes.Value] = undefined,
-                   addClasses: String = "") extends BsProps with MergeableProps[Props] {
+                   addClasses: String = "") extends BsProps with MergeableProps[PanelGroup] {
 
-    def merge(t: Map[String, Any]): Props = implicitly[Mergeable[Props]].merge(this, t)
+    def merge(t: Map[String, Any]): PanelGroup = implicitly[Mergeable[PanelGroup]].merge(this, t)
 
-    def asMap: Map[String, Any] = implicitly[Mappable[Props]].toMap(this)
+    def asMap: Map[String, Any] = implicitly[Mappable[PanelGroup]].toMap(this)
+
+    def apply(children: ReactNode*) = component(this, children)
+
+    def apply() = component(this)
   }
 
 
-  class Backend($: BackendScope[Props, State]) {
+  class Backend($: BackendScope[PanelGroup, State]) {
     def children: js.Any = $._props.asInstanceOf[js.Dynamic].children
 
     var isChanging: Boolean = false
@@ -56,7 +60,7 @@ object PanelGroup extends BootstrapComponent {
     }
   }
 
-  override val component = ReactComponentB[Props]("PanelGroup")
+  override val component = ReactComponentB[PanelGroup]("PanelGroup")
     .initialStateP(P => State(P.defaultActiveKey))
     .backend(new Backend(_))
     .render {
@@ -69,7 +73,7 @@ object PanelGroup extends BootstrapComponent {
 
         val eventKey =
           childPropsAny match {
-            case props: Panel.Props =>
+            case props: Panel.Panel =>
               props.eventKey
             case _ => undefined
           }

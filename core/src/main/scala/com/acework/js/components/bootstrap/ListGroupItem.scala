@@ -11,14 +11,14 @@ import scala.scalajs.js.{UndefOr, undefined}
  * Created by weiyin on 10/03/15.
  */
 object ListGroupItem extends BootstrapComponent {
-  override type P = Props
+  override type P = ListGroupItem
   override type S = Unit
   override type B = Unit
   override type N = TopNode
 
-  override def defaultProps = Props()
+  override def defaultProps = ListGroupItem()
 
-  case class Props(active: UndefOr[Boolean] = undefined,
+  case class ListGroupItem(active: UndefOr[Boolean] = undefined,
                    disabled: UndefOr[Boolean] = undefined,
                    header: UndefOr[ReactNode] = undefined,
                    eventKey: UndefOr[String] = undefined,
@@ -29,14 +29,18 @@ object ListGroupItem extends BootstrapComponent {
                    bsClass: UndefOr[Classes.Value] = Classes.`list-group-item`,
                    bsStyle: UndefOr[Styles.Value] = undefined,
                    bsSize: UndefOr[Sizes.Value] = undefined,
-                   addClasses: String = "") extends BsProps with MergeableProps[Props] {
+                   addClasses: String = "") extends BsProps with MergeableProps[ListGroupItem] {
 
-    def merge(t: Map[String, Any]): Props = implicitly[Mergeable[Props]].merge(this, t)
+    def merge(t: Map[String, Any]): ListGroupItem = implicitly[Mergeable[ListGroupItem]].merge(this, t)
 
-    def asMap: Map[String, Any] = implicitly[Mappable[Props]].toMap(this)
+    def asMap: Map[String, Any] = implicitly[Mappable[ListGroupItem]].toMap(this)
+
+    def apply(children: ReactNode*) = component(this, children)
+
+    def apply() = component(this)
   }
 
-  override val component = ReactComponentB[Props]("ListGroupItem")
+  override val component = ReactComponentB[ListGroupItem]("ListGroupItem")
     .render { (P, C) =>
 
     def renderAnchor(classes: Map[String, Boolean]) = {

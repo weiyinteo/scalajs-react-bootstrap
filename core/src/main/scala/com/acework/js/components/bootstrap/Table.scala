@@ -9,16 +9,27 @@ import scala.scalajs.js._
 /**
  * Created by weiyin on 10/03/15.
  */
-object Table {
+object Table extends BootstrapComponent {
+  override type P = Table
+  override type S = Unit
+  override type B = Unit
+  override type N = TopNode
 
-  case class Props(striped: UndefOr[Boolean] = undefined,
+  override def defaultProps = Table()
+
+  case class Table(striped: UndefOr[Boolean] = undefined,
                    bordered: UndefOr[Boolean] = undefined,
                    condensed: UndefOr[Boolean] = undefined,
                    hover: UndefOr[Boolean] = undefined,
                    responsive: UndefOr[Boolean] = undefined,
-                   addClasses: String = "")
+                   addClasses: String = "") {
 
-  val Table = ReactComponentB[Props]("Table")
+    def apply(children: ReactNode*) = component(this, children)
+
+    def apply() = component(this)
+  }
+
+  val component = ReactComponentB[Table]("Table")
     .stateless
     .render { (P, C, _) =>
     val classes = Map(
@@ -37,9 +48,4 @@ object Table {
       table
   }.build
 
-  def apply(props: Props, children: ReactNode*) = Table(props, children)
-
-  def apply(children: ReactNode*) = Table(Props(), children)
-
-  def apply() = Table(Props())
 }

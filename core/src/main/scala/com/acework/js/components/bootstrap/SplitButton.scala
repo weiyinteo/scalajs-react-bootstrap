@@ -13,14 +13,14 @@ import japgolly.scalajs.react.vdom.prefix_<^._
 import scala.scalajs.js.{UndefOr, undefined}
 
 object SplitButton extends BootstrapComponent {
-  override type P = Props
+  override type P = SplitButton
   override type S = DropdownState
   override type B = Backend
   override type N = TopNode
 
-  override def defaultProps = Props()
+  override def defaultProps = SplitButton()
 
-  case class Props(
+  case class SplitButton(
                     /*==  start react bootstraps  ==*/
                     id: UndefOr[String] = undefined,
                     pullRight: UndefOr[Boolean] = undefined,
@@ -37,14 +37,18 @@ object SplitButton extends BootstrapComponent {
                     bsStyle: UndefOr[Styles.Value] = Styles.default,
                     bsSize: UndefOr[Sizes.Value] = undefined,
                     addClasses: String = "")
-    extends BsProps with MergeableProps[Props] {
+    extends BsProps with MergeableProps[SplitButton] {
 
-    def merge(t: Map[String, Any]): Props = implicitly[Mergeable[Props]].merge(this, t)
+    def merge(t: Map[String, Any]): SplitButton = implicitly[Mergeable[SplitButton]].merge(this, t)
 
-    def asMap: Map[String, Any] = implicitly[Mappable[Props]].toMap(this)
+    def asMap: Map[String, Any] = implicitly[Mappable[SplitButton]].toMap(this)
+
+    def apply(children: ReactNode*) = component(this, children)
+
+    def apply() = component(this)
   }
 
-  class Backend(val scope: BackendScope[Props, DropdownState]) extends DropdownStateMixin[Props] {
+  class Backend(val scope: BackendScope[SplitButton, DropdownState]) extends DropdownStateMixin[SplitButton] {
     def handleButtonClick(e: ReactEvent) = {
       if (scope.state.open)
         setDropdownState(false)
@@ -66,18 +70,18 @@ object SplitButton extends BootstrapComponent {
     }
   }
 
-  override val component = ReactComponentB[Props]("SplitButton")
+  override val component = ReactComponentB[SplitButton]("SplitButton")
     .initialState(DropdownState(open = false))
     .backend(new Backend(_))
     .render((P, C, S, B) => {
 
 
     val buttonRef = Ref("button")
-    val button = Button.withRef("button")(Button.Props(bsStyle = P.bsStyle, bsClass = P.bsClass,
+    val button = Button.withRef("button")(Button.Button(bsStyle = P.bsStyle, bsClass = P.bsClass,
       onClick = (e: ReactEvent) => B.handleButtonClick(e)), P.title.getOrElse(""): ReactNode)
 
     val dropdownButtonRef = Ref("dropdownButton")
-    val dropdownButton = Button.withRef("dropdownButton")(Button.Props(bsStyle = P.bsStyle, bsClass = P.bsClass, addClasses = s"${P.addClasses} dropdown-toggle",
+    val dropdownButton = Button.withRef("dropdownButton")(Button.Button(bsStyle = P.bsStyle, bsClass = P.bsClass, addClasses = s"${P.addClasses} dropdown-toggle",
       onClick = (e: ReactEvent) => B.handleDropdownClick(e)),
       <.span(^.className := "sr-only", P.title),
       <.span(^.className := "caret"))
@@ -89,8 +93,8 @@ object SplitButton extends BootstrapComponent {
     if (P.dropup.getOrElse(false))
       groupClasses += " dropup"
 
-    ButtonGroup(ButtonGroup.Props(bsSize = P.bsSize, id = P.id, addClasses = groupClasses), button, dropdownButton,
-      DropdownMenu.withRef("menu")(DropdownMenu.Props(pullRight = P.pullRight,
+    ButtonGroup(ButtonGroup.ButtonGroup(bsSize = P.bsSize, id = P.id, addClasses = groupClasses), button, dropdownButton,
+      DropdownMenu.withRef("menu")(DropdownMenu.DropdownMenu(pullRight = P.pullRight,
         ariaLabelledBy = P.id, onSelect = (key: String) => B.handleOptionSelect(key)), C)
     )
 

@@ -24,7 +24,7 @@ object Tooltips {
 
   val exampleContent = CodeContent.Content(exampleSource,
     <.div(^.height := 50,
-      Tooltip(Tooltip.Props(placement = Placements.right, positionLeft = 150, positionTop = 50),
+      Tooltip(Tooltip.Tooltip(placement = Placements.right, positionLeft = 150, positionTop = 50),
         <.strong("Holy guacomole!"), " Check this info."
       )
     )
@@ -51,16 +51,16 @@ object Tooltips {
     ButtonToolbar(
       OverlayTrigger(OverlayTrigger.OverlayTrigger(placement = Placements.left,
         overlay = Tooltip(<.strong("Holy guacomole!"), " Check this info.")),
-        Button(Button.Props(bsStyle = Styles.default), "Holy guacomole!")),
+        Button(Button.Button(bsStyle = Styles.default), "Holy guacomole!")),
       OverlayTrigger(OverlayTrigger.OverlayTrigger(placement = Placements.top,
         overlay = Tooltip(<.strong("Holy guacomole!"), " Check this info.")),
-        Button(Button.Props(bsStyle = Styles.default), "Holy guacomole!")),
+        Button(Button.Button(bsStyle = Styles.default), "Holy guacomole!")),
       OverlayTrigger(OverlayTrigger.OverlayTrigger(placement = Placements.bottom,
         overlay = Tooltip(<.strong("Holy guacomole!"), " Check this info.")),
-        Button(Button.Props(bsStyle = Styles.default), "Holy guacomole!")),
+        Button(Button.Button(bsStyle = Styles.default), "Holy guacomole!")),
       OverlayTrigger(OverlayTrigger.OverlayTrigger(placement = Placements.right,
         overlay = Tooltip(<.strong("Holy guacomole!"), " Check this info.")),
-        Button(Button.Props(bsStyle = Styles.default), "Holy guacomole!"))
+        Button(Button.Button(bsStyle = Styles.default), "Holy guacomole!"))
     )
   )
 

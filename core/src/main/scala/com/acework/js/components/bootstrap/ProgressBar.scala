@@ -11,24 +11,36 @@ import scala.scalajs.js._
 /**
  * Created by weiyin on 10/03/15.
  */
-object ProgressBar {
+object ProgressBar extends BootstrapComponent {
+  override type P = ProgressBar
+  override type S = Unit
+  override type B = Unit
+  override type N = TopNode
 
-  case class Props(
-                    min: UndefOr[Double] = 0,
-                    now: UndefOr[Double] = undefined,
-                    max: UndefOr[Double] = 100,
-                    label: UndefOr[ReactNode] = undefined,
-                    srOnly: UndefOr[Boolean] = undefined,
-                    striped: UndefOr[Boolean] = undefined,
-                    active: UndefOr[Boolean] = undefined,
-                    isChild: UndefOr[Boolean] = undefined,
-                    interpolateClass: UndefOr[ReactNode] = undefined,
-                    bsClass: UndefOr[Classes.Value] = Classes.`progress-bar`,
-                    bsStyle: UndefOr[Styles.Value] = Styles.default,
-                    bsSize: UndefOr[Sizes.Value] = undefined,
-                    addClasses: String = "") extends BsProps
+  override def defaultProps = ProgressBar()
 
-  val Progressbar = ReactComponentB[Props]("Progressbar")
+
+  case class ProgressBar(
+                          min: UndefOr[Double] = 0,
+                          now: UndefOr[Double] = undefined,
+                          max: UndefOr[Double] = 100,
+                          label: UndefOr[ReactNode] = undefined,
+                          srOnly: UndefOr[Boolean] = undefined,
+                          striped: UndefOr[Boolean] = undefined,
+                          active: UndefOr[Boolean] = undefined,
+                          isChild: UndefOr[Boolean] = undefined,
+                          interpolateClass: UndefOr[ReactNode] = undefined,
+                          bsClass: UndefOr[Classes.Value] = Classes.`progress-bar`,
+                          bsStyle: UndefOr[Styles.Value] = Styles.default,
+                          bsSize: UndefOr[Sizes.Value] = undefined,
+                          addClasses: String = "") extends BsProps {
+
+    def apply(children: ReactNode*) = component(this, children)
+
+    def apply() = component(this)
+  }
+
+  val component = ReactComponentB[ProgressBar]("Progressbar")
     .render((P, C) => {
 
     def getPercentage(now: Double, min: Double, max: Double): Double =
@@ -96,11 +108,4 @@ object ProgressBar {
 
   }).build
 
-  def withKey(key: js.Any) = Progressbar.withKey(key)
-
-  def withRef(ref: String) = Progressbar.withRef(ref)
-
-  def apply(props: Props, children: ReactNode*) = Progressbar(props, children)
-
-  def apply(children: ReactNode*) = Progressbar(Props(), children)
 }

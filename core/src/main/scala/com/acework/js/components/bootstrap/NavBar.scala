@@ -15,14 +15,14 @@ import scala.scalajs.js.{UndefOr, undefined}
  */
 
 object NavBar extends BootstrapComponent {
-  override type P = Props
+  override type P = NavBar
   override type S = State
   override type B = Backend
   override type N = TopNode
 
-  override def defaultProps = Props()
+  override def defaultProps = NavBar()
 
-  case class Props(
+  case class NavBar(
                     /*==  start react bootstraps  ==*/
                     fixedTop: UndefOr[Boolean] = undefined,
                     fixedBottom: UndefOr[Boolean] = undefined,
@@ -40,16 +40,20 @@ object NavBar extends BootstrapComponent {
                     bsClass: UndefOr[Classes.Value] = Classes.navbar,
                     bsStyle: UndefOr[Styles.Value] = Styles.default,
                     bsSize: UndefOr[Sizes.Value] = undefined,
-                    addClasses: String = "") extends BsProps with MergeableProps[Props] {
+                    addClasses: String = "") extends BsProps with MergeableProps[NavBar] {
 
-    def merge(t: Map[String, Any]): Props = implicitly[Mergeable[Props]].merge(this, t)
+    def merge(t: Map[String, Any]): NavBar = implicitly[Mergeable[NavBar]].merge(this, t)
 
-    def asMap: Map[String, Any] = implicitly[Mappable[Props]].toMap(this)
+    def asMap: Map[String, Any] = implicitly[Mappable[NavBar]].toMap(this)
+
+    def apply(children: ReactNode*) = component(this, children)
+
+    def apply() = component(this)
   }
 
   case class State(navExpanded: Boolean)
 
-  case class Backend(scope: BackendScope[Props, State]) {
+  case class Backend(scope: BackendScope[NavBar, State]) {
     var _isChanging = false
 
     def handleToggle() = {
@@ -71,7 +75,7 @@ object NavBar extends BootstrapComponent {
   }
 
 
-  override val component = ReactComponentB[Props]("NavBar")
+  override val component = ReactComponentB[NavBar]("NavBar")
     .initialStateP(P => State(navExpanded = P.defaultNavExpanded.getOrElse(false)))
     .backend(new Backend(_))
     .render((P, C, S, B) => {

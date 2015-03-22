@@ -14,14 +14,14 @@ import scala.scalajs.js.{Any => JAny, UndefOr, undefined}
  */
 
 object Panel extends BootstrapComponent {
-  override type P = Props
+  override type P = Panel
   override type S = CollapsableState
   override type B = Backend
   override type N = TopNode
 
-  override def defaultProps = Props()
+  override def defaultProps = Panel()
 
-  case class Props(collapsable: UndefOr[Boolean] = undefined,
+  case class Panel(collapsable: UndefOr[Boolean] = undefined,
                    defaultExpanded: Boolean = false,
                    expanded: UndefOr[Boolean] = undefined,
                    header: UndefOr[ReactNode] = undefined,
@@ -32,14 +32,18 @@ object Panel extends BootstrapComponent {
                    bsClass: UndefOr[Classes.Value] = Classes.panel,
                    bsStyle: UndefOr[Styles.Value] = Styles.default,
                    bsSize: UndefOr[Sizes.Value] = undefined,
-                   addClasses: String = "") extends BsProps with CollapsableProps with MergeableProps[Props] {
+                   addClasses: String = "") extends BsProps with CollapsableProps with MergeableProps[Panel] {
 
-    def merge(t: Map[String, Any]): Props = implicitly[Mergeable[Props]].merge(this, t)
+    def merge(t: Map[String, Any]): Panel = implicitly[Mergeable[Panel]].merge(this, t)
 
-    def asMap: Map[String, Any] = implicitly[Mappable[Props]].toMap(this)
+    def asMap: Map[String, Any] = implicitly[Mappable[Panel]].toMap(this)
+
+    def apply(children: ReactNode*) = component(this, children)
+
+    def apply() = component(this)
   }
 
-  class Backend(val scope: BackendScope[Props, CollapsableState]) extends CollapsableMixin[Props] {
+  class Backend(val scope: BackendScope[Panel, CollapsableState]) extends CollapsableMixin[Panel] {
     var _isChanging: Boolean = _
 
     def handleSelect(e: ReactEvent) = {
@@ -70,7 +74,7 @@ object Panel extends BootstrapComponent {
     }
   }
 
-  override val component = ReactComponentB[Props]("Panel")
+  override val component = ReactComponentB[Panel]("Panel")
     .initialStateP(P => CollapsableState(collapsing = false, isExpended = P.defaultExpanded))
     .backend(new Backend(_))
     .render { (P, C, S, B) =>

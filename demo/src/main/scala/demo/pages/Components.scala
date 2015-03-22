@@ -17,16 +17,16 @@ object Components {
   val alerts = <.div(
     PageHeader(<.h1("Alert messages ", <.small("alert"))),
     <.h3("Example Alerts"),
-    Alert(Alert.Props(bsStyle = Styles.warning),
+    Alert(Alert.Alert(bsStyle = Styles.warning),
       <.strong("Holy guacamole!"), "Best check yo self, you're not looking too good."),
     <.h3("closable alert"),
     AlertDismissable(),
     <.h3("Auto hide alert"),
     AlertAutoDismissable(),
-    Alert(Alert.Props(bsStyle = Styles.success), "Well done! You successfully read this important alert message."),
-    Alert(Alert.Props(bsStyle = Styles.info), "Heads up! This alert needs your attention, but it's not super important."),
-    Alert(Alert.Props(bsStyle = Styles.warning), "Warning! Better check yourself, you're not looking too good."),
-    Alert(Alert.Props(bsStyle = Styles.danger), "Oh snap! Change a few things up and try submitting again.")
+    Alert(Alert.Alert(bsStyle = Styles.success), "Well done! You successfully read this important alert message."),
+    Alert(Alert.Alert(bsStyle = Styles.info), "Heads up! This alert needs your attention, but it's not super important."),
+    Alert(Alert.Alert(bsStyle = Styles.warning), "Warning! Better check yourself, you're not looking too good."),
+    Alert(Alert.Alert(bsStyle = Styles.danger), "Oh snap! Change a few things up and try submitting again.")
   )
 
   val sideNavRef = Ref("sideNav")
@@ -37,6 +37,7 @@ object Components {
       <.div(^.className := "row",
         <.div(^.className := "col-md-9", ^.role := "main",
           <.div(
+
             Buttons.content()
             , ButtonGroups.content()
             , DropdownButtons.content()
@@ -64,32 +65,32 @@ object Components {
         <.div(^.className := "col-md-3",
           Affix(Affix.Props(addClasses = "bs-docs-sidebar hidden-print",
             role = "complementary": UndefOr[String], offset = 0, offsetTop = 0, offsetBottom = 0),
-            Nav.withRef("sideRef")(Nav.Props(addClasses = "bs-docs-sidenav", activeHref = "", onSelect = (_: String) => ()),
-              SubNav.withKey(1)(SubNav.Props(href = "#buttons", text = "Buttons"),
-                NavItem.withKey(2)(NavItem.Props(href = "#btn-groups"), "Button groups")
-                , NavItem.withKey(3)(NavItem.Props(href = "#btn-dropdowns"), "Button dropdowns")
+            Nav.withRef("sideRef")(Nav.Nav(addClasses = "bs-docs-sidenav", activeHref = "", onSelect = (_: Seq[UndefOr[String]]) => ()),
+              SubNav.withKey(1)(SubNav.SubNav(href = "#buttons", text = "Buttons"),
+                NavItem.withKey(2)(NavItem.NavItem(href = "#btn-groups"), "Button groups")
+                , NavItem.withKey(3)(NavItem.NavItem(href = "#btn-dropdowns"), "Button dropdowns")
               )
-              , NavItem.withKey(4)(NavItem.Props(href = "#panels"), "Panels")
-              , NavItem.withKey(5)(NavItem.Props(href = "#modals"), "Modals")
-              , NavItem.withKey(6)(NavItem.Props(href = "#tooltips"), "Tooltips")
-              , NavItem.withKey(7)(NavItem.Props(href = "#popovers"), "Popovers")
-              , NavItem.withKey(8)(NavItem.Props(href = "#progress"), "Progress bars")
-              , NavItem.withKey(9)(NavItem.Props(href = "#navs"), "Navs")
-              , NavItem.withKey(10)(NavItem.Props(href = "#navbars"), "Navbars")
-              , NavItem.withKey(11)(NavItem.Props(href = "#tabss"), "Togglable tabs")
-              , NavItem.withKey(12)(NavItem.Props(href = "#pager"), "Pager")
-              , NavItem.withKey(13)(NavItem.Props(href = "#alerts"), "Alerts")
-              , NavItem.withKey(14)(NavItem.Props(href = "#carousels"), "Carousels")
-              , NavItem.withKey(15)(NavItem.Props(href = "#grids"), "Grids")
-              , NavItem.withKey(16)(NavItem.Props(href = "#listgroup"), "List group")
-              , NavItem.withKey(17)(NavItem.Props(href = "#labels"), "Labels")
-              , NavItem.withKey(18)(NavItem.Props(href = "#badges"), "Badges")
-              , NavItem.withKey(19)(NavItem.Props(href = "#jumbotron"), "Jumbotron")
-              , NavItem.withKey(20)(NavItem.Props(href = "#page-header"), "Page Header")
-              , NavItem.withKey(21)(NavItem.Props(href = "#wells"), "Wells")
-              , NavItem.withKey(22)(NavItem.Props(href = "#glyphicons"), "Glyphicons")
-              , NavItem.withKey(23)(NavItem.Props(href = "#tables"), "Tables")
-              , NavItem.withKey(24)(NavItem.Props(href = "#input"), "Input")
+              , NavItem.withKey(4)(NavItem.NavItem(href = "#panels"), "Panels")
+              , NavItem.withKey(5)(NavItem.NavItem(href = "#modals"), "Modals")
+              , NavItem.withKey(6)(NavItem.NavItem(href = "#tooltips"), "Tooltips")
+              , NavItem.withKey(7)(NavItem.NavItem(href = "#popovers"), "Popovers")
+              , NavItem.withKey(8)(NavItem.NavItem(href = "#progress"), "Progress bars")
+              , NavItem.withKey(9)(NavItem.NavItem(href = "#navs"), "Navs")
+              , NavItem.withKey(10)(NavItem.NavItem(href = "#navbars"), "Navbars")
+              , NavItem.withKey(11)(NavItem.NavItem(href = "#tabss"), "Togglable tabs")
+              , NavItem.withKey(12)(NavItem.NavItem(href = "#pager"), "Pager")
+              , NavItem.withKey(13)(NavItem.NavItem(href = "#alerts"), "Alerts")
+              , NavItem.withKey(14)(NavItem.NavItem(href = "#carousels"), "Carousels")
+              , NavItem.withKey(15)(NavItem.NavItem(href = "#grids"), "Grids")
+              , NavItem.withKey(16)(NavItem.NavItem(href = "#listgroup"), "List group")
+              , NavItem.withKey(17)(NavItem.NavItem(href = "#labels"), "Labels")
+              , NavItem.withKey(18)(NavItem.NavItem(href = "#badges"), "Badges")
+              , NavItem.withKey(19)(NavItem.NavItem(href = "#jumbotron"), "Jumbotron")
+              , NavItem.withKey(20)(NavItem.NavItem(href = "#page-header"), "Page Header")
+              , NavItem.withKey(21)(NavItem.NavItem(href = "#wells"), "Wells")
+              , NavItem.withKey(22)(NavItem.NavItem(href = "#glyphicons"), "Glyphicons")
+              , NavItem.withKey(23)(NavItem.NavItem(href = "#tables"), "Tables")
+              , NavItem.withKey(24)(NavItem.NavItem(href = "#input"), "Input")
             )
           )
         )

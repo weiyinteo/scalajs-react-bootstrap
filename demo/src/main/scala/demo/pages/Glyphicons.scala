@@ -19,18 +19,18 @@ object Glyphicons {
     <.div(
       ButtonToolbar(
         ButtonGroup(
-          Button(Glyphicon(Glyphicon.Props(glyph = "align-left"))),
-          Button(Glyphicon(Glyphicon.Props(glyph = "align-center"))),
-          Button(Glyphicon(Glyphicon.Props(glyph = "align-right"))),
-          Button(Glyphicon(Glyphicon.Props(glyph = "align-justify")))
+          Button(Glyphicon(Glyphicon.Glyphicon(glyph = "align-left"))),
+          Button(Glyphicon(Glyphicon.Glyphicon(glyph = "align-center"))),
+          Button(Glyphicon(Glyphicon.Glyphicon(glyph = "align-right"))),
+          Button(Glyphicon(Glyphicon.Glyphicon(glyph = "align-justify")))
         )
       ),
       ButtonToolbar(
         ButtonGroup(
-          Button(Button.Props(bsSize = Sizes.lg), Glyphicon(Glyphicon.Props(glyph = "star")), "Star"),
-          Button(Glyphicon(Glyphicon.Props(glyph = "star")), "Star"),
-          Button(Button.Props(bsSize = Sizes.sm), Glyphicon(Glyphicon.Props(glyph = "star")), "Star"),
-          Button(Button.Props(bsSize = Sizes.xs), Glyphicon(Glyphicon.Props(glyph = "star")), "Star")
+          Button(Button.Button(bsSize = Sizes.lg), Glyphicon(Glyphicon.Glyphicon(glyph = "star")), "Star"),
+          Button(Glyphicon(Glyphicon.Glyphicon(glyph = "star")), "Star"),
+          Button(Button.Button(bsSize = Sizes.sm), Glyphicon(Glyphicon.Glyphicon(glyph = "star")), "Star"),
+          Button(Button.Button(bsSize = Sizes.xs), Glyphicon(Glyphicon.Glyphicon(glyph = "star")), "Star")
         )
       )
     )

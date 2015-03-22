@@ -11,7 +11,7 @@ object Accordion {
     .stateless
     .render { (P, C, _) =>
     // TODO spread props
-    PanelGroup(PanelGroup.Props(accordion = true), C)
+    PanelGroup(PanelGroup.PanelGroup(accordion = true), C)
   }.buildU
 
   def apply(children: ReactNode*) = Accordion(children)

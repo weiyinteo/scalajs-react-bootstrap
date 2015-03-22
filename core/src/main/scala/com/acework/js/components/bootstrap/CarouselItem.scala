@@ -12,14 +12,14 @@ import scala.scalajs.js.{UndefOr, undefined}
  * Created by weiyin on 10/03/15.
  */
 object CarouselItem extends BootstrapComponent {
-  override type P = Props
+  override type P = CarouselItem
   override type S = State
   override type B = Backend
   override type N = TopNode
 
-  override def defaultProps = Props()
+  override def defaultProps = CarouselItem()
 
-  case class Props(index: Int = 0,
+  case class CarouselItem(index: Int = 0,
                    active: UndefOr[Boolean] = undefined,
                    animation: UndefOr[Boolean] = true,
                    animateIn: UndefOr[Boolean] = false,
@@ -27,16 +27,20 @@ object CarouselItem extends BootstrapComponent {
                    direction: UndefOr[Directions.Value] = Directions.next,
                    onAnimateOutEnd: UndefOr[(Int) => Unit] = undefined,
                    caption: UndefOr[String] = undefined,
-                   addClasses: String = "") extends MergeableProps[Props] {
+                   addClasses: String = "") extends MergeableProps[CarouselItem] {
 
-    def merge(t: Map[String, Any]): Props = implicitly[Mergeable[Props]].merge(this, t)
+    def merge(t: Map[String, Any]): CarouselItem = implicitly[Mergeable[CarouselItem]].merge(this, t)
 
-    def asMap: Map[String, Any] = implicitly[Mappable[Props]].toMap(this)
+    def asMap: Map[String, Any] = implicitly[Mappable[CarouselItem]].toMap(this)
+
+    def apply(children: ReactNode*) = component(this, children)
+
+    def apply() = component(this)
   }
 
   case class State(direction: UndefOr[Directions.Value] = undefined)
 
-  class Backend($: BackendScope[Props, State]) {
+  class Backend($: BackendScope[CarouselItem, State]) {
 
     def startAnimation() = {
       if ($.isMounted())
@@ -49,7 +53,7 @@ object CarouselItem extends BootstrapComponent {
     }
   }
 
-  val component = ReactComponentB[Props]("CarouselItem")
+  val component = ReactComponentB[CarouselItem]("CarouselItem")
     .initialState(State())
     .backend(new Backend(_))
     .render((P, C, S, B) => {

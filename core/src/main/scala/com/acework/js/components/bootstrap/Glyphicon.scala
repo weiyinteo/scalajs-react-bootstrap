@@ -275,13 +275,18 @@ object Glyph {
 
 object Glyphicon {
 
-  case class Props(glyph: UndefOr[String] = undefined,
+  case class Glyphicon(glyph: UndefOr[String] = undefined,
                    bsClass: UndefOr[Classes.Value] = Classes.glyphicon,
                    bsStyle: UndefOr[Styles.Value] = Styles.info,
                    bsSize: UndefOr[Sizes.Value] = undefined,
-                   addClasses: String = "") extends BsProps
+                   addClasses: String = "") extends BsProps {
 
-  val Glyphicon = ReactComponentB[Props]("Glyphicon")
+    def apply(children: ReactNode*) = component(this, children)
+
+    def apply() = component(this)
+  }
+
+  val component = ReactComponentB[Glyphicon]("Glyphicon")
     .stateless
     .render { (P, C, _) =>
 
@@ -290,7 +295,7 @@ object Glyphicon {
   }
     .build
 
-  def apply(props: Props, children: ReactNode*) = Glyphicon(props, children)
+  def apply(props: Glyphicon, children: ReactNode*) = component(props, children)
 
-  def apply(glyph: String, children: ReactNode*) = Glyphicon(Props(glyph), children)
+  def apply(glyph: String, children: ReactNode*) = component(Glyphicon(glyph), children)
 }

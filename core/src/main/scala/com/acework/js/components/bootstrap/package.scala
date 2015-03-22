@@ -9,6 +9,4 @@ package object bootstrap extends js.GlobalScope {
 
   implicit def jq2bootstrap(jq: JQuery): BootstrapJQuery = jq.asInstanceOf[BootstrapJQuery]
 
-
-  val NullEventHandler = () => ()
 }

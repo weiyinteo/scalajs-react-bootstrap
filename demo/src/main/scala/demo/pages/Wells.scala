@@ -29,8 +29,8 @@ object Wells {
 
   def optionalContent = CodeContent.Content(optionalSource,
     <.div(
-      Well(Well.Props(bsSize = Sizes.lg), "Look I'm in a well!"),
-      Well(Well.Props(bsSize = Sizes.sm), "Look I'm in a well!")
+      Well(Well.Well(bsSize = Sizes.lg), "Look I'm in a well!"),
+      Well(Well.Well(bsSize = Sizes.sm), "Look I'm in a well!")
     )
   )
 

@@ -12,24 +12,30 @@ import scala.scalajs.js.{Any => JAny, UndefOr, undefined}
 
 
 object ButtonGroup extends BootstrapComponent {
-  override type P = Props
+  override type P = ButtonGroup
   override type S = Unit
   override type B = Unit
   override type N = TopNode
 
-  case class Props(id: UndefOr[String] = undefined,
-                   vertical: UndefOr[Boolean] = undefined, justified: UndefOr[Boolean] = undefined,
-                   bsClass: UndefOr[Classes.Value] = Classes.`btn-group`,
-                   bsStyle: UndefOr[Styles.Value] = undefined,
-                   bsSize: UndefOr[Sizes.Value] = undefined,
-                   addClasses: String = "") extends BsProps with MergeableProps[Props] {
+  override def defaultProps: P = ButtonGroup()
 
-    def merge(t: Map[String, Any]): Props = implicitly[Mergeable[Props]].merge(this, t)
+  case class ButtonGroup(id: UndefOr[String] = undefined,
+                         vertical: UndefOr[Boolean] = undefined, justified: UndefOr[Boolean] = undefined,
+                         bsClass: UndefOr[Classes.Value] = Classes.`btn-group`,
+                         bsStyle: UndefOr[Styles.Value] = undefined,
+                         bsSize: UndefOr[Sizes.Value] = undefined,
+                         addClasses: String = "") extends BsProps with MergeableProps[ButtonGroup] {
 
-    def asMap: Map[String, Any] = implicitly[Mappable[Props]].toMap(this)
+    def merge(t: Map[String, Any]): ButtonGroup = implicitly[Mergeable[ButtonGroup]].merge(this, t)
+
+    def asMap: Map[String, Any] = implicitly[Mappable[ButtonGroup]].toMap(this)
+
+    def apply(children: ReactNode*) = component(this, children)
+
+    def apply() = component(this)
   }
 
-  override val component = ReactComponentB[Props]("ButtonGroup")
+  override val component = ReactComponentB[ButtonGroup]("ButtonGroup")
     .render { (P, C) =>
     val classes = P.bsClassSet ++ Map(
       "btn-group" -> !P.vertical.getOrElse(false),
@@ -40,5 +46,4 @@ object ButtonGroup extends BootstrapComponent {
     <.div(^.classSet1M(P.addClasses, classes))(C)
   }.build
 
-  override def defaultProps = Props()
 }

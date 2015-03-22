@@ -46,11 +46,11 @@ object Labels {
 
   def variationContent = CodeContent.Content(variationSource,
     <.div(
-      Label(Label.Props(bsStyle = Styles.default), "Default"),
-      Label(Label.Props(bsStyle = Styles.primary), "Primary"),
-      Label(Label.Props(bsStyle = Styles.success), "Success"),
-      Label(Label.Props(bsStyle = Styles.info), "Info"),
-      Label(Label.Props(bsStyle = Styles.warning), "Warning")
+      Label(Label.Label(bsStyle = Styles.default), "Default"),
+      Label(Label.Label(bsStyle = Styles.primary), "Primary"),
+      Label(Label.Label(bsStyle = Styles.success), "Success"),
+      Label(Label.Label(bsStyle = Styles.info), "Info"),
+      Label(Label.Label(bsStyle = Styles.warning), "Warning")
     )
   )
 

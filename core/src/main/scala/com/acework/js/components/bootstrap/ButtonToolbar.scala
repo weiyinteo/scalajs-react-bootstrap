@@ -10,24 +10,28 @@ import scala.scalajs.js.{UndefOr, undefined}
  * Created by weiyin on 10/03/15.
  */
 object ButtonToolbar extends BootstrapComponent {
-  override type P = Props
+  override type P = ButtonToolBar
   override type S = Unit
   override type B = Unit
   override type N = TopNode
 
-  override def defaultProps = Props()
+  override def defaultProps = ButtonToolBar()
 
-  case class Props(bsClass: UndefOr[Classes.Value] = Classes.`btn-toolbar`,
+  case class ButtonToolBar(bsClass: UndefOr[Classes.Value] = Classes.`btn-toolbar`,
                    bsStyle: UndefOr[Styles.Value] = undefined,
                    bsSize: UndefOr[Sizes.Value] = undefined,
-                   addClasses: String = "") extends BsProps with MergeableProps[Props] {
+                   addClasses: String = "") extends BsProps with MergeableProps[ButtonToolBar] {
 
-    def merge(t: Map[String, Any]): Props = implicitly[Mergeable[Props]].merge(this, t)
+    def merge(t: Map[String, Any]): ButtonToolBar = implicitly[Mergeable[ButtonToolBar]].merge(this, t)
 
-    def asMap: Map[String, Any] = implicitly[Mappable[Props]].toMap(this)
+    def asMap: Map[String, Any] = implicitly[Mappable[ButtonToolBar]].toMap(this)
+
+    def apply(children: ReactNode*) = component(this, children)
+
+    def apply() = component(this)
   }
 
-  override val component = ReactComponentB[Props]("ButtonToolbar")
+  override val component = ReactComponentB[ButtonToolBar]("ButtonToolbar")
     .render { (P, C) =>
     // TODO spread props
     <.div(^.role := "toolbar", ^.classSet1M(P.addClasses, P.bsClassSet))(C)

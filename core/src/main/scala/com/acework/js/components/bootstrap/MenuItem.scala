@@ -10,28 +10,32 @@ import scala.scalajs.js.{UndefOr, undefined}
  * Created by weiyin on 10/03/15.
  */
 object MenuItem extends BootstrapComponent {
-  override type P = Props
+  override type P = MenuItem
   override type S = Unit
   override type B = Backend
   override type N = TopNode
 
-  override def defaultProps = Props()
+  override def defaultProps = MenuItem()
 
-  case class Props(header: UndefOr[Boolean] = undefined,
+  case class MenuItem(header: UndefOr[Boolean] = undefined,
                    divider: UndefOr[Boolean] = undefined,
                    href: String = "#",
                    title: UndefOr[String] = undefined,
                    target: UndefOr[String] = undefined,
                    eventKey: UndefOr[String] = undefined,
                    onSelect: UndefOr[(String, String, String) => Unit] = undefined,
-                   addClasses: String = "") extends MergeableProps[Props] {
+                   addClasses: String = "") extends MergeableProps[MenuItem] {
 
-    def merge(t: Map[String, Any]): Props = implicitly[Mergeable[Props]].merge(this, t)
+    def merge(t: Map[String, Any]): MenuItem = implicitly[Mergeable[MenuItem]].merge(this, t)
 
-    def asMap: Map[String, Any] = implicitly[Mappable[Props]].toMap(this)
+    def asMap: Map[String, Any] = implicitly[Mappable[MenuItem]].toMap(this)
+
+    def apply(children: ReactNode*) = component(this, children)
+
+    def apply() = component(this)
   }
 
-  class Backend($: BackendScope[Props, Unit]) {
+  class Backend($: BackendScope[MenuItem, Unit]) {
     def handleClick(e: ReactEvent): Unit = {
       if ($.props.onSelect.isDefined) {
         e.preventDefault()
@@ -40,7 +44,7 @@ object MenuItem extends BootstrapComponent {
     }
   }
 
-  override val component = ReactComponentB[Props]("MenuItem")
+  override val component = ReactComponentB[MenuItem]("MenuItem")
     .stateless
     .backend(new Backend(_))
     .render { (P, C, S, B) =>

@@ -25,11 +25,11 @@ object AlertAutoDismissable {
     .render((P, C, S, B) => {
 
     if (S.alertVisible)
-      Alert(Alert.Props(bsStyle = Styles.danger, onDismiss = () => B.handleAlertDismiss(), dismissAfter = 2000),
+      Alert(Alert.Alert(bsStyle = Styles.danger, onDismiss = () => B.handleAlertDismiss(), dismissAfter = 2000),
         <.h4("Oh snap! You got an error!"),
         <.p("But this will hide after 2 seconds."))
     else
-      Button(Button.Props(onClick = (e: ReactEvent) => B.handleAlertShow()), "Show Alert")
+      Button(Button.Button(onClick = (e: ReactEvent) => B.handleAlertShow()), "Show Alert")
   }).buildU
 
   def apply() = AlertAutoDismissable()

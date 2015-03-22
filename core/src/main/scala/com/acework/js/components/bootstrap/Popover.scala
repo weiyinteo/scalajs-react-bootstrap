@@ -10,14 +10,14 @@ import scala.scalajs.js.{UndefOr, undefined}
  * Created by weiyin on 10/03/15.
  */
 object Popover extends BootstrapComponent {
-  override type P = Props
+  override type P = Popover
   override type S = Unit
   override type B = Unit
   override type N = TopNode
 
-  override def defaultProps = Props()
+  override def defaultProps = Popover()
 
-  case class Props(title: UndefOr[ReactNode] = undefined,
+  case class Popover(title: UndefOr[ReactNode] = undefined,
                    placement: Placements.Value = Placements.right,
                    positionLeft: UndefOr[Int] = undefined,
                    positionTop: UndefOr[Int] = undefined,
@@ -26,14 +26,18 @@ object Popover extends BootstrapComponent {
                    bsClass: UndefOr[Classes.Value] = Classes.btn,
                    bsStyle: UndefOr[Styles.Value] = Styles.default,
                    bsSize: UndefOr[Sizes.Value] = undefined,
-                   addClasses: String = "") extends BsProps with MergeableProps[Props] {
+                   addClasses: String = "") extends BsProps with MergeableProps[Popover] {
 
-    def merge(t: Map[String, Any]): Props = implicitly[Mergeable[Props]].merge(this, t)
+    def merge(t: Map[String, Any]): Popover = implicitly[Mergeable[Popover]].merge(this, t)
 
-    def asMap: Map[String, Any] = implicitly[Mappable[Props]].toMap(this)
+    def asMap: Map[String, Any] = implicitly[Mappable[Popover]].toMap(this)
+
+    def apply(children: ReactNode*) = component(this, children)
+
+    def apply() = component(this)
   }
 
-  override val component = ReactComponentB[Props]("Popover")
+  override val component = ReactComponentB[Popover]("Popover")
     .render { (P, C) =>
     def renderTitle() = {
       <.h3(^.className := "popover-title", P.title)

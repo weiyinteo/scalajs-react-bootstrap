@@ -11,26 +11,30 @@ import scala.scalajs.js.{UndefOr, undefined}
  * Created by weiyin on 10/03/15.
  */
 object Alert extends BootstrapComponent {
-  override type P = Props
+  override type P = Alert
   override type S = Unit
   override type B = Backend
   override type N = TopNode
 
-  override def defaultProps = Props()
+  override def defaultProps = Alert()
 
-  case class Props(dismissAfter: UndefOr[Int] = undefined,
+  case class Alert(dismissAfter: UndefOr[Int] = undefined,
                    onDismiss: UndefOr[() => Unit] = undefined,
                    bsClass: UndefOr[Classes.Value] = Classes.alert,
                    bsStyle: UndefOr[Styles.Value] = Styles.info,
                    bsSize: UndefOr[Sizes.Value] = undefined,
-                   addClasses: String = "") extends BsProps with MergeableProps[Props] {
+                   addClasses: String = "") extends BsProps with MergeableProps[Alert] {
 
-    def merge(t: Map[String, Any]): Props = implicitly[Mergeable[Props]].merge(this, t)
+    def merge(t: Map[String, Any]): Alert = implicitly[Mergeable[Alert]].merge(this, t)
 
-    def asMap: Map[String, Any] = implicitly[Mappable[Props]].toMap(this)
+    def asMap: Map[String, Any] = implicitly[Mappable[Alert]].toMap(this)
+
+    def apply(children: ReactNode*) = component(this, children)
+
+    def apply() = component(this)
   }
 
-  class Backend($: BackendScope[Props, Unit]) {
+  class Backend($: BackendScope[Alert, Unit]) {
     var dismissTimer: js.UndefOr[js.timers.SetTimeoutHandle] =
       js.undefined
 
@@ -45,7 +49,7 @@ object Alert extends BootstrapComponent {
       dismissTimer = js.timers.setTimeout(dismissAfter)(onDismiss())
   }
 
-  override val component = ReactComponentB[Props]("Alert")
+  override val component = ReactComponentB[Alert]("Alert")
     .stateless
     .backend(new Backend(_))
     .render { (P, C, S, B) =>

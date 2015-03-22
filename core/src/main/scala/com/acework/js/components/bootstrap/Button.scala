@@ -1,6 +1,7 @@
 package com.acework.js.components.bootstrap
 
 import com.acework.js.utils.{Mappable, Mergeable}
+import japgolly.scalajs.react.ReactComponentC.ReqProps
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
 
@@ -11,46 +12,46 @@ import scala.scalajs.js.{UndefOr, undefined}
  */
 
 object Button extends BootstrapComponent {
-  override type P = Props
+  override type P = Button
   override type S = Unit
   override type B = Unit
   override type N = TopNode
 
-  override def defaultProps = Props()
+  override def defaultProps = Button()
 
-  case class Props(
-                    /*==  start react bootstraps  ==*/
-                    active: Boolean = false,
-                    disabled: Boolean = false,
-                    block: Boolean = false,
-                    navItem: Boolean = false,
-                    navDropdown: Boolean = false,
-                    componentClass: UndefOr[String] = undefined,
-                    href: UndefOr[String] = undefined,
-                    target: UndefOr[String] = undefined,
-                    `type`: String = "button",
-                    value: UndefOr[String] = undefined,
-                    /*==  end react bootstraps  ==*/
-                    onClick: UndefOr[(ReactEvent) => Unit] = undefined,
-                    onMouseOver: UndefOr[(ReactEvent) => Unit] = undefined,
-                    onMouseOut: UndefOr[(ReactEvent) => Unit] = undefined,
-                    onBlur: UndefOr[(ReactEvent) => Unit] = undefined,
-                    onFocus: UndefOr[(ReactEvent) => Unit] = undefined,
-                    bsClass: UndefOr[Classes.Value] = Classes.btn,
-                    bsStyle: UndefOr[Styles.Value] = Styles.default,
-                    bsSize: UndefOr[Sizes.Value] = undefined,
-                    addClasses: String = "") extends BsProps with MergeableProps[Props] {
+  case class Button(
+                     /*==  start react bootstraps  ==*/
+                     active: Boolean = false,
+                     disabled: Boolean = false,
+                     block: Boolean = false,
+                     navItem: Boolean = false,
+                     navDropdown: Boolean = false,
+                     componentClass: UndefOr[String] = undefined,
+                     href: UndefOr[String] = undefined,
+                     target: UndefOr[String] = undefined,
+                     `type`: String = "button",
+                     value: UndefOr[String] = undefined,
+                     /*==  end react bootstraps  ==*/
+                     onClick: UndefOr[(ReactEvent) => Unit] = undefined,
+                     onMouseOver: UndefOr[(ReactEvent) => Unit] = undefined,
+                     onMouseOut: UndefOr[(ReactEvent) => Unit] = undefined,
+                     onBlur: UndefOr[(ReactEvent) => Unit] = undefined,
+                     onFocus: UndefOr[(ReactEvent) => Unit] = undefined,
+                     bsClass: UndefOr[Classes.Value] = Classes.btn,
+                     bsStyle: UndefOr[Styles.Value] = Styles.default,
+                     bsSize: UndefOr[Sizes.Value] = undefined,
+                     addClasses: String = "") extends BsProps with MergeableProps[Button] {
 
-    def merge(t: Map[String, Any]): Props = implicitly[Mergeable[Props]].merge(this, t)
+    def merge(t: Map[String, Any]): Button = implicitly[Mergeable[Button]].merge(this, t)
 
-    def asMap: Map[String, Any] = implicitly[Mappable[Props]].toMap(this)
+    def asMap: Map[String, Any] = implicitly[Mappable[Button]].toMap(this)
 
     def apply(children: ReactNode*) = component(this, children)
 
     def apply() = component(this)
   }
 
-  override val component = ReactComponentB[Props]("Button")
+  override val component = ReactComponentB[Button]("Button")
     .render { (P, C) =>
 
     def renderNavItem(classes: Map[String, Boolean]) = {

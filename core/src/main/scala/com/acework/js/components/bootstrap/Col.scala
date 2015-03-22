@@ -10,7 +10,7 @@ import scala.scalajs.js._
  */
 object Col {
 
-  case class Props(xs: UndefOr[Int] = undefined,
+  case class Col(xs: UndefOr[Int] = undefined,
                    sm: UndefOr[Int] = undefined,
                    md: UndefOr[Int] = undefined,
                    lg: UndefOr[Int] = undefined,
@@ -26,9 +26,14 @@ object Col {
                    smPull: UndefOr[Int] = undefined,
                    mdPull: UndefOr[Int] = undefined,
                    lgPull: UndefOr[Int] = undefined,
-                   componentClass: String = "div", addClasses: String = "")
+                   componentClass: String = "div", addClasses: String = "") {
 
-  val Col = ReactComponentB[Props]("Col")
+    def apply(children: ReactNode*) = component(this, children)
+
+    def apply() = component(this)
+  }
+
+  val component = ReactComponentB[Col]("Col")
     .render { (P, C) =>
     var classes = Map[String, Boolean]()
 
@@ -56,5 +61,4 @@ object Col {
     componentClass(^.classSet1M(P.addClasses, classes))(C)
   }.build
 
-  def apply(props: Props, children: ReactNode*) = Col(props, children)
 }

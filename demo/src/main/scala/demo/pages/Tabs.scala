@@ -18,9 +18,9 @@ object Tabs {
     """.stripMargin
 
   def exampleContent = CodeContent.Content(exampleSource, exampleClasses = "bs-example-tabs", el =
-    TabbedArea.Props(defaultActiveKey = "2")(
-      TabPane.Props(eventKey = "1", tab = "Tab 1")("TabPane 1 content"),
-      TabPane.Props(eventKey = "2", tab = "Tab 2")("TabPane 2 content"))
+    TabbedArea.TabbedArea(defaultActiveKey = "2")(
+      TabPane.TabPane(eventKey = "1", tab = "Tab 1")("TabPane 1 content"),
+      TabPane.TabPane(eventKey = "2", tab = "Tab 2")("TabPane 2 content"))
   )
 
   val noanimationSource =
@@ -31,9 +31,9 @@ object Tabs {
     """.stripMargin
 
   def noanimationContent = CodeContent.Content(noanimationSource, exampleClasses = "bs-noanimation-tabs", el =
-    TabbedArea.Props(defaultActiveKey = "2", animation = false)(
-      TabPane.Props(eventKey = "1", tab = "Tab 1")("TabPane 1 content"),
-      TabPane.Props(eventKey = "2", tab = "Tab 2")("TabPane 2 content"))
+    TabbedArea.TabbedArea(defaultActiveKey = "2", animation = false)(
+      TabPane.TabPane(eventKey = "1", tab = "Tab 1")("TabPane 1 content"),
+      TabPane.TabPane(eventKey = "2", tab = "Tab 2")("TabPane 2 content"))
   )
 
 

@@ -12,25 +12,25 @@ import Utils._
  * Created by weiyin on 22/03/15.
  */
 object TabbedArea extends BootstrapComponent {
-  override type P = Props
+  override type P = TabbedArea
   override type S = State
   override type B = Backend
   override type N = TopNode
 
-  override def defaultProps = Props()
+  override def defaultProps = TabbedArea()
 
 
-  case class Props(id: UndefOr[String] = undefined,
+  case class TabbedArea(id: UndefOr[String] = undefined,
                    activeKey: UndefOr[String] = undefined,
                    animation: Boolean = true,
                    defaultActiveKey: UndefOr[String] = undefined,
                    onSelect: UndefOr[Seq[UndefOr[String]] => Unit] = undefined,
                    bsStyle: UndefOr[Styles.Value] = Styles.tabs,
-                   addClasses: String = "") extends MergeableProps[Props] {
+                   addClasses: String = "") extends MergeableProps[TabbedArea] {
 
-    def merge(t: Map[String, Any]): Props = implicitly[Mergeable[Props]].merge(this, t)
+    def merge(t: Map[String, Any]): TabbedArea = implicitly[Mergeable[TabbedArea]].merge(this, t)
 
-    def asMap: Map[String, Any] = implicitly[Mappable[Props]].toMap(this)
+    def asMap: Map[String, Any] = implicitly[Mappable[TabbedArea]].toMap(this)
 
     def apply(children: ReactNode*) = component(this, children)
 
@@ -39,7 +39,7 @@ object TabbedArea extends BootstrapComponent {
 
   case class State(activeKey: UndefOr[String] = undefined, previousActiveKey: UndefOr[String] = undefined)
 
-  case class Backend(scope: BackendScope[Props, State]) {
+  case class Backend(scope: BackendScope[TabbedArea, State]) {
     var _isChanging = false
 
     def handlePaneAnimateOutEnd() = {
@@ -57,7 +57,7 @@ object TabbedArea extends BootstrapComponent {
       }
     }
 
-    def onComponentWillReceiveProps(nextProps: Props): Unit = {
+    def onComponentWillReceiveProps(nextProps: TabbedArea): Unit = {
       if (nextProps.activeKey.isDefined && nextProps.activeKey.get != scope.props.activeKey.getOrElse(false))
         scope.modState(_.copy(previousActiveKey = scope.props.activeKey))
     }
@@ -72,7 +72,7 @@ object TabbedArea extends BootstrapComponent {
     def shouldComponentUpdate(): Boolean = !_isChanging
   }
 
-  override val component = ReactComponentB[Props]("PanelGroup")
+  override val component = ReactComponentB[TabbedArea]("PanelGroup")
     // FIXME get default from children
     .initialStateP(P => State(P.defaultActiveKey))
     .backend(new Backend(_))
@@ -84,7 +84,7 @@ object TabbedArea extends BootstrapComponent {
           val childPropsAny = getChildProps[Any](child)
 
           childPropsAny match {
-            case props: TabPane.Props =>
+            case props: TabPane.TabPane =>
               props.eventKey
             case _ => undefined
           }
@@ -93,7 +93,7 @@ object TabbedArea extends BootstrapComponent {
           val childPropsAny = getChildProps[Any](child)
 
           childPropsAny match {
-            case props: TabPane.Props =>
+            case props: TabPane.TabPane =>
               props.tab
             case _ => undefined
           }
@@ -101,7 +101,7 @@ object TabbedArea extends BootstrapComponent {
 
         def renderTab(child: ReactNode, childTab: ReactNode): TagMod = {
           val eventKey = getChildEventKey(child)
-          NavItem.withRef(s"tab$eventKey")(NavItem.Props(eventKey = eventKey), childTab)
+          NavItem.withRef(s"tab$eventKey")(NavItem.NavItem(eventKey = eventKey), childTab)
         }
 
         def renderPane(child: ReactNode, index: Int) = {
@@ -131,7 +131,7 @@ object TabbedArea extends BootstrapComponent {
             EmptyTag
         }
 
-        val nav = Nav.withRef("tabs")(Nav.Props(activeKey = activeKey,
+        val nav = Nav.withRef("tabs")(Nav.Nav(activeKey = activeKey,
           addClasses = s"nav-${P.bsStyle.toString}",
           onSelect = (args: Seq[UndefOr[String]]) => B.handleSelect(args)),
           ValidComponentChildren.map(C, renderTabIfSet)

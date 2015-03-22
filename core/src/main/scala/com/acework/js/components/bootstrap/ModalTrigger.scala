@@ -16,11 +16,16 @@ object ModalTrigger {
     override def getDOMNode = super.getDOMNode
   }
 
-  case class Props(modal: ReactElement, container: OverlayContainer = new OverlayContainer {}) extends OverlayProps
+  case class ModalTrigger(modal: ReactElement, container: OverlayContainer = new OverlayContainer {}) extends OverlayProps {
+
+    def apply(child: ReactNode) = component(this, child)
+
+    def apply() = component(this)
+  }
 
   case class State(isOverlayShown: Boolean = false)
 
-  class Backend(val scope: BackendScope[Props, State]) extends OverlayMixin[Props, State] {
+  class Backend(val scope: BackendScope[ModalTrigger, State]) extends OverlayMixin[ModalTrigger, State] {
 
     def show() = scope.modState(_.copy(isOverlayShown = true))
 
@@ -40,7 +45,7 @@ object ModalTrigger {
     }
   }
 
-  val ModalTrigger = ReactComponentB[Props]("ModelTrigger")
+  val component = ReactComponentB[ModalTrigger]("ModelTrigger")
     .initialState(State())
     .backend(new Backend(_))
     .render((P, C, S, B) => {
@@ -59,5 +64,5 @@ object ModalTrigger {
     .componentWillUnmount(scope => scope.backend.onComponentWillUnmount())
     .build
 
-  def apply(props: Props, children: ReactNode) = ModalTrigger(props, children)
+  def apply(props: ModalTrigger, child: ReactNode) = component(props, child)
 }

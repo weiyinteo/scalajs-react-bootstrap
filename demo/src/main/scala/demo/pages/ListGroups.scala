@@ -38,9 +38,9 @@ object ListGroups {
 
   def linkedContent = CodeContent.Content(linkedSource,
     ListGroup(
-      ListGroupItem(ListGroupItem.Props(href = "#link1", active = true), "Link 1"),
-      ListGroupItem(ListGroupItem.Props(href = "#link2"), "Link 2"),
-      ListGroupItem(ListGroupItem.Props(href = "#linkN", disabled = true), "...")
+      ListGroupItem(ListGroupItem.ListGroupItem(href = "#link1", active = true), "Link 1"),
+      ListGroupItem(ListGroupItem.ListGroupItem(href = "#link2"), "Link 2"),
+      ListGroupItem(ListGroupItem.ListGroupItem(href = "#linkN", disabled = true), "...")
     )
   )
 
@@ -55,9 +55,9 @@ object ListGroups {
 
   def stylingStatusContent = CodeContent.Content(stylingStatusSource,
     ListGroup(
-      ListGroupItem(ListGroupItem.Props(href = "#", active = true), "Link 1"),
-      ListGroupItem(ListGroupItem.Props(href = "#"), "Link 2"),
-      ListGroupItem(ListGroupItem.Props(href = "#", disabled = true), "Link 3")
+      ListGroupItem(ListGroupItem.ListGroupItem(href = "#", active = true), "Link 1"),
+      ListGroupItem(ListGroupItem.ListGroupItem(href = "#"), "Link 2"),
+      ListGroupItem(ListGroupItem.ListGroupItem(href = "#", disabled = true), "Link 3")
     )
   )
 
@@ -73,10 +73,10 @@ object ListGroups {
 
   def stylingContent = CodeContent.Content(stylingSource,
     ListGroup(
-      ListGroupItem(ListGroupItem.Props(bsStyle = Styles.success), "Success"),
-      ListGroupItem(ListGroupItem.Props(bsStyle = Styles.info), "Info"),
-      ListGroupItem(ListGroupItem.Props(bsStyle = Styles.warning), "Warning"),
-      ListGroupItem(ListGroupItem.Props(bsStyle = Styles.danger), "Danger")
+      ListGroupItem(ListGroupItem.ListGroupItem(bsStyle = Styles.success), "Success"),
+      ListGroupItem(ListGroupItem.ListGroupItem(bsStyle = Styles.info), "Info"),
+      ListGroupItem(ListGroupItem.ListGroupItem(bsStyle = Styles.warning), "Warning"),
+      ListGroupItem(ListGroupItem.ListGroupItem(bsStyle = Styles.danger), "Danger")
     )
   )
 
@@ -91,9 +91,9 @@ object ListGroups {
 
   def headerContent = CodeContent.Content(headerSource,
     ListGroup(
-      ListGroupItem(ListGroupItem.Props(header = "Heading 1": ReactNode), "Some body text"),
-      ListGroupItem(ListGroupItem.Props(header = "Heading 2": ReactNode, href = "#"), "Linked item"),
-      ListGroupItem(ListGroupItem.Props(header = "Heading 3": ReactNode, bsStyle = Styles.danger), "Danger styling")
+      ListGroupItem(ListGroupItem.ListGroupItem(header = "Heading 1": ReactNode), "Some body text"),
+      ListGroupItem(ListGroupItem.ListGroupItem(header = "Heading 2": ReactNode, href = "#"), "Linked item"),
+      ListGroupItem(ListGroupItem.ListGroupItem(header = "Heading 3": ReactNode, bsStyle = Styles.danger), "Danger styling")
     )
   )
 

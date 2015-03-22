@@ -10,10 +10,15 @@ import scala.scalajs.js._
  */
 object Grid {
 
-  case class Props(fluid: UndefOr[Boolean] = undefined,
-                   componentClass: String = "div", addClasses: String = "")
+  case class Grid(fluid: UndefOr[Boolean] = undefined,
+                   componentClass: String = "div", addClasses: String = "") {
 
-  val Grid = ReactComponentB[Props]("Grid")
+    def apply(children: ReactNode*) = component(this, children)
+
+    def apply() = component(this)
+  }
+
+  val component = ReactComponentB[Grid]("Grid")
     .render { (P, C) =>
 
     val classes = if (P.fluid.getOrElse(false)) Map("container-fluid" -> true) else Map("container" -> true)
@@ -24,7 +29,7 @@ object Grid {
 
   }.build
 
-  def apply(props: Props, children: ReactNode*) = Grid(props, children)
+  def apply(props: Grid, children: ReactNode*) = component(props, children)
 
-  def apply(children: ReactNode*) = Grid(Props(), children)
+  def apply(children: ReactNode*) = component(Grid(), children)
 }

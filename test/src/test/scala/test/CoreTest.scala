@@ -14,7 +14,7 @@ object CoreTest extends TestSuite {
   val tests = TestSuite {
     'alerts {
       'ExampleAlert {
-        Alert(Alert.Props(bsStyle = Styles.warning),
+        Alert(Alert.Alert(bsStyle = Styles.warning),
           <.strong("Holy guacamole!"), " Best check yo self, you're not looking too good.") shouldRender
           "<div class=\"alert-warning  alert\"><strong>Holy guacamole!</strong> Best check yo self, you&#x27;re not looking too good.</div>"
       }

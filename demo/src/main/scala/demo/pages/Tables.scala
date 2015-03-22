@@ -44,7 +44,7 @@ object Tables {
     """.stripMargin
 
   def exampleContent = CodeContent.Content(exampleSource,
-    Table(Table.Props(striped = true, bordered = true, condensed = true, hover = true),
+    Table(Table.Table(striped = true, bordered = true, condensed = true, hover = true),
       <.thead(
         <.tr(
           <.th("#"),
@@ -122,7 +122,7 @@ object Tables {
     """.stripMargin
 
   def responsiveContent = CodeContent.Content(responsiveSource,
-    Table(Table.Props(responsive = true),
+    Table(Table.Table(responsive = true),
       <.thead(
         <.tr(
           <.th("#"),

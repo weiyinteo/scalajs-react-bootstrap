@@ -13,42 +13,42 @@ object Grids {
   val exampleSource =
     """
       |Grid(
-      |      Row(Row.Props(addClasses = "show-grid"),
-      |        Col(Col.Props(xs = 12, md = 8), <.code("Col(Col.props(xs=12 md=8)")),
-      |        Col(Col.Props(xs = 6, md = 4), <.code("Col(Col.props(xs=6 md=4)"))
-      |      ),
-      |      Row(Row.Props(addClasses = "show-grid"),
-      |        Col(Col.Props(xs = 6, md = 4), <.code("Col(Col.props(xs=6 md=4)")),
-      |        Col(Col.Props(xs = 6, md = 4), <.code("Col(Col.props(xs=6 md=4)")),
-      |        Col(Col.Props(xs = 6, md = 4), <.code("Col(Col.props(xs=6 md=4)"))
-      |      ),
-      |      Row(Row.Props(addClasses = "show-grid"),
-      |        Col(Col.Props(xs = 6, xsOffset = 6), <.code("Col(Col.Props(xs = 6, xsOffset = 6)"))
-      |      ),
-      |      Row(Row.Props(addClasses = "show-grid"),
-      |        Col(Col.Props(md = 6, mdPush = 6), <.code("Col(Col.Props(md = 6, mdPush = 6)")),
-      |        Col(Col.Props(md = 6, mdPull = 6), <.code("Col(Col.Props(md = 6, mdPull = 6)"))
-      |      )
+      |  Row.Row(addClasses = "show-grid")(
+      |    Col.Col(xs = 12, md = 8)(<.code("Col(Col.props(xs=12 md=8)")),
+      |    Col.Col(xs = 6, md = 4)(<.code("Col(Col.props(xs=6 md=4)"))
+      |  ),
+      |  Row.Row(addClasses = "show-grid")(
+      |    Col.Col(xs = 6, md = 4)(<.code("Col(Col.props(xs=6 md=4)")),
+      |    Col.Col(xs = 6, md = 4)(<.code("Col(Col.props(xs=6 md=4)")),
+      |    Col.Col(xs = 6, md = 4)(<.code("Col(Col.props(xs=6 md=4)"))
+      |  ),
+      |  Row.Row(addClasses = "show-grid")(
+      |    Col.Col(xs = 6, xsOffset = 6)(<.code("Col(Col.Props(xs = 6, xsOffset = 6)"))
+      |  ),
+      |  Row.Row(addClasses = "show-grid")(
+      |    Col.Col(md = 6, mdPush = 6)(<.code("Col(Col.Props(md = 6, mdPush = 6)")),
+      |    Col.Col(md = 6, mdPull = 6)(<.code("Col(Col.Props(md = 6, mdPull = 6)"))
+      |  )
       |)
     """.stripMargin
 
   def exampleContent = CodeContent.Content(exampleSource,
     Grid(
-      Row(Row.Props(addClasses = "show-grid"),
-        Col(Col.Props(xs = 12, md = 8), <.code("Col(Col.props(xs=12 md=8)")),
-        Col(Col.Props(xs = 6, md = 4), <.code("Col(Col.props(xs=6 md=4)"))
+      Row.Row(addClasses = "show-grid")(
+        Col.Col(xs = 12, md = 8)(<.code("Col(Col.props(xs=12 md=8)")),
+        Col.Col(xs = 6, md = 4)(<.code("Col(Col.props(xs=6 md=4)"))
       ),
-      Row(Row.Props(addClasses = "show-grid"),
-        Col(Col.Props(xs = 6, md = 4), <.code("Col(Col.props(xs=6 md=4)")),
-        Col(Col.Props(xs = 6, md = 4), <.code("Col(Col.props(xs=6 md=4)")),
-        Col(Col.Props(xs = 6, md = 4), <.code("Col(Col.props(xs=6 md=4)"))
+      Row.Row(addClasses = "show-grid")(
+        Col.Col(xs = 6, md = 4)(<.code("Col(Col.props(xs=6 md=4)")),
+        Col.Col(xs = 6, md = 4)(<.code("Col(Col.props(xs=6 md=4)")),
+        Col.Col(xs = 6, md = 4)(<.code("Col(Col.props(xs=6 md=4)"))
       ),
-      Row(Row.Props(addClasses = "show-grid"),
-        Col(Col.Props(xs = 6, xsOffset = 6), <.code("Col(Col.Props(xs = 6, xsOffset = 6)"))
+      Row.Row(addClasses = "show-grid")(
+        Col.Col(xs = 6, xsOffset = 6)(<.code("Col(Col.Props(xs = 6, xsOffset = 6)"))
       ),
-      Row(Row.Props(addClasses = "show-grid"),
-        Col(Col.Props(md = 6, mdPush = 6), <.code("Col(Col.Props(md = 6, mdPush = 6)")),
-        Col(Col.Props(md = 6, mdPull = 6), <.code("Col(Col.Props(md = 6, mdPull = 6)"))
+      Row.Row(addClasses = "show-grid")(
+        Col.Col(md = 6, mdPush = 6)(<.code("Col(Col.Props(md = 6, mdPush = 6)")),
+        Col.Col(md = 6, mdPull = 6)(<.code("Col(Col.Props(md = 6, mdPull = 6)"))
       )
     )
   )

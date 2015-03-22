@@ -30,12 +30,12 @@ object DropdownButtons {
 
   val singleButtonContent = CodeContent.Content(singleButtonSource, {
     def renderButton(style: Styles.Value, key: Int): ReactNode = {
-      DropdownButton.withKey(key)(DropdownButton.Props(bsStyle = style, title = style.toString: ReactNode),
-        MenuItem(MenuItem.Props(eventKey = "1"), "Action")
-        , MenuItem(MenuItem.Props(eventKey = "2"), "Another action")
-        , MenuItem(MenuItem.Props(eventKey = "3"), "Something else here")
-        , MenuItem(MenuItem.Props(divider = true))
-        , MenuItem(MenuItem.Props(eventKey = "4"), "Separated link")
+      DropdownButton.withKey(key)(DropdownButton.DropdownButton(bsStyle = style, title = style.toString: ReactNode),
+        MenuItem(MenuItem.MenuItem(eventKey = "1"), "Action")
+        , MenuItem(MenuItem.MenuItem(eventKey = "2"), "Another action")
+        , MenuItem(MenuItem.MenuItem(eventKey = "3"), "Something else here")
+        , MenuItem(MenuItem.MenuItem(divider = true))
+        , MenuItem(MenuItem.MenuItem(eventKey = "4"), "Separated link")
       )
     }
     ButtonToolbar(
@@ -66,12 +66,12 @@ object DropdownButtons {
 
   val splitButtonContent = CodeContent.Content(splitButtonSource, {
     def renderButton(style: Styles.Value, key: Int): ReactNode = {
-      SplitButton.withKey(key)(SplitButton.Props(bsStyle = style, title = style.toString: ReactNode),
-        MenuItem(MenuItem.Props(eventKey = "1"), "Action")
-        , MenuItem(MenuItem.Props(eventKey = "2"), "Another action")
-        , MenuItem(MenuItem.Props(eventKey = "3"), "Something else here")
-        , MenuItem(MenuItem.Props(divider = true))
-        , MenuItem(MenuItem.Props(eventKey = "4"), "Separated link")
+      SplitButton.withKey(key)(SplitButton.SplitButton(bsStyle = style, title = style.toString: ReactNode),
+        MenuItem(MenuItem.MenuItem(eventKey = "1"), "Action")
+        , MenuItem(MenuItem.MenuItem(eventKey = "2"), "Another action")
+        , MenuItem(MenuItem.MenuItem(eventKey = "3"), "Something else here")
+        , MenuItem(MenuItem.MenuItem(divider = true))
+        , MenuItem(MenuItem.MenuItem(eventKey = "4"), "Separated link")
       )
     }
 
@@ -118,30 +118,30 @@ object DropdownButtons {
   val sizingContent = CodeContent.Content(sizingSource,
     <.div(
       ButtonToolbar(
-        DropdownButton(DropdownButton.Props(bsSize = Sizes.lg, title = "Large Button": ReactNode),
-          MenuItem(MenuItem.Props(eventKey = "1"), "Action")
-          , MenuItem(MenuItem.Props(eventKey = "2"), "Another action")
-          , MenuItem(MenuItem.Props(eventKey = "3"), "Something else here")
-          , MenuItem(MenuItem.Props(divider = true))
-          , MenuItem(MenuItem.Props(eventKey = "4"), "Separated link")
+        DropdownButton(DropdownButton.DropdownButton(bsSize = Sizes.lg, title = "Large Button": ReactNode),
+          MenuItem(MenuItem.MenuItem(eventKey = "1"), "Action")
+          , MenuItem(MenuItem.MenuItem(eventKey = "2"), "Another action")
+          , MenuItem(MenuItem.MenuItem(eventKey = "3"), "Something else here")
+          , MenuItem(MenuItem.MenuItem(divider = true))
+          , MenuItem(MenuItem.MenuItem(eventKey = "4"), "Separated link")
         )
       )
       , ButtonToolbar(
-        DropdownButton(DropdownButton.Props(bsSize = Sizes.sm, title = "Small Button": ReactNode),
-          MenuItem(MenuItem.Props(eventKey = "1"), "Action")
-          , MenuItem(MenuItem.Props(eventKey = "2"), "Another action")
-          , MenuItem(MenuItem.Props(eventKey = "3"), "Something else here")
-          , MenuItem(MenuItem.Props(divider = true))
-          , MenuItem(MenuItem.Props(eventKey = "4"), "Separated link")
+        DropdownButton(DropdownButton.DropdownButton(bsSize = Sizes.sm, title = "Small Button": ReactNode),
+          MenuItem(MenuItem.MenuItem(eventKey = "1"), "Action")
+          , MenuItem(MenuItem.MenuItem(eventKey = "2"), "Another action")
+          , MenuItem(MenuItem.MenuItem(eventKey = "3"), "Something else here")
+          , MenuItem(MenuItem.MenuItem(divider = true))
+          , MenuItem(MenuItem.MenuItem(eventKey = "4"), "Separated link")
         )
       )
       , ButtonToolbar(
-        DropdownButton(DropdownButton.Props(bsSize = Sizes.xs, title = "Extra Small Button": ReactNode),
-          MenuItem(MenuItem.Props(eventKey = "1"), "Action")
-          , MenuItem(MenuItem.Props(eventKey = "2"), "Another action")
-          , MenuItem(MenuItem.Props(eventKey = "3"), "Something else here")
-          , MenuItem(MenuItem.Props(divider = true))
-          , MenuItem(MenuItem.Props(eventKey = "4"), "Separated link")
+        DropdownButton(DropdownButton.DropdownButton(bsSize = Sizes.xs, title = "Extra Small Button": ReactNode),
+          MenuItem(MenuItem.MenuItem(eventKey = "1"), "Action")
+          , MenuItem(MenuItem.MenuItem(eventKey = "2"), "Another action")
+          , MenuItem(MenuItem.MenuItem(eventKey = "3"), "Something else here")
+          , MenuItem(MenuItem.MenuItem(divider = true))
+          , MenuItem(MenuItem.MenuItem(eventKey = "4"), "Separated link")
         )
       )
     )
@@ -162,12 +162,12 @@ object DropdownButtons {
 
   val noCaretContent = CodeContent.Content(noCaretSource,
     ButtonToolbar(
-      DropdownButton(DropdownButton.Props(title = "No caret": ReactNode, noCaret = true),
-        MenuItem(MenuItem.Props(eventKey = "1"), "Action")
-        , MenuItem(MenuItem.Props(eventKey = "2"), "Another action")
-        , MenuItem(MenuItem.Props(eventKey = "3"), "Something else here")
-        , MenuItem(MenuItem.Props(divider = true))
-        , MenuItem(MenuItem.Props(eventKey = "4"), "Separated link")
+      DropdownButton(DropdownButton.DropdownButton(title = "No caret": ReactNode, noCaret = true),
+        MenuItem(MenuItem.MenuItem(eventKey = "1"), "Action")
+        , MenuItem(MenuItem.MenuItem(eventKey = "2"), "Another action")
+        , MenuItem(MenuItem.MenuItem(eventKey = "3"), "Something else here")
+        , MenuItem(MenuItem.MenuItem(divider = true))
+        , MenuItem(MenuItem.MenuItem(eventKey = "4"), "Separated link")
       )
     )
   )
@@ -199,21 +199,21 @@ object DropdownButtons {
   val dropupContent = CodeContent.Content(dropupSource,
     <.div(
       ButtonToolbar(
-        SplitButton(SplitButton.Props(title = "dropup": ReactNode, dropup = true),
-          MenuItem(MenuItem.Props(eventKey = "1"), "Action")
-          , MenuItem(MenuItem.Props(eventKey = "2"), "Another action")
-          , MenuItem(MenuItem.Props(eventKey = "3"), "Something else here")
-          , MenuItem(MenuItem.Props(divider = true))
-          , MenuItem(MenuItem.Props(eventKey = "4"), "Separated link")
+        SplitButton(SplitButton.SplitButton(title = "dropup": ReactNode, dropup = true),
+          MenuItem(MenuItem.MenuItem(eventKey = "1"), "Action")
+          , MenuItem(MenuItem.MenuItem(eventKey = "2"), "Another action")
+          , MenuItem(MenuItem.MenuItem(eventKey = "3"), "Something else here")
+          , MenuItem(MenuItem.MenuItem(divider = true))
+          , MenuItem(MenuItem.MenuItem(eventKey = "4"), "Separated link")
         )
       )
       , ButtonToolbar(
-        SplitButton(SplitButton.Props(bsStyle = Styles.primary, title = "Right dropup": ReactNode, dropup = true, pullRight = true),
-          MenuItem(MenuItem.Props(eventKey = "1"), "Action")
-          , MenuItem(MenuItem.Props(eventKey = "2"), "Another action")
-          , MenuItem(MenuItem.Props(eventKey = "3"), "Something else here")
-          , MenuItem(MenuItem.Props(divider = true))
-          , MenuItem(MenuItem.Props(eventKey = "4"), "Separated link")
+        SplitButton(SplitButton.SplitButton(bsStyle = Styles.primary, title = "Right dropup": ReactNode, dropup = true, pullRight = true),
+          MenuItem(MenuItem.MenuItem(eventKey = "1"), "Action")
+          , MenuItem(MenuItem.MenuItem(eventKey = "2"), "Another action")
+          , MenuItem(MenuItem.MenuItem(eventKey = "3"), "Something else here")
+          , MenuItem(MenuItem.MenuItem(divider = true))
+          , MenuItem(MenuItem.MenuItem(eventKey = "4"), "Separated link")
         )
       )
     )
@@ -234,12 +234,12 @@ object DropdownButtons {
 
   val dropdownRightContent = CodeContent.Content(dropdownRightSource,
     ButtonToolbar(
-      SplitButton(SplitButton.Props(title = "dropdown right": ReactNode, pullRight = true),
-        MenuItem(MenuItem.Props(eventKey = "1"), "Action")
-        , MenuItem(MenuItem.Props(eventKey = "2"), "Another action")
-        , MenuItem(MenuItem.Props(eventKey = "3"), "Something else here")
-        , MenuItem(MenuItem.Props(divider = true))
-        , MenuItem(MenuItem.Props(eventKey = "4"), "Separated link")
+      SplitButton(SplitButton.SplitButton(title = "dropdown right": ReactNode, pullRight = true),
+        MenuItem(MenuItem.MenuItem(eventKey = "1"), "Action")
+        , MenuItem(MenuItem.MenuItem(eventKey = "2"), "Another action")
+        , MenuItem(MenuItem.MenuItem(eventKey = "3"), "Something else here")
+        , MenuItem(MenuItem.MenuItem(divider = true))
+        , MenuItem(MenuItem.MenuItem(eventKey = "4"), "Separated link")
       )
     )
   )

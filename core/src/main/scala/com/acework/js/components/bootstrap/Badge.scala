@@ -10,16 +10,20 @@ import scala.scalajs.js._
  * Created by weiyin on 10/03/15.
  */
 object Badge extends BootstrapComponent {
-  override type P = Props
+  override type P = Badge
   override type S = Unit
   override type B = Unit
   override type N = TopNode
 
-  def defaultProps = Props()
+  def defaultProps = Badge()
 
-  case class Props(pullRight: UndefOr[Boolean] = undefined, addClasses: String = "")
+  case class Badge(pullRight: UndefOr[Boolean] = undefined, addClasses: String = "") {
+    def apply(children: ReactNode*) = component(this, children)
 
-  override val component = ReactComponentB[Props]("Badge")
+    def apply() = component(this)
+  }
+
+  override val component = ReactComponentB[Badge]("Badge")
     .render { (P, C) =>
 
     def hasContent = {

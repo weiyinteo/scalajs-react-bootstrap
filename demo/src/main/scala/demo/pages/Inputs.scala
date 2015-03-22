@@ -16,92 +16,129 @@ object Inputs {
     """.stripMargin
 
   def exampleContent = CodeContent.Content(exampleSource,
+    //Input.Input(`type` = "text")
     <.div()
-    //Input(Input.Props(`type` = "text", ))
   )
 
   def typesSource =
     """
+      |<.form(
+      |  Input.Input(`type` = "text", label = "Text", defaultValue = "Enter text"),
+      |  Input.Input(`type` = "email", label = "Email Address", defaultValue = "Enter text"),
+      |  Input.Input(`type` = "password", label = "Password", defaultValue = "secret"),
+      |  Input.Input(`type` = "file", label = "File", help = "[Optinal] Block level help text"),
+      |  Input.Input(`type` = "checkbox", label = "Checkbox", checked = true, readOnly = true),
+      |  Input.Input(`type` = "radio", label = "Radio", checked = true, readOnly = true),
+      |  Input.Input(`type` = "select", label = "Select", defaultValue = "select")(
+      |    <.option(^.value := "select", "select"),
+      |    <.option(^.value := "other", "...")),
       |
+      |  Input.Input(`type` = "select", label = "Multiple Select", multiple = true)(
+      |    <.option(^.value := "select", "select"),
+      |    <.option(^.value := "other", "...")),
+      |  Input.Input(`type` = "textarea", label = "Text Area", defaultValue = "textarea"),
+      |  Input.Input(`type` = "static", value = "Static Text"),
+      |  Input.Input(`type` = "submit", value = "Submit button")
+      |)
     """.stripMargin
 
   def typesContent = CodeContent.Content(typesSource,
     <.form(
-      Input(Input.Props(`type` = "text", label = "Text", defaultValue = "Enter text")),
-      Input(Input.Props(`type` = "email", label = "Email Address", defaultValue = "Enter text")),
-      Input(Input.Props(`type` = "password", label = "Password", defaultValue = "secret")),
-      Input(Input.Props(`type` = "file", label = "File", help = "[Optinal] Block level help text")),
-      Input(Input.Props(`type` = "checkbox", label = "Checkbox", checked = true, readOnly = true)),
-      Input(Input.Props(`type` = "radio", label = "Radio", checked = true, readOnly = true)),
-      Input(Input.Props(`type` = "select", label = "Select", defaultValue = "select"),
+      Input.Input(`type` = "text", label = "Text", defaultValue = "Enter text")(),
+      Input.Input(`type` = "email", label = "Email Address", defaultValue = "Enter text")(),
+      Input.Input(`type` = "password", label = "Password", defaultValue = "secret")(),
+      Input.Input(`type` = "file", label = "File", help = "[Optinal] Block level help text")(),
+      Input.Input(`type` = "checkbox", label = "Checkbox", checked = true, readOnly = true)(),
+      Input.Input(`type` = "radio", label = "Radio", checked = true, readOnly = true)(),
+      Input.Input(`type` = "select", label = "Select", defaultValue = "select")(
         <.option(^.value := "select", "select"),
         <.option(^.value := "other", "...")),
 
-      Input(Input.Props(`type` = "select", label = "Multiple Select", multiple = true),
+      Input.Input(`type` = "select", label = "Multiple Select", multiple = true)(
         <.option(^.value := "select", "select"),
         <.option(^.value := "other", "...")),
-      Input(Input.Props(`type` = "textarea", label = "Text Area", defaultValue = "textarea")),
-      Input(Input.Props(`type` = "static", value = "Static Text")),
-      Input(Input.Props(`type` = "submit", value = "Submit button"))
-    ))
+      Input.Input(`type` = "textarea", label = "Text Area", defaultValue = "textarea")(),
+      Input.Input(`type` = "static", value = "Static Text")(),
+      Input.Input(`type` = "submit", value = "Submit button")()
+    )
+  )
 
   val addonsSource =
     """
-      |
+      | <.form(
+      |  Input.Input(`type` = "text", addonBefore = "@": ReactNode),
+      |  Input.Input(`type` = "text", addonAfter = ".00": ReactNode),
+      |  Input.Input(`type` = "text", addonBefore = "$": ReactNode, addonAfter = ".00": ReactNode),
+      |  Input.Input(`type` = "text", addonAfter = Glyphicon("music")),
+      |  Input.Input(`type` = "text", buttonBefore = Button(Button.Button(), "Before")),
+      |  Input.Input(`type` = "text", buttonAfter =
+      |    DropdownButton.DropdownButton(title = "Action": ReactNode)(
+      |      MenuItem.withKey(1)(MenuItem.MenuItem(), "Item")))
+      |)
     """.stripMargin
 
   def addonsContent = CodeContent.Content(addonsSource,
     <.form(
-      Input(Input.Props(`type` = "text", addonBefore = "@": ReactNode)),
-      Input(Input.Props(`type` = "text", addonAfter = ".00": ReactNode)),
-      Input(Input.Props(`type` = "text", addonBefore = "$": ReactNode, addonAfter = ".00": ReactNode)),
-      Input(Input.Props(`type` = "text", addonAfter = Glyphicon("music"))),
-      Input(Input.Props(`type` = "text", buttonBefore = Button(Button.Props(), "Before"))),
-      Input(Input.Props(`type` = "text", buttonAfter =
-        DropdownButton(DropdownButton.Props(title = "Action": ReactNode),
-          MenuItem.withKey(1)(MenuItem.Props(), "Item")
-        )))
+      Input.Input(`type` = "text", addonBefore = "@": ReactNode)(),
+      Input.Input(`type` = "text", addonAfter = ".00": ReactNode)(),
+      Input.Input(`type` = "text", addonBefore = "$": ReactNode, addonAfter = ".00": ReactNode)(),
+      Input.Input(`type` = "text", addonAfter = Glyphicon("music"))(),
+      Input.Input(`type` = "text", buttonBefore = Button(Button.Button(), "Before"))(),
+      Input.Input(`type` = "text", buttonAfter =
+        DropdownButton.DropdownButton(title = "Action": ReactNode)(
+          MenuItem.withKey(1)(MenuItem.MenuItem(), "Item")))()
     )
   )
 
   val validationSource =
     """
-      |
+      |<.form(
+      |  Input.Input(`type` = "text", bsStyle = Styles.success, label = "Success", hasFeedback = true),
+      |  Input.Input(`type` = "text", bsStyle = Styles.warning, label = "Warning", hasFeedback = true),
+      |  Input.Input(`type` = "text", bsStyle = Styles.error, label = "Error", hasFeedback = true)
+      |)
     """.stripMargin
 
   def validationContent = CodeContent.Content(validationSource,
     <.form(
-      Input(Input.Props(`type` = "text", bsStyle = Styles.success, label = "Success", hasFeedback = true)),
-      Input(Input.Props(`type` = "text", bsStyle = Styles.warning, label = "Warning", hasFeedback = true)),
-      Input(Input.Props(`type` = "text", bsStyle = Styles.error, label = "Error", hasFeedback = true))
+      Input.Input(`type` = "text", bsStyle = Styles.success, label = "Success", hasFeedback = true)(),
+      Input.Input(`type` = "text", bsStyle = Styles.warning, label = "Warning", hasFeedback = true)(),
+      Input.Input(`type` = "text", bsStyle = Styles.error, label = "Error", hasFeedback = true)()
     )
   )
 
   val horizontalSource =
     """
-      |
+      |<.form(^.className := "form-horizontal",
+      |  Input.Input(`type` = "text", label = "Text", labelClassName = "col-xs-2", wrapperClassName = "col-xs-10"),
+      |  Input.Input(`type` = "textarea", label = "Textarea", labelClassName = "col-xs-2", wrapperClassName = "col-xs-10"),
+      |  Input.Input(`type` = "checkbox", label = "Checkbox", labelClassName = "col-xs-offset-2 col-xs-10", help = "offset is applied to wrapper")
+      |)
     """.stripMargin
 
   def horizontalContent = CodeContent.Content(horizontalSource,
     <.form(^.className := "form-horizontal",
-      Input(Input.Props(`type` = "text", label = "Text", labelClassName = "col-xs-2", wrapperClassName = "col-xs-10")),
-      Input(Input.Props(`type` = "textarea", label = "Textarea", labelClassName = "col-xs-2", wrapperClassName = "col-xs-10")),
-      Input(Input.Props(`type` = "checkbox", label = "Checkbox", labelClassName = "col-xs-offset-2 col-xs-10", help = "offset is applied to wrapper"))
+      Input.Input(`type` = "text", label = "Text", labelClassName = "col-xs-2", wrapperClassName = "col-xs-10")(),
+      Input.Input(`type` = "textarea", label = "Textarea", labelClassName = "col-xs-2", wrapperClassName = "col-xs-10")(),
+      Input.Input(`type` = "checkbox", label = "Checkbox", labelClassName = "col-xs-offset-2 col-xs-10", help = "offset is applied to wrapper")()
     )
   )
 
   val wrapperSource =
     """
-      |
+      |Input.Input(label = "Input wrapper", help = "Use this when you need something other than the available input types.", wrapperClassName = "wrapper")(
+      |  Row(
+      |    Col.Col(xs = 6)(Input.Input(`type` = "text", addClasses = "form-control")()),
+      |    Col.Col(xs = 6)(Input.Input(`type` = "text", addClasses = "form-control")())
+      |  )
+      |)
     """.stripMargin
 
   def wrapperContent = CodeContent.Content(wrapperSource,
-    Input(Input.Props(label = "Input wrapper", help = "Use this when you need something other than the available input types.", wrapperClassName = "wrapper"),
+    Input.Input(label = "Input wrapper", help = "Use this when you need something other than the available input types.", wrapperClassName = "wrapper")(
       Row(
-        Col(Col.Props(xs = 6),
-          Input(Input.Props(`type` = "text", addClasses = "form-control"))),
-        Col(Col.Props(xs = 6),
-          Input(Input.Props(`type` = "text", addClasses = "form-control")))
+        Col.Col(xs = 6)(Input.Input(`type` = "text", addClasses = "form-control")()),
+        Col.Col(xs = 6)(Input.Input(`type` = "text", addClasses = "form-control")())
       )
     )
   )

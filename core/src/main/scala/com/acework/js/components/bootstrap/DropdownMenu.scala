@@ -16,27 +16,31 @@ import japgolly.scalajs.react.vdom.prefix_<^._
 import scala.scalajs.js.{UndefOr, undefined}
 
 object DropdownMenu extends BootstrapComponent {
-  override type P = Props
+  override type P = DropdownMenu
   override type S = Unit
   override type B = Unit
   override type N = TopNode
 
-  override def defaultProps = Props()
+  override def defaultProps = DropdownMenu()
 
-  case class Props(
+  case class DropdownMenu(
                     /*==  start react bootstraps  ==*/
                     ariaLabelledBy: UndefOr[String] = undefined,
                     pullRight: UndefOr[Boolean] = undefined,
                     onSelect: UndefOr[(String) => Unit] = undefined,
                     /*==  end react bootstraps  ==*/
-                    addClasses: String = "") extends MergeableProps[Props] {
+                    addClasses: String = "") extends MergeableProps[DropdownMenu] {
 
-    def merge(t: Map[String, Any]): Props = implicitly[Mergeable[Props]].merge(this, t)
+    def merge(t: Map[String, Any]): DropdownMenu = implicitly[Mergeable[DropdownMenu]].merge(this, t)
 
-    def asMap: Map[String, Any] = implicitly[Mappable[Props]].toMap(this)
+    def asMap: Map[String, Any] = implicitly[Mappable[DropdownMenu]].toMap(this)
+
+    def apply(children: ReactNode*) = component(this, children)
+
+    def apply() = component(this)
   }
 
-  override val component = ReactComponentB[Props]("DropdownMenu")
+  override val component = ReactComponentB[DropdownMenu]("DropdownMenu")
     .render((P, C) => {
 
     def renderMenuItem(child: ReactNode, index: Int) = {

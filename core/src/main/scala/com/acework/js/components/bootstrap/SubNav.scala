@@ -15,14 +15,14 @@ import scala.scalajs.js.{UndefOr, undefined}
  */
 
 object SubNav extends BootstrapComponent {
-  override type P = Props
+  override type P = SubNav
   override type S = Unit
   override type B = Unit
   override type N = TopNode
 
-  override def defaultProps = Props()
+  override def defaultProps = SubNav()
 
-  case class Props(active: Boolean = true,
+  case class SubNav(active: Boolean = true,
                    disabled: Boolean = false,
                    href: UndefOr[String] = undefined,
                    target: UndefOr[String] = undefined,
@@ -33,17 +33,21 @@ object SubNav extends BootstrapComponent {
                    bsClass: UndefOr[Classes.Value] = Classes.nav,
                    bsStyle: UndefOr[Styles.Value] = undefined,
                    bsSize: UndefOr[Sizes.Value] = undefined,
-                   addClasses: String = "") extends BsProps with MergeableProps[Props] {
+                   addClasses: String = "") extends BsProps with MergeableProps[SubNav] {
 
-    def merge(t: Map[String, Any]): Props = implicitly[Mergeable[Props]].merge(this, t)
+    def merge(t: Map[String, Any]): SubNav = implicitly[Mergeable[SubNav]].merge(this, t)
 
-    def asMap: Map[String, Any] = implicitly[Mappable[Props]].toMap(this)
+    def asMap: Map[String, Any] = implicitly[Mappable[SubNav]].toMap(this)
+
+    def apply(children: ReactNode*) = component(this, children)
+
+    def apply() = component(this)
   }
 
   // TODO
   def getChildActiveProp(child: ReactNode): Boolean = true
 
-  override val component = ReactComponentB[Props]("SubNav")
+  override val component = ReactComponentB[SubNav]("SubNav")
     .render((P, C) => {
 
     val handleClick = (e: ReactEvent) => {

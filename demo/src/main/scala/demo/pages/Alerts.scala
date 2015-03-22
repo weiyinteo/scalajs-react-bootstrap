@@ -17,7 +17,7 @@ object Alerts {
     """.stripMargin
 
   def exampleContent = CodeContent.Content(exampleSource,
-    Alert(Alert.Props(bsStyle = Styles.warning), <.strong("Holy guacamole!"), " Best check yo self, you're not looking too good."))
+    Alert(Alert.Alert(bsStyle = Styles.warning), <.strong("Holy guacamole!"), " Best check yo self, you're not looking too good."))
 
   val closableSource =
     """
@@ -103,10 +103,10 @@ object Alerts {
 
   def contextualContent = CodeContent.Content(contextualSource,
     <.div(
-      Alert(Alert.Props(bsStyle = Styles.success), "Well done! You successfully read this important alert message."),
-      Alert(Alert.Props(bsStyle = Styles.info), "Heads up! This alert needs your attention, but it's not super important."),
-      Alert(Alert.Props(bsStyle = Styles.warning), "Warning! Better check yourself, you're not looking too good."),
-      Alert(Alert.Props(bsStyle = Styles.danger), "Oh snap! Change a few things up and try submitting again.")
+      Alert(Alert.Alert(bsStyle = Styles.success), "Well done! You successfully read this important alert message."),
+      Alert(Alert.Alert(bsStyle = Styles.info), "Heads up! This alert needs your attention, but it's not super important."),
+      Alert(Alert.Alert(bsStyle = Styles.warning), "Warning! Better check yourself, you're not looking too good."),
+      Alert(Alert.Alert(bsStyle = Styles.danger), "Oh snap! Change a few things up and try submitting again.")
     )
   )
 

@@ -13,24 +13,24 @@ import Utils._
  * Created by weiyin on 22/03/15.
  */
 object TabPane extends BootstrapComponent {
-  override type P = Props
+  override type P = TabPane
   override type S = State
   override type B = Backend
   override type N = TopNode
 
-  override def defaultProps = Props()
+  override def defaultProps = TabPane()
 
-  case class Props(active: Boolean = false,
+  case class TabPane(active: Boolean = false,
                    animation: Boolean = true,
                    tab: UndefOr[String] = undefined,
                    eventKey: UndefOr[String] = undefined,
                    onAnimateOutEnd: UndefOr[() => Unit] = undefined,
                    bsStyle: UndefOr[Styles.Value] = Styles.default,
-                   addClasses: String = "") extends MergeableProps[Props] {
+                   addClasses: String = "") extends MergeableProps[TabPane] {
 
-    def merge(t: Map[String, Any]): Props = implicitly[Mergeable[Props]].merge(this, t)
+    def merge(t: Map[String, Any]): TabPane = implicitly[Mergeable[TabPane]].merge(this, t)
 
-    def asMap: Map[String, Any] = implicitly[Mappable[Props]].toMap(this)
+    def asMap: Map[String, Any] = implicitly[Mappable[TabPane]].toMap(this)
 
     def apply(children: ReactNode*) = component(this, children)
 
@@ -40,9 +40,9 @@ object TabPane extends BootstrapComponent {
 
   case class State(animateIn: Boolean, animateOut: Boolean)
 
-  class Backend(scope: BackendScope[Props, State]) {
+  class Backend(scope: BackendScope[TabPane, State]) {
 
-    def onComponentWillReceiveProps(nextProps: Props) = {
+    def onComponentWillReceiveProps(nextProps: TabPane) = {
       if (scope.props.animation) {
         if (!scope.state.animateIn && nextProps.active && !scope.props.active)
           scope.modState(_.copy(animateIn = true))
@@ -74,7 +74,7 @@ object TabPane extends BootstrapComponent {
     }
   }
 
-  override val component = ReactComponentB[Props]("TabPane")
+  override val component = ReactComponentB[TabPane]("TabPane")
     .initialState(State(animateIn = false, animateOut = false))
     .backend(new Backend(_))
     .render((P, C, S, B) => {

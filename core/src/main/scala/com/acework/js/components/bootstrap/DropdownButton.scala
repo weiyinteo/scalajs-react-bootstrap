@@ -17,14 +17,14 @@ import japgolly.scalajs.react.vdom.prefix_<^._
 import scala.scalajs.js.{UndefOr, undefined}
 
 object DropdownButton extends BootstrapComponent {
-  override type P = Props
+  override type P = DropdownButton
   override type S = DropdownState
   override type B = Backend
   override type N = TopNode
 
-  override def defaultProps: P = Props()
+  override def defaultProps: P = DropdownButton()
 
-  case class Props(
+  case class DropdownButton(
                     /*==  start react bootstraps  ==*/
                     id: UndefOr[String] = undefined,
                     pullRight: UndefOr[Boolean] = undefined,
@@ -41,14 +41,18 @@ object DropdownButton extends BootstrapComponent {
                     bsStyle: UndefOr[Styles.Value] = Styles.default,
                     bsSize: UndefOr[Sizes.Value] = undefined,
                     addClasses: String = "")
-    extends BsProps with MergeableProps[Props] {
+    extends BsProps with MergeableProps[DropdownButton] {
 
-    def merge(t: Map[String, Any]): Props = implicitly[Mergeable[Props]].merge(this, t)
+    def merge(t: Map[String, Any]): DropdownButton = implicitly[Mergeable[DropdownButton]].merge(this, t)
 
-    def asMap: Map[String, Any] = implicitly[Mappable[Props]].toMap(this)
+    def asMap: Map[String, Any] = implicitly[Mappable[DropdownButton]].toMap(this)
+
+    def apply(children: ReactNode*) = component(this, children)
+
+    def apply() = component(this)
   }
 
-  class Backend(val scope: BackendScope[Props, DropdownState]) extends DropdownStateMixin[Props] {
+  class Backend(val scope: BackendScope[DropdownButton, DropdownState]) extends DropdownStateMixin[DropdownButton] {
 
     def handleOptionSelect(key: String): Unit = {
       if (scope.props.onSelect.isDefined)
@@ -61,7 +65,7 @@ object DropdownButton extends BootstrapComponent {
     }
   }
 
-  override val component = ReactComponentB[Props]("DropdownButton")
+  override val component = ReactComponentB[DropdownButton]("DropdownButton")
     .initialState(DropdownState(open = false))
     .backend(new Backend(_))
     .render((P, C, S, B) => {
@@ -69,7 +73,7 @@ object DropdownButton extends BootstrapComponent {
       var addClasses = "dropdown"
       if (S.open)
         addClasses += " open"
-      ButtonGroup(ButtonGroup.Props(addClasses = addClasses), children)
+      ButtonGroup(ButtonGroup.ButtonGroup(addClasses = addClasses), children)
     }
     def renderNavItem(children: ReactNode*) = {
       <.li(^.classSet1("dropdown", "open" -> S.open, "dropup" -> P.dropup.getOrElse(false)))(children)
@@ -91,7 +95,7 @@ object DropdownButton extends BootstrapComponent {
     }
 
     val buttonRef = Ref("dropdownButton")
-    val buttonProps = Button.Props(
+    val buttonProps = Button.Button(
       addClasses = "dropdown-toggle",
       onClick = (e: ReactEvent) => B.handleDropdownClick(e),
       navDropdown = P.navItem.getOrElse(false),
@@ -101,7 +105,7 @@ object DropdownButton extends BootstrapComponent {
     )
 
     val menuRef = Ref("menu")
-    val dropdownMenu = DropdownMenu.withKey(1).withRef("menu")(DropdownMenu.Props(ariaLabelledBy = P.id,
+    val dropdownMenu = DropdownMenu.withKey(1).withRef("menu")(DropdownMenu.DropdownMenu(ariaLabelledBy = P.id,
       pullRight = P.pullRight),
       ValidComponentChildren.map(C, renderMenuItem)
     )

@@ -24,15 +24,15 @@ object AlertDismissable {
     .render((P, C, S, B) => {
 
     if (S.alertVisible)
-      Alert(Alert.Props(bsStyle = Styles.danger, onDismiss = () => B.handleAlertDismiss()),
+      Alert(Alert.Alert(bsStyle = Styles.danger, onDismiss = () => B.handleAlertDismiss()),
         <.h4("Oh snap! You got an error!"),
         <.p("Change this and that and try again. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum."),
         <.p(
-          Button(Button.Props(bsStyle = Styles.danger), "Take this action"),
+          Button(Button.Button(bsStyle = Styles.danger), "Take this action"),
           "or",
-          Button(Button.Props(onClick = (e: ReactEvent) => B.handleAlertDismiss()), "Hide Alert")))
+          Button(Button.Button(onClick = (e: ReactEvent) => B.handleAlertDismiss()), "Hide Alert")))
     else
-      Button(Button.Props(onClick = (e: ReactEvent) => B.handleAlertShow()), "Show Alert")
+      Button(Button.Button(onClick = (e: ReactEvent) => B.handleAlertShow()), "Show Alert")
   }).buildU
 
   def apply() = AlertDismissable()

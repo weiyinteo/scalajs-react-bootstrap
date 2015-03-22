@@ -18,7 +18,7 @@ object Progressbars {
     """.stripMargin
 
   val exampleContent = CodeContent.Content(exampleSource,
-    ProgressBar(ProgressBar.Props(now = 60.0))
+    ProgressBar(ProgressBar.ProgressBar(now = 60.0))
   )
 
   val withLabelSource =
@@ -27,7 +27,7 @@ object Progressbars {
     """.stripMargin
 
   val withLabelContent = CodeContent.Content(withLabelSource,
-    ProgressBar(ProgressBar.Props(now = 60.0, label = "%(percent)s%": ReactNode))
+    ProgressBar(ProgressBar.ProgressBar(now = 60.0, label = "%(percent)s%": ReactNode))
   )
 
   val srOnlySource =
@@ -36,7 +36,7 @@ object Progressbars {
     """.stripMargin
 
   val srOnlyContent = CodeContent.Content(srOnlySource,
-    ProgressBar(ProgressBar.Props(now = 60.0, label = "%(percent)s%": ReactNode, srOnly = true))
+    ProgressBar(ProgressBar.ProgressBar(now = 60.0, label = "%(percent)s%": ReactNode, srOnly = true))
   )
 
   val contextualSource =
@@ -51,10 +51,10 @@ object Progressbars {
 
   val contextualContent = CodeContent.Content(contextualSource,
     <.div(
-      ProgressBar(ProgressBar.Props(bsStyle = Styles.success, now = 40.0))
-      , ProgressBar(ProgressBar.Props(bsStyle = Styles.info, now = 20.0))
-      , ProgressBar(ProgressBar.Props(bsStyle = Styles.warning, now = 60.0))
-      , ProgressBar(ProgressBar.Props(bsStyle = Styles.danger, now = 80.0))
+      ProgressBar(ProgressBar.ProgressBar(bsStyle = Styles.success, now = 40.0))
+      , ProgressBar(ProgressBar.ProgressBar(bsStyle = Styles.info, now = 20.0))
+      , ProgressBar(ProgressBar.ProgressBar(bsStyle = Styles.warning, now = 60.0))
+      , ProgressBar(ProgressBar.ProgressBar(bsStyle = Styles.danger, now = 80.0))
     )
   )
   val stripedSource =
@@ -69,10 +69,10 @@ object Progressbars {
 
   val stripedContent = CodeContent.Content(stripedSource,
     <.div(
-      ProgressBar(ProgressBar.Props(striped = true, bsStyle = Styles.success, now = 40.0))
-      , ProgressBar(ProgressBar.Props(striped = true, bsStyle = Styles.info, now = 20.0))
-      , ProgressBar(ProgressBar.Props(striped = true, bsStyle = Styles.warning, now = 60.0))
-      , ProgressBar(ProgressBar.Props(striped = true, bsStyle = Styles.danger, now = 80.0))
+      ProgressBar(ProgressBar.ProgressBar(striped = true, bsStyle = Styles.success, now = 40.0))
+      , ProgressBar(ProgressBar.ProgressBar(striped = true, bsStyle = Styles.info, now = 20.0))
+      , ProgressBar(ProgressBar.ProgressBar(striped = true, bsStyle = Styles.warning, now = 60.0))
+      , ProgressBar(ProgressBar.ProgressBar(striped = true, bsStyle = Styles.danger, now = 80.0))
     )
   )
 
@@ -82,7 +82,7 @@ object Progressbars {
     """.stripMargin
 
   val animatedContent = CodeContent.Content(animatedSource,
-    ProgressBar(ProgressBar.Props(active = true, now = 60.0))
+    ProgressBar(ProgressBar.ProgressBar(active = true, now = 60.0))
   )
   val stackedSource =
     """
@@ -91,9 +91,9 @@ object Progressbars {
 
   val stackedContent = CodeContent.Content(stackedSource,
     ProgressBar(
-      ProgressBar.withKey(1)(ProgressBar.Props(bsStyle = Styles.success, now = 20.0))
-      , ProgressBar.withKey(2)(ProgressBar.Props(bsStyle = Styles.warning, now = 60.0))
-      , ProgressBar.withKey(3)(ProgressBar.Props(bsStyle = Styles.danger, now = 80.0))
+      ProgressBar.withKey(1)(ProgressBar.ProgressBar(bsStyle = Styles.success, now = 20.0))
+      , ProgressBar.withKey(2)(ProgressBar.ProgressBar(bsStyle = Styles.warning, now = 60.0))
+      , ProgressBar.withKey(3)(ProgressBar.ProgressBar(bsStyle = Styles.danger, now = 80.0))
     )
   )
 

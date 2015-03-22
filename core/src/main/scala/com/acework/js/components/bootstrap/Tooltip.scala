@@ -10,14 +10,14 @@ import scala.scalajs.js.{UndefOr, undefined}
  * Created by weiyin on 09/03/15.
  */
 object Tooltip extends BootstrapComponent {
-  override type P = Props
+  override type P = Tooltip
   override type S = Unit
   override type B = Unit
   override type N = TopNode
 
-  override def defaultProps = Props()
+  override def defaultProps = Tooltip()
 
-  case class Props(placement: UndefOr[Placements.Value] = Placements.right,
+  case class Tooltip(placement: UndefOr[Placements.Value] = Placements.right,
                    positionLeft: UndefOr[Int] = undefined,
                    positionTop: UndefOr[Int] = undefined,
                    arrowOffsetLeft: UndefOr[Int] = undefined,
@@ -25,14 +25,18 @@ object Tooltip extends BootstrapComponent {
                    bsClass: UndefOr[Classes.Value] = Classes.panel,
                    bsStyle: UndefOr[Styles.Value] = Styles.default,
                    bsSize: UndefOr[Sizes.Value] = undefined,
-                   addClasses: String = "") extends BsProps with MergeableProps[Props] {
+                   addClasses: String = "") extends BsProps with MergeableProps[Tooltip] {
 
-    def merge(t: Map[String, Any]): Props = implicitly[Mergeable[Props]].merge(this, t)
+    def merge(t: Map[String, Any]): Tooltip = implicitly[Mergeable[Tooltip]].merge(this, t)
 
-    def asMap: Map[String, Any] = implicitly[Mappable[Props]].toMap(this)
+    def asMap: Map[String, Any] = implicitly[Mappable[Tooltip]].toMap(this)
+
+    def apply(children: ReactNode*) = component(this, children)
+
+    def apply() = component(this)
   }
 
-  override val component = ReactComponentB[Props]("Tooltip")
+  override val component = ReactComponentB[Tooltip]("Tooltip")
     .render((P, C) => {
     val classes = Map(P.placement.get.toString -> true,
       "in" -> (P.positionLeft.isDefined || P.positionTop.isDefined)

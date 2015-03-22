@@ -11,27 +11,31 @@ import scala.scalajs.js.{UndefOr, undefined}
  * Created by weiyin on 09/03/15.
  */
 object NavItem extends BootstrapComponent {
-  override type P = Props
+  override type P = NavItem
   override type S = Unit
   override type B = Unit
   override type N = TopNode
 
-  override def defaultProps = Props()
+  override def defaultProps = NavItem()
 
-  case class Props(active: Boolean = false, disabled: Boolean = false,
+  case class NavItem(active: Boolean = false, disabled: Boolean = false,
                    href: UndefOr[String] = "#",
                    eventKey: UndefOr[String] = undefined,
                    title: UndefOr[String] = undefined,
                    target: UndefOr[String] = undefined,
                    onSelect: UndefOr[Seq[UndefOr[String]] => Unit] = undefined,
-                   addClasses: String = "") extends MergeableProps[Props] {
+                   addClasses: String = "") extends MergeableProps[NavItem] {
 
-    def merge(t: Map[String, Any]): Props = implicitly[Mergeable[Props]].merge(this, t)
+    def merge(t: Map[String, Any]): NavItem = implicitly[Mergeable[NavItem]].merge(this, t)
 
-    def asMap: Map[String, Any] = implicitly[Mappable[Props]].toMap(this)
+    def asMap: Map[String, Any] = implicitly[Mappable[NavItem]].toMap(this)
+
+    def apply(children: ReactNode*) = component(this, children)
+
+    def apply() = component(this)
   }
 
-  override val component = ReactComponentB[Props]("NavItem")
+  override val component = ReactComponentB[NavItem]("NavItem")
     .render((P, C) => {
 
     def handleClick(e: ReactEvent): Unit = {

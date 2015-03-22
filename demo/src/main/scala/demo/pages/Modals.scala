@@ -5,7 +5,6 @@ import demo.examples.ContainedModal
 import demo.examples.util.CodeContent
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
-import org.scalajs.dom.raw.HTMLElement
 import org.scalajs.dom.window
 
 /**
@@ -16,18 +15,19 @@ object Modals {
   val exampleSource =
     """
       |<.div(^.className := "static-modal",
-      |  Modal(Modal.Props(title = "Modal title": ReactNode,
+      |  Modal.Modal(title = "Modal title": ReactNode,
       |    bsStyle = Styles.primary,
       |    backdrop = false,
       |    animation = false,
       |    //container = mountRef,
-      |    onRequestHide = handleHide),
-      |    <.div(^.className := "modal-body",
-      |      "One fine body..."),
-      |    <.div(^.className := "modal-footer",
-      |      Button("Close"),
-      |      Button(Button.Props(bsStyle = Styles.primary), "Save changes"))
-      |  )
+      |    onRequestHide = handleHide)(
+      |      <.div(^.className := "modal-body",
+      |        "One fine body..."),
+      |
+      |      <.div(^.className := "modal-footer",
+      |        Button("Close"),
+      |        Button(Button.Button(bsStyle = Styles.primary), "Save changes"))
+      |    )
       |)
     """.stripMargin
 
@@ -36,29 +36,28 @@ object Modals {
   }
 
   def exampleContent = CodeContent.Content(exampleSource, {
-    val mountRef = Ref[HTMLElement]("mount")
     <.div(^.className := "static-modal",
-      Modal(Modal.Props(title = "Modal title": ReactNode,
+      Modal.Modal(title = "Modal title": ReactNode,
         bsStyle = Styles.primary,
         backdrop = false,
         animation = false,
         //container = mountRef,
-        onRequestHide = handleHide),
-        <.div(^.className := "modal-body",
-          "One fine body..."),
+        onRequestHide = handleHide)(
+          <.div(^.className := "modal-body",
+            "One fine body..."),
 
-        <.div(^.className := "modal-footer",
-          Button("Close"),
-          Button(Button.Props(bsStyle = Styles.primary), "Save changes"))
-      )
+          <.div(^.className := "modal-footer",
+            Button("Close"),
+            Button(Button.Button(bsStyle = Styles.primary), "Save changes"))
+        )
     )
   }
   )
 
   val liveSource =
     """
-      |val myModel = Modal(Modal.Props(bsStyle = Styles.primary, title = "Modal heading": ReactNode, animation = false,
-      |  onRequestHide = () => ()),
+      |val myModel = Modal.Modal(bsStyle = Styles.primary, title = "Modal heading": ReactNode, animation = false,
+      |  onRequestHide = () => ())(
       |  <.div(^.className := "modal-body",
       |    <.h4("Text in a modal"),
       |    <.p("Duis mollis, est non commodo luctus, nisi erat porttitor ligula."),
@@ -82,49 +81,50 @@ object Modals {
       |    <.p("Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.")
       |  ),
       |  <.div(^.className := "modal-footer",
-      |    Button(Button.Props(), "Close"))
+      |    Button.Button()("Close"))
       |)
       |
-      |ModalTrigger(ModalTrigger.Props(modal = myModel),
-      |  Button(Button.Props(bsStyle = Styles.primary, bsSize = Sizes.lg), "Launch demo modal")
+      |ModalTrigger.ModalTrigger(modal = myModel)(
+      |  Button.Button(bsStyle = Styles.primary, bsSize = Sizes.lg)("Launch demo modal")
       |)
     """.stripMargin
 
   def liveContent = CodeContent.Content(liveSource, {
-    val myModel = Modal(Modal.Props(bsStyle = Styles.primary, title = "Modal heading": ReactNode, animation = false,
-      onRequestHide = () => ()),
-      <.div(^.className := "modal-body",
-        <.h4("Text in a modal"),
-        <.p("Duis mollis, est non commodo luctus, nisi erat porttitor ligula."),
-        <.h4("Popover in a modal"),
-        <.p("TODO"),
+    val myModel = Modal.Modal(bsStyle = Styles.primary, title = "Modal heading": ReactNode, animation = false,
+      onRequestHide = () => ())(
+        <.div(^.className := "modal-body",
+          <.h4("Text in a modal"),
+          <.p("Duis mollis, est non commodo luctus, nisi erat porttitor ligula."),
+          <.h4("Popover in a modal"),
+          <.p("TODO"),
 
-        <.h4("Tooltips in a modal"),
-        <.p("TODO"),
+          <.h4("Tooltips in a modal"),
+          <.p("TODO"),
 
-        <.hr(),
+          <.hr(),
 
-        <.h4("Overflowing text to show scroll behavior"),
-        <.p("Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros."),
-        <.p("Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor."),
-        <.p("Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla."),
-        <.p("Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros."),
-        <.p("Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor."),
-        <.p("Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla."),
-        <.p("Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros."),
-        <.p("Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor."),
-        <.p("Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.")
-      ),
-      <.div(^.className := "modal-footer",
-        Button(Button.Props(), "Close"))
-    )
+          <.h4("Overflowing text to show scroll behavior"),
+          <.p("Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros."),
+          <.p("Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor."),
+          <.p("Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla."),
+          <.p("Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros."),
+          <.p("Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor."),
+          <.p("Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla."),
+          <.p("Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros."),
+          <.p("Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor."),
+          <.p("Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.")
+        ),
+        <.div(^.className := "modal-footer",
+          Button.Button()("Close"))
+      )
 
-    ModalTrigger(ModalTrigger.Props(modal = myModel),
-      Button(Button.Props(bsStyle = Styles.primary, bsSize = Sizes.lg), "Launch demo modal")
+    ModalTrigger.ModalTrigger(modal = myModel)(
+      Button.Button(bsStyle = Styles.primary, bsSize = Sizes.lg)("Launch demo modal")
     )
   }
   )
 
+  // TODO containedSource
   def containedContent = CodeContent.Content(liveSource,
     ContainedModal.trigger()
   )

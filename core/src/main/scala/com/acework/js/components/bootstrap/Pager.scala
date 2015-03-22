@@ -36,7 +36,7 @@ object Pager extends BootstrapComponent {
     def getOnSelectProps(child: ReactNode): UndefOr[Seq[UndefOr[String]] => Unit] = {
       val childPropsAny = getChildProps[Any](child)
       childPropsAny match {
-        case props: NavItem.Props =>
+        case props: NavItem.NavItem =>
           if (props.onSelect.isDefined)
             props.onSelect
           else

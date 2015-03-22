@@ -26,10 +26,10 @@ object Navs {
   val handleSelect = (selectedKey: Seq[UndefOr[String]]) => Console.println(s"selected $selectedKey")
 
   val exampleContent = CodeContent.Content(exampleSource, {
-    Nav(Nav.Props(bsStyle = Styles.pills, activeKey = "1", onSelect = handleSelect),
-      NavItem(NavItem.Props(eventKey = "1", href = "/home"), "NavItem 1 content"),
-      NavItem(NavItem.Props(eventKey = "2", title = "Item"), "NavItem 1 content"),
-      NavItem(NavItem.Props(eventKey = "3", disabled = true), "NavItem 3 content")
+    Nav(Nav.Nav(bsStyle = Styles.pills, activeKey = "1", onSelect = handleSelect),
+      NavItem(NavItem.NavItem(eventKey = "1", href = "/home"), "NavItem 1 content"),
+      NavItem(NavItem.NavItem(eventKey = "2", title = "Item"), "NavItem 1 content"),
+      NavItem(NavItem.NavItem(eventKey = "3", disabled = true), "NavItem 3 content")
     )
   }
   )
@@ -51,16 +51,16 @@ object Navs {
     """.stripMargin
 
   val dropdownContent = CodeContent.Content(dropdownSource,
-    Nav(Nav.Props(bsStyle = Styles.tabs, activeKey = "1", onSelect = handleSelect),
-      NavItem(NavItem.Props(eventKey = "1", href = "/home"), "NavItem 1 content"),
-      NavItem(NavItem.Props(eventKey = "2", title = "Item"), "NavItem 1 content"),
-      NavItem(NavItem.Props(eventKey = "3", disabled = true), "NavItem 3 content"),
-      DropdownButton(DropdownButton.Props(eventKey = "4", title = "Dropdown": ReactNode, navItem = true),
-        MenuItem(MenuItem.Props(eventKey = "4.1"), "Action"),
-        MenuItem(MenuItem.Props(eventKey = "4.2"), "Another Action"),
-        MenuItem(MenuItem.Props(eventKey = "4.3"), "Something else here"),
-        MenuItem(MenuItem.Props(divider = true)),
-        MenuItem(MenuItem.Props(eventKey = "4.4"), "Separated link"))
+    Nav(Nav.Nav(bsStyle = Styles.tabs, activeKey = "1", onSelect = handleSelect),
+      NavItem(NavItem.NavItem(eventKey = "1", href = "/home"), "NavItem 1 content"),
+      NavItem(NavItem.NavItem(eventKey = "2", title = "Item"), "NavItem 1 content"),
+      NavItem(NavItem.NavItem(eventKey = "3", disabled = true), "NavItem 3 content"),
+      DropdownButton(DropdownButton.DropdownButton(eventKey = "4", title = "Dropdown": ReactNode, navItem = true),
+        MenuItem(MenuItem.MenuItem(eventKey = "4.1"), "Action"),
+        MenuItem(MenuItem.MenuItem(eventKey = "4.2"), "Another Action"),
+        MenuItem(MenuItem.MenuItem(eventKey = "4.3"), "Something else here"),
+        MenuItem(MenuItem.MenuItem(divider = true)),
+        MenuItem(MenuItem.MenuItem(eventKey = "4.4"), "Separated link"))
     )
   )
   val stackedSource =
@@ -74,10 +74,10 @@ object Navs {
     """.stripMargin
 
   val stackedContent = CodeContent.Content(stackedSource,
-    Nav(Nav.Props(bsStyle = Styles.pills, stacked = true, activeKey = "1", onSelect = handleSelect),
-      NavItem(NavItem.Props(eventKey = "1", href = "/home"), "NavItem 1 content"),
-      NavItem(NavItem.Props(eventKey = "2", title = "Item"), "NavItem 1 content"),
-      NavItem(NavItem.Props(eventKey = "3", disabled = true), "NavItem 3 content")
+    Nav(Nav.Nav(bsStyle = Styles.pills, stacked = true, activeKey = "1", onSelect = handleSelect),
+      NavItem(NavItem.NavItem(eventKey = "1", href = "/home"), "NavItem 1 content"),
+      NavItem(NavItem.NavItem(eventKey = "2", title = "Item"), "NavItem 1 content"),
+      NavItem(NavItem.NavItem(eventKey = "3", disabled = true), "NavItem 3 content")
     )
   )
 
@@ -100,16 +100,16 @@ object Navs {
 
   val justifiedContent = CodeContent.Content(justifiedSource,
     <.div(
-      Nav(Nav.Props(bsStyle = Styles.tabs, justified = true, activeKey = "1", onSelect = handleSelect),
-        NavItem(NavItem.Props(eventKey = "1", href = "/home"), "NavItem 1 content"),
-        NavItem(NavItem.Props(eventKey = "2", title = "Item"), "NavItem 1 content"),
-        NavItem(NavItem.Props(eventKey = "3", disabled = true), "NavItem 3 content")
+      Nav(Nav.Nav(bsStyle = Styles.tabs, justified = true, activeKey = "1", onSelect = handleSelect),
+        NavItem(NavItem.NavItem(eventKey = "1", href = "/home"), "NavItem 1 content"),
+        NavItem(NavItem.NavItem(eventKey = "2", title = "Item"), "NavItem 1 content"),
+        NavItem(NavItem.NavItem(eventKey = "3", disabled = true), "NavItem 3 content")
       ),
       <.br(),
-      Nav(Nav.Props(bsStyle = Styles.pills, justified = true, activeKey = "1", onSelect = handleSelect),
-        NavItem(NavItem.Props(eventKey = "1", href = "/home"), "NavItem 1 content"),
-        NavItem(NavItem.Props(eventKey = "2", title = "Item"), "NavItem 1 content"),
-        NavItem(NavItem.Props(eventKey = "3", disabled = true), "NavItem 3 content")
+      Nav(Nav.Nav(bsStyle = Styles.pills, justified = true, activeKey = "1", onSelect = handleSelect),
+        NavItem(NavItem.NavItem(eventKey = "1", href = "/home"), "NavItem 1 content"),
+        NavItem(NavItem.NavItem(eventKey = "2", title = "Item"), "NavItem 1 content"),
+        NavItem(NavItem.NavItem(eventKey = "3", disabled = true), "NavItem 3 content")
       )
     )
   )

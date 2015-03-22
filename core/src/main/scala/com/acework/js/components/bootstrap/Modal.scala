@@ -14,7 +14,7 @@ import scala.scalajs.js.{UndefOr, undefined}
  * Created by weiyin on 09/03/15.
  */
 object Modal extends BootstrapComponent {
-  override type P = Props
+  override type P = Modal
   override type S = Unit
   override type B = Backend
   override type N = TopNode
@@ -22,7 +22,7 @@ object Modal extends BootstrapComponent {
   override def defaultProps = throw new RuntimeException("noRequestHide must be provided")
 
   // header and footer are functions, so that they can get access to the the hide() function for their buttons
-  case class Props(
+  case class Modal(
                     onRequestHide: () => Unit,
                     backdrop: Boolean = true,
                     keyboard: Boolean = true,
@@ -37,15 +37,19 @@ object Modal extends BootstrapComponent {
                     footer: UndefOr[() => ReactNode] = undefined,
                     closed: () => Unit = () => (),
                     addClasses: String = "") extends BsProps
-  with MergeableProps[Props] with OverlayProps {
+  with MergeableProps[Modal] with OverlayProps {
 
-    def merge(t: Map[String, Any]): Props = implicitly[Mergeable[Props]].merge(this, t)
+    def merge(t: Map[String, Any]): Modal = implicitly[Mergeable[Modal]].merge(this, t)
 
-    def asMap: Map[String, Any] = implicitly[Mappable[Props]].toMap(this)
+    def asMap: Map[String, Any] = implicitly[Mappable[Modal]].toMap(this)
+
+    def apply(children: ReactNode*) = component(this, children)
+
+    def apply() = component(this)
   }
 
 
-  class Backend(val scope: BackendScope[Props, Unit]) extends FadeMixin[Props, Unit] {
+  class Backend(val scope: BackendScope[Modal, Unit]) extends FadeMixin[Modal, Unit] {
     var _onDocumentKeyupListener: Option[EventListener] = None
 
     def handleBackdropClick(e: ReactEvent): Unit = {
@@ -88,7 +92,7 @@ object Modal extends BootstrapComponent {
     }
   }
 
-  override val component = ReactComponentB[Props]("Modal")
+  override val component = ReactComponentB[Modal]("Modal")
     .stateless
     .backend(new Backend(_))
     .render((P, C, _, B) => {

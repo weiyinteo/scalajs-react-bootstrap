@@ -15,16 +15,16 @@ import scala.scalajs.js.{UndefOr, undefined}
  * Created by weiyin on 10/03/15.
  */
 object Carousel extends BootstrapComponent {
-  override type P = Props
+  override type P = Carousel
   override type S = State
   override type B = Backend
   override type N = TopNode
 
-  override def defaultProps = Props()
+  override def defaultProps = Carousel()
 
   case class State(activeIndex: Int, previousActiveIndex: UndefOr[Int] = undefined, direction: UndefOr[Directions.Value] = undefined)
 
-  case class Props(slide: UndefOr[Boolean] = true,
+  case class Carousel(slide: UndefOr[Boolean] = true,
                    indicators: UndefOr[Boolean] = true,
                    controls: UndefOr[Boolean] = true,
                    pauseOnHover: UndefOr[Boolean] = true,
@@ -38,14 +38,18 @@ object Carousel extends BootstrapComponent {
                    bsClass: UndefOr[Classes.Value] = Classes.`btn-group`,
                    bsStyle: UndefOr[Styles.Value] = undefined,
                    bsSize: UndefOr[Sizes.Value] = undefined,
-                   addClasses: String = "") extends BsProps with MergeableProps[Props] {
+                   addClasses: String = "") extends BsProps with MergeableProps[Carousel] {
 
-    def merge(t: Map[String, Any]): Props = implicitly[Mergeable[Props]].merge(this, t)
+    def merge(t: Map[String, Any]): Carousel = implicitly[Mergeable[Carousel]].merge(this, t)
 
-    def asMap: Map[String, Any] = implicitly[Mappable[Props]].toMap(this)
+    def asMap: Map[String, Any] = implicitly[Mappable[Carousel]].toMap(this)
+
+    def apply(children: ReactNode*) = component(this, children)
+
+    def apply() = component(this)
   }
 
-  class Backend($: BackendScope[Props, State]) {
+  class Backend($: BackendScope[Carousel, State]) {
     var timer: js.UndefOr[js.timers.SetTimeoutHandle] = js.undefined
     var isPaused: Boolean = false
 
@@ -159,7 +163,7 @@ object Carousel extends BootstrapComponent {
     }
   }
 
-  override val component = ReactComponentB[Props]("Carousel")
+  override val component = ReactComponentB[Carousel]("Carousel")
     .initialStateP(P => State(activeIndex = if (P.defaultActiveIndex.isEmpty) 0 else P.defaultActiveIndex.get))
     .backend(new Backend(_))
     .render((P, C, S, B) => {

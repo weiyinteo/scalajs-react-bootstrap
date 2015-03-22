@@ -90,7 +90,7 @@ object ButtonGroups {
   val sizingContent = CodeContent.Content(sizingSource,
     <.div(
       ButtonToolbar(
-        ButtonGroup(ButtonGroup.Props(bsSize = Sizes.lg),
+        ButtonGroup(ButtonGroup.ButtonGroup(bsSize = Sizes.lg),
           Button("Left"),
           Button("Middle"),
           Button("Right"))),
@@ -100,12 +100,12 @@ object ButtonGroups {
           Button("Middle"),
           Button("Right"))),
       ButtonToolbar(
-        ButtonGroup(ButtonGroup.Props(bsSize = Sizes.sm),
+        ButtonGroup(ButtonGroup.ButtonGroup(bsSize = Sizes.sm),
           Button("Left"),
           Button("Middle"),
           Button("Right"))),
       ButtonToolbar(
-        ButtonGroup(ButtonGroup.Props(bsSize = Sizes.xs),
+        ButtonGroup(ButtonGroup.ButtonGroup(bsSize = Sizes.xs),
           Button("Left"),
           Button("Middle"),
           Button("Right")))
@@ -128,9 +128,9 @@ object ButtonGroups {
     ButtonGroup(
       Button("1"),
       Button("2"),
-      DropdownButton(DropdownButton.Props(title = reactNodeInhabitableS("Dropdown")),
-        MenuItem(MenuItem.Props(eventKey = "1"), "Dropdown link"),
-        MenuItem(MenuItem.Props(eventKey = "2"), "Dropdown link")
+      DropdownButton(DropdownButton.DropdownButton(title = reactNodeInhabitableS("Dropdown")),
+        MenuItem(MenuItem.MenuItem(eventKey = "1"), "Dropdown link"),
+        MenuItem(MenuItem.MenuItem(eventKey = "2"), "Dropdown link")
       )
     )
   )
@@ -157,22 +157,22 @@ object ButtonGroups {
     """.stripMargin
 
   val verticalContent = CodeContent.Content(verticalSource,
-    ButtonGroup(ButtonGroup.Props(vertical = true),
+    ButtonGroup(ButtonGroup.ButtonGroup(vertical = true),
       Button("Button"),
       Button("Button"),
-      DropdownButton(DropdownButton.Props(title = reactNodeInhabitableS("Dropdown")),
-        MenuItem(MenuItem.Props(eventKey = "1"), "Dropdown link"),
-        MenuItem(MenuItem.Props(eventKey = "2"), "Dropdown link")),
+      DropdownButton(DropdownButton.DropdownButton(title = reactNodeInhabitableS("Dropdown")),
+        MenuItem(MenuItem.MenuItem(eventKey = "1"), "Dropdown link"),
+        MenuItem(MenuItem.MenuItem(eventKey = "2"), "Dropdown link")),
       Button("Button"),
       Button("Button"),
-      DropdownButton(DropdownButton.Props(title = reactNodeInhabitableS("Dropdown")),
-        MenuItem(MenuItem.Props(eventKey = "1"), "Dropdown link"),
-        MenuItem(MenuItem.Props(eventKey = "2"), "Dropdown link")),
+      DropdownButton(DropdownButton.DropdownButton(title = reactNodeInhabitableS("Dropdown")),
+        MenuItem(MenuItem.MenuItem(eventKey = "1"), "Dropdown link"),
+        MenuItem(MenuItem.MenuItem(eventKey = "2"), "Dropdown link")),
       Button("Button"),
       Button("Button"),
-      DropdownButton(DropdownButton.Props(title = reactNodeInhabitableS("Dropdown")),
-        MenuItem(MenuItem.Props(eventKey = "1"), "Dropdown link"),
-        MenuItem(MenuItem.Props(eventKey = "2"), "Dropdown link"))
+      DropdownButton(DropdownButton.DropdownButton(title = reactNodeInhabitableS("Dropdown")),
+        MenuItem(MenuItem.MenuItem(eventKey = "1"), "Dropdown link"),
+        MenuItem(MenuItem.MenuItem(eventKey = "2"), "Dropdown link"))
     )
   )
 
@@ -188,12 +188,12 @@ object ButtonGroups {
     """.stripMargin
 
   val justifiedContent = CodeContent.Content(justifiedSource,
-    ButtonGroup(ButtonGroup.Props(justified = true),
-      Button(Button.Props(href = "#"), "Left"),
-      Button(Button.Props(href = "#"), "Middle"),
-      DropdownButton(DropdownButton.Props(title = reactNodeInhabitableS("Dropdown")),
-        MenuItem(MenuItem.Props(eventKey = "1"), "Dropdown link"),
-        MenuItem(MenuItem.Props(eventKey = "2"), "Dropdown link"))
+    ButtonGroup(ButtonGroup.ButtonGroup(justified = true),
+      Button(Button.Button(href = "#"), "Left"),
+      Button(Button.Button(href = "#"), "Middle"),
+      DropdownButton(DropdownButton.DropdownButton(title = reactNodeInhabitableS("Dropdown")),
+        MenuItem(MenuItem.MenuItem(eventKey = "1"), "Dropdown link"),
+        MenuItem(MenuItem.MenuItem(eventKey = "2"), "Dropdown link"))
     )
   )
 

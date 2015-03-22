@@ -25,13 +25,13 @@ object Buttons {
 
   def optionsContent = CodeContent.Content(optionsSource,
     ButtonToolbar(
-      Button("Default"),
-      Button(Button.Props(bsStyle = Styles.primary), "Primary"),
-      Button(Button.Props(bsStyle = Styles.success), "Success"),
-      Button(Button.Props(bsStyle = Styles.info), "Info"),
-      Button(Button.Props(bsStyle = Styles.warning), "Warning"),
-      Button(Button.Props(bsStyle = Styles.danger), "Danger"),
-      Button(Button.Props(bsStyle = Styles.link), "Link")
+      //Button.Button()("Default"),
+      Button.Button(bsStyle = Styles.primary)("Primary"),
+      Button.Button(bsStyle = Styles.success)("Success"),
+      Button.Button(bsStyle = Styles.info)("Info"),
+      Button.Button(bsStyle = Styles.warning)("Warning"),
+      Button.Button(bsStyle = Styles.danger)("Danger"),
+      Button.Button(bsStyle = Styles.link)("Link")
     )
   )
 
@@ -56,17 +56,17 @@ object Buttons {
   val sizesContent = CodeContent.Content(sizesSource,
     <.div(
       ButtonToolbar(
-        Button(Button.Props(bsStyle = Styles.primary, bsSize = Sizes.lg), "Large button"),
-        Button(Button.Props(bsSize = Sizes.lg), "Large button")),
+        Button.Button(bsStyle = Styles.primary, bsSize = Sizes.lg)("Large button"),
+        Button.Button(bsSize = Sizes.lg)("Large button")),
       ButtonToolbar(
-        Button(Button.Props(bsStyle = Styles.primary), "Default button"),
+        Button.Button(bsStyle = Styles.primary)("Default button"),
         Button("Default button")),
       ButtonToolbar(
-        Button(Button.Props(bsStyle = Styles.primary, bsSize = Sizes.sm), "Small button"),
-        Button(Button.Props(bsSize = Sizes.sm), "Small button")),
+        Button.Button(bsStyle = Styles.primary, bsSize = Sizes.sm)("Small button"),
+        Button.Button(bsSize = Sizes.sm)("Small button")),
       ButtonToolbar(
-        Button(Button.Props(bsStyle = Styles.primary, bsSize = Sizes.xs), "Extra small button"),
-        Button(Button.Props(bsSize = Sizes.xs), "Extra small button"))
+        Button.Button(bsStyle = Styles.primary, bsSize = Sizes.xs)("Extra small button"),
+        Button.Button(bsSize = Sizes.xs)("Extra small button"))
     )
   )
 
@@ -80,8 +80,8 @@ object Buttons {
 
   val blockContent = CodeContent.Content(blockSource,
     <.div(^.className := "well", ^.maxWidth := 400, ^.margin := "0 auto 10px",
-      Button(Button.Props(bsStyle = Styles.primary, bsSize = Sizes.lg, block = true), "Block level button"),
-      Button(Button.Props(bsSize = Sizes.lg, block = true), "Block level button")
+      Button(Button.Button(bsStyle = Styles.primary, bsSize = Sizes.lg, block = true), "Block level button"),
+      Button(Button.Button(bsSize = Sizes.lg, block = true), "Block level button")
     )
   )
 
@@ -94,8 +94,8 @@ object Buttons {
 
   val activeStateContent = CodeContent.Content(activeStateSource,
     ButtonToolbar(
-      Button(Button.Props(bsStyle = Styles.primary, bsSize = Sizes.lg, active = true), "Primary button"),
-      Button(Button.Props(bsSize = Sizes.lg, active = true), "Button")
+      Button(Button.Button(bsStyle = Styles.primary, bsSize = Sizes.lg, active = true), "Primary button"),
+      Button(Button.Button(bsSize = Sizes.lg, active = true), "Button")
     )
   )
 
@@ -108,8 +108,8 @@ object Buttons {
 
   val disabledStateContent = CodeContent.Content(disabledStateSource,
     ButtonToolbar(
-      Button(Button.Props(bsStyle = Styles.primary, bsSize = Sizes.lg, disabled = true), "Primary button"),
-      Button(Button.Props(bsSize = Sizes.lg, disabled = true), "Button")
+      Button(Button.Button(bsStyle = Styles.primary, bsSize = Sizes.lg, disabled = true), "Primary button"),
+      Button(Button.Button(bsSize = Sizes.lg, disabled = true), "Button")
     )
   )
   val tagsSource =
@@ -121,7 +121,7 @@ object Buttons {
 
   val tagsContent = CodeContent.Content(tagsSource,
     ButtonToolbar(
-      Button(Button.Props(href = "#"), "Link"),
+      Button(Button.Button(href = "#"), "Link"),
       Button("Button")
     )
   )
@@ -176,7 +176,7 @@ object Buttons {
       (e: ReactEvent) => B.handleClick()
     }
 
-    Button(Button.Props(bsStyle = Styles.primary, disabled = S.isLoading,
+    Button(Button.Button(bsStyle = Styles.primary, disabled = S.isLoading,
       onClick = handleClick
     ), if (S.isLoading) "Loading..." else "Loading State")
   }).buildU

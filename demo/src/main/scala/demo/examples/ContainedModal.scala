@@ -16,16 +16,16 @@ object ContainedModal {
   val containerRef: RefSimple[TopNode] = Ref[HTMLElement]("container")
 
   def containedModel = {
-    Modal(Modal.Props(bsStyle = Styles.primary, title = "Contained Modal": ReactNode, animation = true,
-      onRequestHide = () => ()),
-      <.div(^.className := "modal-body",
-        <.h4("Text in a modal"),
-        <.p("Elit est explicabo ipsum eaque dolorem blanditiis doloribus sed id ipsam, beatae, rem fuga id earum? Inventore et facilis obcaecati.")
-      ),
-      <.div(^.className := "modal-footer",
-        // FIXME link onClick to onRequestHide
-        Button(Button.Props(), "Close"))
-    )
+    Modal.Modal(bsStyle = Styles.primary, title = "Contained Modal": ReactNode, animation = true,
+      onRequestHide = () => ())(
+        <.div(^.className := "modal-body",
+          <.h4("Text in a modal"),
+          <.p("Elit est explicabo ipsum eaque dolorem blanditiis doloribus sed id ipsam, beatae, rem fuga id earum? Inventore et facilis obcaecati.")
+        ),
+        <.div(^.className := "modal-footer",
+          // FIXME link onClick to onRequestHide
+          Button(Button.Button(), "Close"))
+      )
   }
 
   class Backend(val scope: BackendScope[Unit, Unit])
@@ -36,10 +36,10 @@ object ContainedModal {
     .render((_, _, B) => {
 
     <.div(^.className := "modal-container", ^.height := 300, ^.ref := containerRef,
-      ModalTrigger(ModalTrigger.Props(modal = containedModel,
-        container = new ReferencedContainer(containerRef, B.scope)),
-        Button(Button.Props(bsStyle = Styles.primary, bsSize = Sizes.lg), "Launch contained modal")
-      )
+      ModalTrigger.ModalTrigger(modal = containedModel,
+        container = new ReferencedContainer(containerRef, B.scope))(
+          Button(Button.Button(bsStyle = Styles.primary, bsSize = Sizes.lg), "Launch contained modal")
+        )
     )
   }).
     buildU

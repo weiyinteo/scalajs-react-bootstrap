@@ -5,7 +5,6 @@ import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
 import org.scalajs.dom.raw.HTMLUListElement
 
-import scala.collection.mutable.ListBuffer
 import scala.scalajs.js
 import scala.scalajs.js.{UndefOr, undefined}
 import com.acework.js.components.bootstrap.Utils._
@@ -16,12 +15,12 @@ import com.acework.js.components.bootstrap.Utils._
  */
 
 object Nav extends BootstrapComponent {
-  override type P = Props
+  override type P = Nav
   override type S = CollapsableState
   override type B = Backend
   override type N = TopNode
 
-  override def defaultProps = Props()
+  override def defaultProps = Nav()
 
   @inline implicit final class ReactExt2_PropsChildren(val _c: PropsChildren) extends AnyVal {
     @inline def map[U](f: ReactNode => U): UndefOr[Object] =
@@ -31,7 +30,7 @@ object Nav extends BootstrapComponent {
       React.Children.map(_c, (f: js.Function).asInstanceOf[js.Function2[ReactNode, Int, js.Any]])
   }
 
-  case class Props(navbar: Boolean = false, stacked: Boolean = false,
+  case class Nav(navbar: Boolean = false, stacked: Boolean = false,
                    justified: Boolean = false, pullRight: Boolean = false,
                    right: Boolean = false,
                    collapsable: UndefOr[Boolean] = undefined,
@@ -45,15 +44,19 @@ object Nav extends BootstrapComponent {
                    bsStyle: UndefOr[Styles.Value] = undefined,
                    bsSize: UndefOr[Sizes.Value] = undefined,
                    onSelect: UndefOr[Seq[UndefOr[String]] => Unit] = undefined,
-                   addClasses: String = "") extends BsProps with CollapsableProps with MergeableProps[Props] {
+                   addClasses: String = "") extends BsProps with CollapsableProps with MergeableProps[Nav] {
 
-    def merge(t: Map[String, Any]): Props = implicitly[Mergeable[Props]].merge(this, t)
+    def merge(t: Map[String, Any]): Nav = implicitly[Mergeable[Nav]].merge(this, t)
 
-    def asMap: Map[String, Any] = implicitly[Mappable[Props]].toMap(this)
+    def asMap: Map[String, Any] = implicitly[Mappable[Nav]].toMap(this)
+
+    def apply(children: ReactNode*) = component(this, children)
+
+    def apply() = component(this)
   }
 
 
-  class Backend(val scope: BackendScope[Props, CollapsableState]) extends CollapsableMixin[Props] {
+  class Backend(val scope: BackendScope[Nav, CollapsableState]) extends CollapsableMixin[Nav] {
 
     def getCollapsableDOMNode: Option[TopNode] = Some(scope.getDOMNode())
 
@@ -72,7 +75,7 @@ object Nav extends BootstrapComponent {
 
   val ulRef = Ref[HTMLUListElement]("ul")
 
-  override val component = ReactComponentB[Props]("Nav")
+  override val component = ReactComponentB[Nav]("Nav")
     .initialState(CollapsableState(false, false))
     .backend(new Backend(_))
     .render((P, C, S, B) => {
@@ -80,7 +83,7 @@ object Nav extends BootstrapComponent {
     def getChildActiveProp(child: ReactNode) = {
       val childPropsAny = getChildProps[Any](child)
       childPropsAny match {
-        case props: NavItem.Props =>
+        case props: NavItem.NavItem =>
           props.active ||
             props.eventKey.getOrElse("NA1") == P.activeKey.getOrElse("NA") ||
             props.href.getOrElse("NA1") == P.activeHref.getOrElse("NA")
@@ -91,7 +94,7 @@ object Nav extends BootstrapComponent {
     def getOnSelectProps(child: ReactNode): UndefOr[Seq[UndefOr[String]] => Unit] = {
       val childPropsAny = getChildProps[Any](child)
       childPropsAny match {
-        case props: NavItem.Props =>
+        case props: NavItem.NavItem =>
           if (props.onSelect.isDefined)
             props.onSelect
           else

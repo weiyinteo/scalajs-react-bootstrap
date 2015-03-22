@@ -12,16 +12,16 @@ import scala.scalajs.js.{UndefOr, undefined}
  * Created by weiyin on 10/03/15.
  */
 object Input extends BootstrapComponent {
-  override type P = Props
+  override type P = Input
   override type S = Unit
   override type B = Backend
   override type N = TopNode
 
-  override def defaultProps = Props()
+  override def defaultProps = Input()
 
   val theInput = Ref[HTMLInputElement]("input")
 
-  case class Props(id: UndefOr[String] = undefined,
+  case class Input(id: UndefOr[String] = undefined,
                    `type`: UndefOr[String] = undefined,
                    label: UndefOr[String] = undefined,
                    help: UndefOr[String] = undefined,
@@ -44,14 +44,18 @@ object Input extends BootstrapComponent {
                    readOnly: UndefOr[Boolean] = undefined,
                    onChange: UndefOr[() => Unit] = undefined,
                    ref: UndefOr[Ref] = undefined,
-                   addClasses: String = "") extends MergeableProps[Props] {
+                   addClasses: String = "") extends MergeableProps[Input] {
 
-    def merge(t: Map[String, Any]): Props = implicitly[Mergeable[Props]].merge(this, t)
+    def merge(t: Map[String, Any]): Input = implicitly[Mergeable[Input]].merge(this, t)
 
-    def asMap: Map[String, Any] = implicitly[Mappable[Props]].toMap(this)
+    def asMap: Map[String, Any] = implicitly[Mappable[Input]].toMap(this)
+
+    def apply(children: ReactNode*) = component(this, children)
+
+    def apply() = component(this)
   }
 
-  class Backend(scope: BackendScope[Props, Unit]) {
+  class Backend(scope: BackendScope[Input, Unit]) {
     def getInputDOMNode = {
       theInput(scope).get.getDOMNode()
     }
@@ -97,7 +101,7 @@ object Input extends BootstrapComponent {
   }
 
 
-  override val component = ReactComponentB[Props]("Input")
+  override val component = ReactComponentB[Input]("Input")
     .stateless
     .backend(new Backend(_))
     .render { (P, C, _, B) =>
@@ -123,7 +127,7 @@ object Input extends BootstrapComponent {
               ^.tpe := P.`type`, ^.ref := theInput, ^.key := "input")(P.value)
           case "submit" =>
             // FIXME ref
-            Button.withKey("input")(Button.Props(componentClass = "input", `type` = "submit", value = P.value))
+            Button.withKey("input")(Button.Button(componentClass = "input", `type` = "submit", value = P.value))
           case _ =>
             // FIXME spread properties
             val className = if (B.isCheckboxOrRadio || B.isFile) "" else "form-control"

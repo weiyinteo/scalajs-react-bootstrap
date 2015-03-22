@@ -11,16 +11,20 @@ import scala.scalajs.js._
  * Created by weiyin on 10/03/15.
  */
 object ListGroup extends BootstrapComponent {
-  override type P = Props
+  override type P = ListGroup
   override type S = Unit
   override type B = Unit
   override type N = TopNode
 
-  override def defaultProps = Props()
+  override def defaultProps = ListGroup()
 
-  case class Props(fill: Boolean = false, onClick: UndefOr[() => Unit] = undefined)
+  case class ListGroup(fill: Boolean = false, onClick: UndefOr[() => Unit] = undefined) {
+    def apply(children: ReactNode*) = component(this, children)
 
-  override val component = ReactComponentB[Props]("ListGroup")
+    def apply() = component(this)
+  }
+
+  override val component = ReactComponentB[ListGroup]("ListGroup")
     .render { (P, C) =>
 
     def renderListItem(child: ReactNode, index: Int) = {
