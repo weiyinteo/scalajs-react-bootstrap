@@ -31,20 +31,20 @@ object Nav extends BootstrapComponent {
   }
 
   case class Nav(navbar: Boolean = false, stacked: Boolean = false,
-                   justified: Boolean = false, pullRight: Boolean = false,
-                   right: Boolean = false,
-                   collapsable: UndefOr[Boolean] = undefined,
-                   expanded: UndefOr[Boolean] = undefined,
-                   activeHref: UndefOr[String] = undefined,
-                   activeKey: UndefOr[String] = undefined,
-                   role: UndefOr[String] = undefined,
-                   eventKey: UndefOr[String] = undefined,
-                   id: UndefOr[String] = undefined,
-                   bsClass: UndefOr[Classes.Value] = Classes.nav,
-                   bsStyle: UndefOr[Styles.Value] = undefined,
-                   bsSize: UndefOr[Sizes.Value] = undefined,
-                   onSelect: UndefOr[Seq[UndefOr[String]] => Unit] = undefined,
-                   addClasses: String = "") extends BsProps with CollapsableProps with MergeableProps[Nav] {
+                 justified: Boolean = false, pullRight: Boolean = false,
+                 right: Boolean = false,
+                 collapsable: UndefOr[Boolean] = undefined,
+                 expanded: UndefOr[Boolean] = undefined,
+                 activeHref: UndefOr[String] = undefined,
+                 activeKey: UndefOr[String] = undefined,
+                 role: UndefOr[String] = undefined,
+                 eventKey: UndefOr[String] = undefined,
+                 id: UndefOr[String] = undefined,
+                 bsClass: UndefOr[Classes.Value] = Classes.nav,
+                 bsStyle: UndefOr[Styles.Value] = undefined,
+                 bsSize: UndefOr[Sizes.Value] = undefined,
+                 onSelect: UndefOr[Seq[UndefOr[String]] => Unit] = undefined,
+                 addClasses: String = "") extends BsProps with CollapsableProps with MergeableProps[Nav] {
 
     def merge(t: Map[String, Any]): Nav = implicitly[Mergeable[Nav]].merge(this, t)
 
@@ -65,7 +65,7 @@ object Nav extends BootstrapComponent {
         val node = scope.refs("ul").asInstanceOf[TopNode]
         val height = node.offsetHeight
         // FIXME
-        //node.ownerDocument.defaultView.getComptedStyle(elem, null)
+        //node.ownerDocument.defaultView.getComputedStyle(elem, null)
         height
       }
       else
@@ -143,7 +143,7 @@ object Nav extends BootstrapComponent {
       renderUI()
     else {
       val ui = renderUI()
-      <.nav(^.classSetM(classes), ui)
+      <.nav(^.classSetM(classes), ^.role := P.role, ui)
     }
   }
     ).build

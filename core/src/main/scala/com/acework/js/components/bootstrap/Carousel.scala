@@ -2,7 +2,6 @@ package com.acework.js.components.bootstrap
 
 import com.acework.js.components.bootstrap.Utils._
 import com.acework.js.utils.{Mappable, Mergeable}
-import japgolly.scalajs.react.Addons.ReactCloneWithProps
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
 import org.scalajs.dom.raw.HTMLElement

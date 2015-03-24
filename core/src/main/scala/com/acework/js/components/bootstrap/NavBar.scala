@@ -23,24 +23,24 @@ object NavBar extends BootstrapComponent {
   override def defaultProps = NavBar()
 
   case class NavBar(
-                    /*==  start react bootstraps  ==*/
-                    fixedTop: UndefOr[Boolean] = undefined,
-                    fixedBottom: UndefOr[Boolean] = undefined,
-                    staticTop: UndefOr[Boolean] = undefined,
-                    inverse: UndefOr[Boolean] = undefined,
-                    fluid: UndefOr[Boolean] = undefined,
-                    role: UndefOr[String] = "navigation",
-                    componentClass: UndefOr[String] = "Nav",
-                    brand: UndefOr[ReactNode] = undefined,
-                    toggleButton: UndefOr[ReactNode] = undefined,
-                    toggleNavKey: UndefOr[String] = undefined, // FIXME String or Number
-                    onToggle: UndefOr[() => Unit] = undefined,
-                    navExpanded: UndefOr[Boolean] = undefined,
-                    defaultNavExpanded: UndefOr[Boolean] = undefined,
-                    bsClass: UndefOr[Classes.Value] = Classes.navbar,
-                    bsStyle: UndefOr[Styles.Value] = Styles.default,
-                    bsSize: UndefOr[Sizes.Value] = undefined,
-                    addClasses: String = "") extends BsProps with MergeableProps[NavBar] {
+                     /*==  start react bootstraps  ==*/
+                     fixedTop: UndefOr[Boolean] = undefined,
+                     fixedBottom: UndefOr[Boolean] = undefined,
+                     staticTop: UndefOr[Boolean] = undefined,
+                     inverse: UndefOr[Boolean] = undefined,
+                     fluid: UndefOr[Boolean] = undefined,
+                     role: UndefOr[String] = "navigation",
+                     componentClass: UndefOr[String] = "Nav",
+                     brand: UndefOr[ReactNode] = undefined,
+                     toggleButton: UndefOr[ReactNode] = undefined,
+                     toggleNavKey: UndefOr[String] = undefined, // FIXME String or Number
+                     onToggle: UndefOr[() => Unit] = undefined,
+                     navExpanded: UndefOr[Boolean] = undefined,
+                     defaultNavExpanded: UndefOr[Boolean] = undefined,
+                     bsClass: UndefOr[Classes.Value] = Classes.navbar,
+                     bsStyle: UndefOr[Styles.Value] = Styles.default,
+                     bsSize: UndefOr[Sizes.Value] = undefined,
+                     addClasses: String = "") extends BsProps with MergeableProps[NavBar] {
 
     def merge(t: Map[String, Any]): NavBar = implicitly[Mergeable[NavBar]].merge(this, t)
 
@@ -81,23 +81,34 @@ object NavBar extends BootstrapComponent {
     .render((P, C, S, B) => {
 
     def renderHeader(): TagMod = {
-      if (P.brand.isDefined) {
-        if (React.isValidElement(P.brand.get)) {
-          ReactCloneWithProps(P.brand.get, Map("className" -> "navbar-brand"))
+      val brand: TagMod =
+        if (P.brand.isDefined) {
+          if (React.isValidElement(P.brand.get)) {
+            cloneWithProps(P.brand.get, (undefined, undefined), Map("addClasses" -> "navbar-brand"))
+          }
+          else
+            <.span(^.className := "navbar-brand", P.brand.get)
         }
         else
-          <.span(^.className := "navbar-brand", P.brand.get)
-      }
+          EmptyTag
+
+      val toggleButton = if (P.toggleButton.isDefined || P.toggleNavKey.isDefined)
+        renderToggleButton()
       else
         EmptyTag
+
+      <.div(^.className := "navbar-header",
+        brand,
+        toggleButton
+      )
     }
 
     def renderChild(child: ReactNode, index: Int) = {
       val dynChild = child.asInstanceOf[js.Dynamic]
       val childProps = dynChild.props
 
-      val keyAndRef = getChildKeyAndRef(child, index)
-      ReactCloneWithProps(child, keyAndRef ++ Map[String, js.Any](
+      val keyAndRef = getChildKeyAndRef2(child, index)
+      cloneWithProps(child, keyAndRef, Map(
         "navbar" -> true,
         "collapsable" -> (P.toggleNavKey.isDefined && P.toggleNavKey.get == childProps.eventKey),
         "expanded" -> (P.toggleNavKey.isDefined && P.toggleNavKey.get == childProps.eventKey && B.isNavExpanded)
@@ -105,7 +116,7 @@ object NavBar extends BootstrapComponent {
     }
 
     def renderToggleButton(): TagMod = {
-      if (P.toggleButton.isDefined) {
+      if (false && P.toggleButton.isDefined) {
         if (React.isValidElement(P.toggleButton))
           ReactCloneWithProps(P.toggleButton.get, Map[String, js.Any]("className" -> "navbar-toggle",
             "onClick" -> (() => B.handleToggle()) // FIXME createChainedFunction0(B.handleToggle(_), P.toggleButton.props.onClick))
@@ -128,7 +139,8 @@ object NavBar extends BootstrapComponent {
         EmptyTag
     }
 
-    val componentClass = P.componentClass.getOrElse("Nav").reactTag
+
+
     val classes = P.bsClassSet ++ Map(
       "navbar-fixed-top" -> P.fixedTop.getOrElse(false),
       "navbar-fixed-bottom" -> P.fixedBottom.getOrElse(false),
@@ -142,12 +154,25 @@ object NavBar extends BootstrapComponent {
         EmptyTag
 
     val className = if (P.fluid.getOrElse(false)) "container-fluid" else "container"
-    componentClass(^.classSet1M(P.addClasses, classes),
-      <.div(^.className := className,
-        header,
-        ValidComponentChildren.map(C, renderChild)
+    if (P.componentClass.isDefined && P.componentClass.get != "Nav") {
+      val componentClass = P.componentClass.get.reactTag
+      componentClass(^.classSet1M(P.addClasses, classes), ^.role := P.role,
+        <.div(^.className := className,
+          header,
+          ValidComponentChildren.map(C, renderChild)
+        )
       )
-    )
+    }
+    else {
+      val addClasses = classes.filter(_._2).map(_._1).mkString(" ")
+      Nav.Nav(addClasses = s"$addClasses ${P.addClasses}".trim, role = P.role)(
+        <.div(^.className := className,
+          header,
+          ValidComponentChildren.map(C, renderChild)
+        )
+      )
+    }
+
   }
     ).build
 

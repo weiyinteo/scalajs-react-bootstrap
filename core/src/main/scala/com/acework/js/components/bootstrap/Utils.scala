@@ -226,4 +226,12 @@ object Utils {
     }
     scalaComponent
   }
+
+  case class Offset(top: Int, left: Int)
+
+  def getOffset(node: TopNode) = {
+    val offset = jQuery(node).offset().asInstanceOf[js.Dynamic]
+    Offset(offset.top.asInstanceOf[Int], offset.left.asInstanceOf[Int])
+  }
+
 }

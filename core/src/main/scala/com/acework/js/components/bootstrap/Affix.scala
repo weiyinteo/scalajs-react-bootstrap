@@ -1,18 +1,21 @@
 package com.acework.js.components.bootstrap
 
+import com.acework.js.utils.EventListener
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
-import org.scalajs.dom.document
+import org.scalajs.dom.raw.HTMLElement
+import org.scalajs.dom.{Event, document, window}
 
 import scala.scalajs.js
 import scala.scalajs.js.{UndefOr, undefined}
+import Utils._
 
 /**
  * Created by weiyin on 10/03/15.
  */
 object Affix {
 
-  case class State(affixClass: String = "affix-top")
+  case class State(affixClass: String = "affix-top", affixPositionTop: Double = 0)
 
   case class Props(offset: UndefOr[Int] = undefined,
                    offsetTop: UndefOr[Int] = undefined,
@@ -21,35 +24,41 @@ object Affix {
                    affixed: UndefOr[String] = undefined,
                    addClasses: String = "")
 
+  val affixRegexp = "(affix-top|affix-bottom|affix)".r
+
   class Backend(val scope: BackendScope[Props, State]) {
+    var _onWindowScrollListener: UndefOr[EventListener] = undefined
+    var _onDocumentClickListener: UndefOr[EventListener] = undefined
 
-    case class Offset(top: Double, left: Double)
 
-    var pinnedOffset: Option[Offset] = None
+    var pinnedOffset: UndefOr[Int] = undefined
+    var unpin: UndefOr[Int] = undefined
+    var affixed: UndefOr[String] = undefined
 
-    def getOffset(node: TopNode) = {
-      val offset = jQuery(node).offset().asInstanceOf[js.Dynamic]
-      Offset(offset.top.asInstanceOf[Double], offset.left.asInstanceOf[Double])
+
+    def checkPositionWithEventLoop() = {
+      js.timers.setTimeout(0)(checkPosition())
     }
 
     def getPinnedOffset(node: TopNode) = {
       if (pinnedOffset.isDefined)
         pinnedOffset.get
       else {
-        var className = node.className.replaceAll("affix-top|affix-bottom|affix", "")
+        var className = affixRegexp.replaceAllIn(node.className, "")
         className = if (className.length > 0) className + " affix" else className + "affix"
         node.className = className
 
-        pinnedOffset = Some(getOffset(node))
+        pinnedOffset = getOffset(node).top - window.pageYOffset
         pinnedOffset.get
       }
     }
 
-    def checkPosition = {
+    def checkPosition() = {
       if (scope.isMounted()) {
         val domNode = scope.getDOMNode()
-        val scrollHeight = document.documentElement.scrollHeight
-        val scrollTop = document.documentElement.scrollTop
+        // documentElement has no offsetHeight
+        val scrollHeight = document.body.offsetHeight
+        val scrollTop = window.pageYOffset
         var position = getOffset(domNode)
 
         if (scope.props.affixed.getOrElse("NA") == "top")
@@ -65,29 +74,82 @@ object Affix {
         else
           scope.props.offset
 
-        if (!offsetTop.isDefined && !offsetBottom.isDefined) {
-          // do nothing
-        }
-        else {
+        if (offsetTop.isDefined || offsetBottom.isDefined) {
           if (!offsetTop.isDefined)
             offsetTop = 0
           if (!offsetBottom.isDefined)
             offsetBottom = 0
         }
 
+        var affix: UndefOr[String] = undefined
+
+        if (this.unpin.isDefined && (scrollTop + unpin.get < position.top)) {
+          affix = undefined
+        } else if (offsetBottom.isDefined && (position.top + domNode.offsetHeight >= scrollHeight - offsetBottom.get)) {
+          affix = "bottom"
+        } else if (offsetTop.isDefined && (scrollTop <= offsetTop.get)) {
+          affix = "top"
+        }
+
+        if (affixed.getOrElse("NA1") != affix.getOrElse("NA2")) {
+          if (unpin.isDefined)
+            domNode.style.top = ""
+
+          val affixType = if (affix.isDefined) s"affix-${affix.get}" else "affix"
+          affixed = affix
+
+          if (affix.getOrElse("NA") == "bottom")
+            unpin = getPinnedOffset(domNode)
+          else
+            unpin = undefined
+
+          var affixPositionTop = 0
+          if (affix.getOrElse("NA") == "bottom") {
+            domNode.className = affixRegexp.replaceAllIn(domNode.className, "affix-bottom")
+            affixPositionTop = (scrollHeight - offsetBottom.get - domNode.offsetHeight - getOffset(domNode).top).toInt
+          }
+
+          scope.modState(_.copy(affixClass = affixType, affixPositionTop = affixPositionTop))
+        }
       }
     }
 
+    def onComponentDidMount() = {
+      _onWindowScrollListener = EventListener.listen(window, "scroll", (_: Event) => checkPosition())
+      _onDocumentClickListener = EventListener.listen(document, "click", (_: Event) => checkPositionWithEventLoop())
+    }
+
+    def onComponentWillUnmount() = {
+      if (_onDocumentClickListener.isDefined) {
+        _onDocumentClickListener.get.remove()
+        _onDocumentClickListener = undefined
+      }
+
+      if (_onWindowScrollListener.isDefined) {
+        _onWindowScrollListener.get.remove()
+        _onWindowScrollListener = undefined
+      }
+    }
+
+    def onComponentDidUpdate(prevProps: Props, prevState: State) = {
+      if (prevState.affixClass == scope.state.affixClass)
+        checkPositionWithEventLoop()
+    }
   }
 
   val Affix = ReactComponentB[Props]("Affix")
     .initialState(State())
     .backend(new Backend(_))
     .render((P, C, S, B) => {
-    // FIXME holder style
-    <.div(^.classSet1(P.addClasses, S.affixClass -> true))(C)
+    <.div(^.classSet1(P.addClasses, S.affixClass -> true), ^.top := S.affixPositionTop,
+      C
+    )
 
-  }).build
+  })
+    .componentDidMount(scope => scope.backend.onComponentDidMount())
+    .componentDidUpdate((scope, prevProps, prevState) => scope.backend.onComponentDidUpdate(prevProps, prevState))
+    .componentWillUnmount(scope => scope.backend.onComponentWillUnmount())
+    .build
 
   def apply(props: Props, children: ReactNode*) = Affix(props, children)
 
