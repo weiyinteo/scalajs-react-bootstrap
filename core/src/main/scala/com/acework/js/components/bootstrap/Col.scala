@@ -42,13 +42,13 @@ object Col {
       if (size.isDefined)
         classes += (s"col-$sizeName-${size.get}" -> true)
 
-      if (offset.isDefined)
+      if (offset.isDefined && offset.get >= 0)
         classes += (s"col-$sizeName-offset-${offset.get}" -> true)
 
-      if (push.isDefined)
+      if (push.isDefined && push.get >= 0)
         classes += (s"col-$sizeName-push-${push.get}" -> true)
 
-      if (pull.isDefined)
+      if (pull.isDefined && pull.get >= 0)
         classes += (s"col-$sizeName-pull-${pull.get}" -> true)
     }
 
