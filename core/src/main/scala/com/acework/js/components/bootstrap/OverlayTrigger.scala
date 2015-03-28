@@ -200,7 +200,8 @@ object OverlayTrigger extends BootstrapComponent {
   })
     .componentDidMount(scope => {
     scope.backend.onComponentDidMount()
-    scope.backend.updateOverlayPosition()
+    if(scope.props.defaultOverlayShown.getOrElse(false))
+      scope.backend.updateOverlayPosition()
   })
     .componentDidUpdate((scope, nextProps, state) => scope.backend.onComponentDidUpdate())
     .componentWillUnmount(scope => {

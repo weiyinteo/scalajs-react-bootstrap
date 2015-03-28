@@ -14,86 +14,90 @@ object Progressbars {
 
   val exampleSource =
     """
-      |ProgressBar(ProgressBar.Props(now = 60.0))
+      |ProgressBar.Props(now = 60.0)()
     """.stripMargin
 
   val exampleContent = CodeContent.Content(exampleSource,
-    ProgressBar(ProgressBar.ProgressBar(now = 60.0))
+    ProgressBar.ProgressBar(now = 60.0)()
   )
 
   val withLabelSource =
     """
-      |ProgressBar(ProgressBar.Props(now = 60.0, label = "%(percent)s%": ReactNode))
+      |ProgressBar.ProgressBar(now = 60.0, label = "%(percent)s%": ReactNode)()
     """.stripMargin
 
   val withLabelContent = CodeContent.Content(withLabelSource,
-    ProgressBar(ProgressBar.ProgressBar(now = 60.0, label = "%(percent)s%": ReactNode))
+    ProgressBar.ProgressBar(now = 60.0, label = "%(percent)s%": ReactNode)()
   )
 
   val srOnlySource =
     """
-      |ProgressBar(ProgressBar.Props(now = 60.0, label = "%(percent)s%": ReactNode, srOnly = true))
+      |ProgressBar.ProgressBar(now = 60.0, label = "%(percent)s%": ReactNode, srOnly = true)()
     """.stripMargin
 
   val srOnlyContent = CodeContent.Content(srOnlySource,
-    ProgressBar(ProgressBar.ProgressBar(now = 60.0, label = "%(percent)s%": ReactNode, srOnly = true))
+    ProgressBar.ProgressBar(now = 60.0, label = "%(percent)s%": ReactNode, srOnly = true)()
   )
 
   val contextualSource =
     """
       |<.div(
-      |      ProgressBar(ProgressBar.Props(bsStyle = Styles.success, now = 40.0))
-      |      , ProgressBar(ProgressBar.Props(bsStyle = Styles.info, now = 20.0))
-      |      , ProgressBar(ProgressBar.Props(bsStyle = Styles.warning, now = 60.0))
-      |      , ProgressBar(ProgressBar.Props(bsStyle = Styles.danger, now = 80.0))
+      |  ProgressBar.ProgressBar(bsStyle = Styles.success, now = 40.0)(),
+      |  ProgressBar.ProgressBar(bsStyle = Styles.info, now = 20.0)(),
+      |  ProgressBar.ProgressBar(bsStyle = Styles.warning, now = 60.0)(),
+      |  ProgressBar.ProgressBar(bsStyle = Styles.danger, now = 80.0)()
       |)
     """.stripMargin
 
   val contextualContent = CodeContent.Content(contextualSource,
     <.div(
-      ProgressBar(ProgressBar.ProgressBar(bsStyle = Styles.success, now = 40.0))
-      , ProgressBar(ProgressBar.ProgressBar(bsStyle = Styles.info, now = 20.0))
-      , ProgressBar(ProgressBar.ProgressBar(bsStyle = Styles.warning, now = 60.0))
-      , ProgressBar(ProgressBar.ProgressBar(bsStyle = Styles.danger, now = 80.0))
+      ProgressBar.ProgressBar(bsStyle = Styles.success, now = 40.0)(),
+      ProgressBar.ProgressBar(bsStyle = Styles.info, now = 20.0)(),
+      ProgressBar.ProgressBar(bsStyle = Styles.warning, now = 60.0)(),
+      ProgressBar.ProgressBar(bsStyle = Styles.danger, now = 80.0)()
     )
   )
+
   val stripedSource =
     """
       |<.div(
-      |      ProgressBar(ProgressBar.Props(striped = true, bsStyle = Styles.success, now = 40.0))
-      |      , ProgressBar(ProgressBar.Props(striped = true, bsStyle = Styles.info, now = 20.0))
-      |      , ProgressBar(ProgressBar.Props(striped = true, bsStyle = Styles.warning, now = 60.0))
-      |      , ProgressBar(ProgressBar.Props(striped = true, bsStyle = Styles.danger, now = 80.0))
-      |)
+      |  ProgressBar.ProgressBar(striped = true, bsStyle = Styles.success, now = 40.0)(),
+      |  ProgressBar.ProgressBar(striped = true, bsStyle = Styles.info, now = 20.0)(),
+      |  ProgressBar.ProgressBar(striped = true, bsStyle = Styles.warning, now = 60.0)(),
+      |  ProgressBar.ProgressBar(striped = true, bsStyle = Styles.danger, now = 80.0)())
     """.stripMargin
 
   val stripedContent = CodeContent.Content(stripedSource,
     <.div(
-      ProgressBar(ProgressBar.ProgressBar(striped = true, bsStyle = Styles.success, now = 40.0))
-      , ProgressBar(ProgressBar.ProgressBar(striped = true, bsStyle = Styles.info, now = 20.0))
-      , ProgressBar(ProgressBar.ProgressBar(striped = true, bsStyle = Styles.warning, now = 60.0))
-      , ProgressBar(ProgressBar.ProgressBar(striped = true, bsStyle = Styles.danger, now = 80.0))
-    )
+      ProgressBar.ProgressBar(striped = true, bsStyle = Styles.success, now = 40.0)(),
+      ProgressBar.ProgressBar(striped = true, bsStyle = Styles.info, now = 20.0)(),
+      ProgressBar.ProgressBar(striped = true, bsStyle = Styles.warning, now = 60.0)(),
+      ProgressBar.ProgressBar(striped = true, bsStyle = Styles.danger, now = 80.0)())
   )
 
   val animatedSource =
     """
-      |ProgressBar(ProgressBar.Props(active = true, now = 60.0))
+      |ProgressBar.Props(active = true, now = 60.0)()
     """.stripMargin
 
   val animatedContent = CodeContent.Content(animatedSource,
-    ProgressBar(ProgressBar.ProgressBar(active = true, now = 60.0))
+    ProgressBar.ProgressBar(active = true, now = 60.0)()
   )
+
   val stackedSource =
     """
-      |ProgressBar(ProgressBar.Props(active = true, now = 60.0))
+      |ProgressBar(
+      |  ProgressBar.withKey(1)(ProgressBar.ProgressBar(bsStyle = Styles.success, now = 20.0)),
+      |  ProgressBar.withKey(2)(ProgressBar.ProgressBar(bsStyle = Styles.warning, now = 60.0)),
+      |  ProgressBar.withKey(3)(ProgressBar.ProgressBar(bsStyle = Styles.danger, now = 80.0))
+      |)
     """.stripMargin
 
   val stackedContent = CodeContent.Content(stackedSource,
     ProgressBar(
-      ProgressBar.withKey(1)(ProgressBar.ProgressBar(bsStyle = Styles.success, now = 20.0))
-      , ProgressBar.withKey(2)(ProgressBar.ProgressBar(bsStyle = Styles.warning, now = 60.0))
-      , ProgressBar.withKey(3)(ProgressBar.ProgressBar(bsStyle = Styles.danger, now = 80.0))
+      ProgressBar.withKey(1)(ProgressBar.ProgressBar(bsStyle = Styles.success, now = 35.0)),
+      ProgressBar.withKey(2)(ProgressBar.ProgressBar(bsStyle = Styles.warning, now = 20.0)),
+      ProgressBar.withKey(3)(ProgressBar.ProgressBar(bsStyle = Styles.danger, now = 10.0))
     )
   )
 

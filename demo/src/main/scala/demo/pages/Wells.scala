@@ -12,7 +12,7 @@ object Wells {
 
   val defaultSource =
     """
-      |PageHeader("Example page header ", <.small("Subtext"), " for header")
+      |Well("Look I'm in a well!")
     """.stripMargin
 
   def defaultContent = CodeContent.Content(defaultSource,
@@ -22,15 +22,15 @@ object Wells {
   val optionalSource =
     """
       |<.div(
-      |  Well(Well.Props(bsSize = Sizes.lg), "Look I'm in a well!"),
-      |  Well(Well.Props(bsSize = Sizes.sm), "Look I'm in a well!")
+      |  Well.Props(bsSize = Sizes.lg)("Look I'm in a well!"),
+      |  Well.Props(bsSize = Sizes.sm)("Look I'm in a well!")
       |)
     """.stripMargin
 
   def optionalContent = CodeContent.Content(optionalSource,
     <.div(
-      Well(Well.Well(bsSize = Sizes.lg), "Look I'm in a well!"),
-      Well(Well.Well(bsSize = Sizes.sm), "Look I'm in a well!")
+      Well.Well(bsSize = Sizes.lg)("Look I'm in a well!"),
+      Well.Well(bsSize = Sizes.sm)("Look I'm in a well!")
     )
   )
 

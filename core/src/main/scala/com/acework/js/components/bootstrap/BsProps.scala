@@ -30,5 +30,10 @@ trait BsProps {
     }
     classes
   }
+
+  def prefixClass(subClass: String) = {
+    val bsClassName = bsClass.get.toString.replaceAll("\\$minus", "-")
+    s"$bsClassName-$subClass"
+  }
 }
 

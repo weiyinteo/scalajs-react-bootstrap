@@ -16,7 +16,7 @@ object PageHeaders {
     """.stripMargin
 
   def exampleContent = CodeContent.Content(exampleSource,
-    PageHeader("Example page header ", <.small("Subtext"), " for header")
+    PageHeader("Example page header ", <.small("Subtext for header"))
   )
 
   val content = Section("page-header", <.span("Page Header")

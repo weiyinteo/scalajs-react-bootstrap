@@ -52,16 +52,18 @@ object Navbars {
   val mobileSource =
     """
       |val handleSelect = (selectedKey: String) => Console.println(s"selected $selectedKey")
-      |Nav(Nav.Props(bsStyle = Styles.tabs, activeKey = "1", onSelect = handleSelect),
-      |      NavItem(NavItem.Props(eventKey = "1", href = "/home"), "NavItem 1 content"),
-      |      NavItem(NavItem.Props(eventKey = "2", title = "Item"), "NavItem 1 content"),
-      |      NavItem(NavItem.Props(eventKey = "3", disabled = true), "NavItem 3 content"),
-      |      DropdownButton(DropdownButton.Props(eventKey = "4", title = "Dropdown": ReactNode, navItem = true),
-      |        MenuItem(MenuItem.Props(eventKey = "4.1"), "Action"),
-      |        MenuItem(MenuItem.Props(eventKey = "4.2"), "Another Action"),
-      |        MenuItem(MenuItem.Props(eventKey = "4.3"), "Something else here"),
-      |        MenuItem(MenuItem.Props(divider = true)),
-      |        MenuItem(MenuItem.Props(eventKey = "4.4"), "Separated link"))
+      |NavBar.NavBar(brand = "React-Bootstrap": ReactNode, inverse = true, toggleNavKey = "0")(
+      |  Nav.Nav(right = true, eventKey = "0")(/*This is the eventKey referenced */
+      |    NavItem.NavItem(eventKey = "1", href = "#")("Link"),
+      |    NavItem.NavItem(eventKey = "2", href = "#")("Link"),
+      |    DropdownButton.DropdownButton(eventKey = "3", title = "Dropdown": ReactNode)(
+      |      MenuItem.MenuItem(eventKey = "1")("Action"),
+      |      MenuItem.MenuItem(eventKey = "2")("Action action"),
+      |      MenuItem.MenuItem(eventKey = "3")("Something else here"),
+      |      MenuItem.MenuItem(divider = true)(),
+      |      MenuItem.MenuItem(eventKey = "4")("Separated link")
+      |    )
+      |  )
       |)
     """.stripMargin
 
@@ -82,7 +84,25 @@ object Navbars {
   )
   val mobileMultipleSource =
     """
-      |
+      |NavBar.NavBar(brand = "React-Bootstrap": ReactNode, toggleNavKey = "0")(
+      |  CollapsableNav.CollapsableNav(eventKey = "0")(/*This is the eventKey referenced */
+      |    Nav.Nav(navbar = true)(
+      |      NavItem.NavItem(eventKey = "1", href = "#")("Link"),
+      |      NavItem.NavItem(eventKey = "2", href = "#")("Link"),
+      |      DropdownButton.DropdownButton(eventKey = "3", title = "Dropdown": ReactNode)(
+      |        MenuItem.MenuItem(eventKey = "1")("Action"),
+      |        MenuItem.MenuItem(eventKey = "2")("Action action"),
+      |        MenuItem.MenuItem(eventKey = "3")("Something else here"),
+      |        MenuItem.MenuItem(divider = true)(),
+      |        MenuItem.MenuItem(eventKey = "4")("Separated link")
+      |      )
+      |    ),
+      |    Nav.Nav(right = true, navbar = true)(
+      |      NavItem.NavItem(eventKey = "1", href = "#")("Link Right"),
+      |      NavItem.NavItem(eventKey = "2", href = "#")("Link Right")
+      |    )
+      |  )
+      |)
     """.stripMargin
 
   val mobileMultipleContent = CodeContent.Content(mobileMultipleSource,
@@ -124,12 +144,11 @@ object Navbars {
         " of one of his Nav children. This child will be the one collapsed."),
       <.p("By setting the property ", <.code("defaultNavExpanded=true"), " the Navbar will start expanded by default."),
       mobileContent())
-  /*
     , SubSection("navbars-mobile-multiple", "Mobile Friendly (Multiple Nav Components)",
       <.p("To have a mobile friendly Navbar that handles multiple ", <.code("Nav"),
         " components use ", <.code("CollapsableNav"), ". The ", <.code("toggleNavKey"),
         " must still be set, however, the corresponding ", <.code("eventKey"),
         " must now be on the ", <.code("CollapsableNav"), " component."),
-      mobileMultipleContent())*/
+      mobileMultipleContent())
   )
 }

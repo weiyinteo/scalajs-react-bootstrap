@@ -52,7 +52,7 @@ object CollapsableNav extends BootstrapComponent {
 
     def getCollapsableDOMNode: Option[TopNode] = Some(scope.getDOMNode())
 
-    def getCollapsableDimensionValue: Double = {
+    def getCollapsableDimensionValue: Int = {
       0
     }
   }
@@ -118,7 +118,10 @@ object CollapsableNav extends BootstrapComponent {
     )
 
   }
-    ).build
+    )
+    .componentWillUpdate((scope, nextProps, nextState) => scope.backend.onComponentWillUpdate(nextProps, nextState))
+    .componentDidUpdate((scope, prevProps, prevState) => scope.backend.onComponentDidUpdate(prevProps, prevState))
+    .build
 
 }
 

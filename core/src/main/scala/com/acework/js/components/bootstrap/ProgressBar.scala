@@ -1,12 +1,11 @@
 package com.acework.js.components.bootstrap
 
 import com.acework.js.components.bootstrap.Utils._
-import japgolly.scalajs.react.Addons.ReactCloneWithProps
+import com.acework.js.utils.{Mappable, Mergeable}
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
 
-import scala.scalajs.js
-import scala.scalajs.js._
+import scala.scalajs.js.{UndefOr, undefined}
 
 /**
  * Created by weiyin on 10/03/15.
@@ -33,7 +32,11 @@ object ProgressBar extends BootstrapComponent {
                           bsClass: UndefOr[Classes.Value] = Classes.`progress-bar`,
                           bsStyle: UndefOr[Styles.Value] = Styles.default,
                           bsSize: UndefOr[Sizes.Value] = undefined,
-                          addClasses: String = "") extends BsProps {
+                          addClasses: String = "") extends BsProps with MergeableProps[ProgressBar] {
+
+    def merge(t: Map[String, Any]): ProgressBar = implicitly[Mergeable[ProgressBar]].merge(this, t)
+
+    def asMap: Map[String, Any] = implicitly[Mappable[ProgressBar]].toMap(this)
 
     def apply(children: ReactNode*) = component(this, children)
 
@@ -53,7 +56,7 @@ object ProgressBar extends BootstrapComponent {
         ""
       }
       else {
-        if(P.label.isDefined)
+        if (P.label.isDefined)
           Interpolate.Interpolate(now = P.now, min = P.min, max = P.max, percent = percentage,
             bsStyle = P.bsStyle)(P.label.get)
         else
@@ -67,8 +70,8 @@ object ProgressBar extends BootstrapComponent {
     }
 
     def renderChildBar(child: ReactNode, index: Int) = {
-      val keyAndRef = getChildKeyAndRef(child, index)
-      ReactCloneWithProps(child, keyAndRef ++ Map[String, js.Any]("isChild" -> true))
+      val keyAndRef = getChildKeyAndRef2(child, index)
+      cloneWithProps(child, keyAndRef, Map("isChild" -> true))
     }
 
     def renderProgressBar() = {

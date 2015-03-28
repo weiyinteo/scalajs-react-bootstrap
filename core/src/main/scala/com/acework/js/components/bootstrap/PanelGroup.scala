@@ -22,14 +22,14 @@ object PanelGroup extends BootstrapComponent {
   case class State(activeKey: UndefOr[String])
 
   case class PanelGroup(activeKey: UndefOr[String] = undefined,
-                   accordion: UndefOr[Boolean] = undefined,
-                   collapsable: UndefOr[Boolean] = undefined,
-                   onSelect: UndefOr[(UndefOr[String]) => Unit] = undefined,
-                   defaultActiveKey: UndefOr[String] = undefined,
-                   bsClass: UndefOr[Classes.Value] = Classes.`panel-group`,
-                   bsStyle: UndefOr[Styles.Value] = undefined,
-                   bsSize: UndefOr[Sizes.Value] = undefined,
-                   addClasses: String = "") extends BsProps with MergeableProps[PanelGroup] {
+                        accordion: UndefOr[Boolean] = undefined,
+                        collapsable: UndefOr[Boolean] = undefined,
+                        onSelect: UndefOr[(UndefOr[String]) => Unit] = undefined,
+                        defaultActiveKey: UndefOr[String] = undefined,
+                        bsClass: UndefOr[Classes.Value] = Classes.`panel-group`,
+                        bsStyle: UndefOr[Styles.Value] = undefined,
+                        bsSize: UndefOr[Sizes.Value] = undefined,
+                        addClasses: String = "") extends BsProps with MergeableProps[PanelGroup] {
 
     def merge(t: Map[String, Any]): PanelGroup = implicitly[Mergeable[PanelGroup]].merge(this, t)
 
@@ -46,7 +46,9 @@ object PanelGroup extends BootstrapComponent {
 
     var isChanging: Boolean = false
 
-    def handleSelect(key: UndefOr[String]): Unit = {
+    def handleSelect(e: ReactEvent, key: UndefOr[String]): Unit = {
+      e.preventDefault()
+
       if ($.props.onSelect.isDefined) {
         isChanging = true
         $.props.onSelect.get(key)
@@ -57,6 +59,11 @@ object PanelGroup extends BootstrapComponent {
         newKey = undefined
 
       $.modState(s => s.copy(activeKey = newKey))
+    }
+
+    def shouldComponentUpdate = {
+      // defer any updates to this component during the onselect handler
+      !isChanging
     }
   }
 
@@ -71,28 +78,32 @@ object PanelGroup extends BootstrapComponent {
 
         val childPropsAny = getChildProps[Any](child)
 
-        val eventKey =
+        val (eventKey, bsStyle) =
           childPropsAny match {
             case props: Panel.Panel =>
-              props.eventKey
-            case _ => undefined
+              (props.eventKey, props.bsStyle)
+
+            case _ => (undefined, undefined)
           }
+
+        var propsMap = Map[String, Any]("bsStyle" -> (if (bsStyle.isDefined) bsStyle else P.bsStyle))
 
         val keyAndRef = getChildKeyAndRef2(child, index)
         if (P.accordion.getOrElse(false)) {
-          val propsMap = Map(
+          propsMap ++= Map(
             "collapsable" -> true,
             "expanded" -> (eventKey.getOrElse("NA1") == activeKey.getOrElse("NA2")),
             "onSelect" -> B.handleSelect _)
-          cloneWithProps(child, keyAndRef, propsMap)
         }
-        else
-          cloneWithProps(child, keyAndRef)
+
+        cloneWithProps(child, keyAndRef, propsMap)
       }
 
       <.div(^.classSet1M(P.addClasses, P.bsClassSet))(
         ValidComponentChildren.map(C, renderPanel)
       )
-  }.build
+  }
+    .shouldComponentUpdate((scope, _, _) => scope.backend.shouldComponentUpdate)
+    .build
 
 }

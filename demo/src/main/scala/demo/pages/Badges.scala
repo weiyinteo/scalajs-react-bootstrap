@@ -20,7 +20,7 @@ object Badges {
   )
 
   val content = Section("badges", <.span("Badges")
-    , <.p("Easily highlight new or unread items by adding a ", <.code("Bidge"), " to links, Bootstrap navs, and more")
+    , <.p("Easily highlight new or unread items by adding a ", <.code("Badge"), " to links, Bootstrap navs, and more")
     , SubSection("badges-example", "Example",
       exampleContent())
   )

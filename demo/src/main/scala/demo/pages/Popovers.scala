@@ -16,53 +16,95 @@ object Popovers {
   val exampleSource =
     """
       |<.div(^.height := 120,
-      |  Popover(Popover.Props(placement = Placements.right, positionLeft = 200, positionTop = 50, title = "Popover right": ReactNode),
+      |  Popover.Popover(placement = Placements.right, positionLeft = 200, positionTop = 50, title = "Popover right": ReactNode),
       |    "And here's some ", <.strong("amazing"), " content. It's very engaging. right?")
       |)
     """.stripMargin
 
   val exampleContent = CodeContent.Content(exampleSource,
     <.div(^.height := 120,
-      Popover(Popover.Popover(placement = Placements.right, positionLeft = 200, positionTop = 50, title = "Popover right": ReactNode),
-        "And here's some ", <.strong("amazing"), " content. It's very engaging. right?")
+      Popover.Popover(placement = Placements.right, positionLeft = 200, positionTop = 50, title = "Popover right": ReactNode)(
+        "And here's some ", <.strong("amazing"), " content. It's very engaging. right?"
+      )
     )
   )
 
   val positionedSource =
     """
       |ButtonToolbar(
-      |  OverlayTrigger(OverlayTrigger.Props(placement = Placements.left, trigger = Array("click"),
-      |    overlay = Popover(Popover.Props(title = "Popover left": ReactNode), <.strong("Holy guacomole!"), " Check this info.")),
-      |    Button(Button.Props(bsStyle = Styles.default), "Holy guacomole!")),
-      |  OverlayTrigger(OverlayTrigger.Props(placement = Placements.top, trigger = Array("click"),
-      |    overlay = Popover(Popover.Props(title = "Popover top": ReactNode), <.strong("Holy guacomole!"), " Check this info.")),
-      |    Button(Button.Props(bsStyle = Styles.default), "Holy guacomole!")),
-      |  OverlayTrigger(OverlayTrigger.Props(placement = Placements.bottom, trigger = Array("click"),
-      |    overlay = Popover(Popover.Props(title = "Popover bottom": ReactNode), <.strong("Holy guacomole!"), " Check this info.")),
-      |    Button(Button.Props(bsStyle = Styles.default), "Holy guacomole!")),
-      |  OverlayTrigger(OverlayTrigger.Props(placement = Placements.right, trigger = Array("click"),
-      |    overlay = Popover(Popover.Props(title = "Popover right": ReactNode), <.strong("Holy guacomole!"), " Check this info.")),
-      |    Button(Button.Props(bsStyle = Styles.default), "Holy guacomole!"))
+      |  OverlayTrigger.OverlayTrigger(placement = Placements.left, trigger = Array("click"),
+      |    overlay = Popover.Popover(title = "Popover left": ReactNode)(
+      |      <.strong("Holy guacomole!"), " Check this info."
+      |    )
+      |  )(Button.Button(bsStyle = Styles.default)("Holy guacomole!")),
+      |  OverlayTrigger.OverlayTrigger(placement = Placements.top, trigger = Array("click"),
+      |    overlay = Popover.Popover(title = "Popover top": ReactNode)(
+      |      <.strong("Holy guacomole!"), " Check this info."
+      |    )
+      |  )(Button.Button(bsStyle = Styles.default)(Holy guacomole!")),
+      |  OverlayTrigger.OverlayTrigger(placement = Placements.bottom, trigger = Array("click"),
+      |    overlay = Popover.Popover(title = "Popover bottom": ReactNode)(
+      |      <.strong("Holy guacomole!"), " Check this info."
+      |    )
+      |  )(Button.Button(bsStyle = Styles.default)(Holy guacomole!")),
+      |  OverlayTrigger.OverlayTrigger(placement = Placements.right, trigger = Array("click"),
+      |    overlay = Popover.Popover(title = "Popover right": ReactNode)(
+      |      <.strong("Holy guacomole!"), " Check this info."
+      |    )
+      |  )(Button.Button(bsStyle = Styles.default)(Holy guacomole!"))
       |)
     """.stripMargin
 
   val positionedContent = CodeContent.Content(positionedSource,
     ButtonToolbar(
-      OverlayTrigger(OverlayTrigger.OverlayTrigger(placement = Placements.left, trigger = Array("click"),
-        overlay = Popover(Popover.Popover(title = "Popover left": ReactNode), <.strong("Holy guacomole!"), " Check this info.")),
-        Button(Button.Button(bsStyle = Styles.default), "Holy guacomole!")),
-      OverlayTrigger(OverlayTrigger.OverlayTrigger(placement = Placements.top, trigger = Array("click"),
-        overlay = Popover(Popover.Popover(title = "Popover top": ReactNode), <.strong("Holy guacomole!"), " Check this info.")),
-        Button(Button.Button(bsStyle = Styles.default), "Holy guacomole!")),
-      OverlayTrigger(OverlayTrigger.OverlayTrigger(placement = Placements.bottom, trigger = Array("click"),
-        overlay = Popover(Popover.Popover(title = "Popover bottom": ReactNode), <.strong("Holy guacomole!"), " Check this info.")),
-        Button(Button.Button(bsStyle = Styles.default), "Holy guacomole!")),
-      OverlayTrigger(OverlayTrigger.OverlayTrigger(placement = Placements.right, trigger = Array("click"),
-        overlay = Popover(Popover.Popover(title = "Popover right": ReactNode), <.strong("Holy guacomole!"), " Check this info.")),
-        Button(Button.Button(bsStyle = Styles.default), "Holy guacomole!"))
+      OverlayTrigger.OverlayTrigger(placement = Placements.left, trigger = Array("click"),
+        overlay = Popover.Popover(title = "Popover left": ReactNode)(
+          <.strong("Holy guacomole!"), " Check this info."
+        )
+      )(Button.Button(bsStyle = Styles.default)("Holy guacomole!")),
+      OverlayTrigger.OverlayTrigger(placement = Placements.top, trigger = Array("click"),
+        overlay = Popover.Popover(title = "Popover top": ReactNode)(
+          <.strong("Holy guacomole!"), " Check this info."
+        )
+      )(Button.Button(bsStyle = Styles.default)("Holy guacomole!")),
+      OverlayTrigger.OverlayTrigger(placement = Placements.bottom, trigger = Array("click"),
+        overlay = Popover.Popover(title = "Popover bottom": ReactNode)(
+          <.strong("Holy guacomole!"), " Check this info."
+        )
+      )(Button.Button(bsStyle = Styles.default)("Holy guacomole!")),
+      OverlayTrigger.OverlayTrigger(placement = Placements.right, trigger = Array("click"),
+        overlay = Popover.Popover(title = "Popover right": ReactNode)(
+          <.strong("Holy guacomole!"), " Check this info."
+        )
+      )(Button.Button(bsStyle = Styles.default)("Holy guacomole!"))
     )
   )
 
+  val scollingSource =
+    """
+      |val containerRef: RefSimple[TopNode] = Ref[HTMLElement]("container")
+      |<.div(^.ref := containerRef,
+      |  ButtonToolbar(
+      |    OverlayTrigger.OverlayTrigger(container = container, placement = Placements.left, trigger = Array("click"),
+      |      overlay = Popover.Popover(title = "Popover left": ReactNode)(
+      |        <.strong("Holy guacomole!"), " Check this info."
+      |      )
+      |    )(Button.Button(bsStyle = Styles.default)("Holy guacomole!")),
+      |    OverlayTrigger.OverlayTrigger(container = container, placement = Placements.top, trigger = Array("click"),
+      |      overlay = Popover.Popover(title = "Popover top": ReactNode)(
+      |        <.strong("Holy guacomole!"), " Check this info.")
+      |    )(Button.Button(bsStyle = Styles.default)("Holy guacomole!")),
+      |    OverlayTrigger.OverlayTrigger(container = container, placement = Placements.bottom, trigger = Array("click"),
+      |      overlay = Popover.Popover(title = "Popover bottom": ReactNode)(
+      |        <.strong("Holy guacomole!"), " Check this info.")
+      |        )(Button.Button(bsStyle = Styles.default)("Holy guacomole!")),
+      |    OverlayTrigger.OverlayTrigger(container = container, placement = Placements.right, trigger = Array("click"),
+      |      overlay = Popover.Popover(title = "Popover right": ReactNode)(
+      |        <.strong("Holy guacomole!"), " Check this info.")
+      |    )(Button.Button(bsStyle = Styles.default)("Holy guacomole!"))
+      |  )
+      |)
+    """.stripMargin
 
   val scrollingContent = CodeContent.Content(positionedSource, exampleClasses = "bs-example-scroll", el = {
     val containerRef: RefSimple[TopNode] = Ref[HTMLElement]("container")
@@ -78,17 +120,22 @@ object Popovers {
       <.div(^.ref := containerRef,
         ButtonToolbar(
           OverlayTrigger.OverlayTrigger(container = container, placement = Placements.left, trigger = Array("click"),
-            overlay = Popover(Popover.Popover(title = "Popover left": ReactNode), <.strong("Holy guacomole!"), " Check this info.")
-          )(Button(Button.Button(bsStyle = Styles.default), "Holy guacomole!")),
+            overlay = Popover.Popover(title = "Popover left": ReactNode)(
+              <.strong("Holy guacomole!"), " Check this info."
+            )
+          )(Button.Button(bsStyle = Styles.default)("Holy guacomole!")),
           OverlayTrigger.OverlayTrigger(container = container, placement = Placements.top, trigger = Array("click"),
-            overlay = Popover(Popover.Popover(title = "Popover top": ReactNode), <.strong("Holy guacomole!"), " Check this info.")
-          )(Button(Button.Button(bsStyle = Styles.default), "Holy guacomole!")),
+            overlay = Popover.Popover(title = "Popover top": ReactNode)(
+              <.strong("Holy guacomole!"), " Check this info.")
+          )(Button.Button(bsStyle = Styles.default)("Holy guacomole!")),
           OverlayTrigger.OverlayTrigger(container = container, placement = Placements.bottom, trigger = Array("click"),
-            overlay = Popover(Popover.Popover(title = "Popover bottom": ReactNode), <.strong("Holy guacomole!"), " Check this info.")
-          )(Button(Button.Button(bsStyle = Styles.default), "Holy guacomole!")),
+            overlay = Popover.Popover(title = "Popover bottom": ReactNode)(
+              <.strong("Holy guacomole!"), " Check this info.")
+          )(Button.Button(bsStyle = Styles.default)("Holy guacomole!")),
           OverlayTrigger.OverlayTrigger(container = container, placement = Placements.right, trigger = Array("click"),
-            overlay = Popover(Popover.Popover(title = "Popover right": ReactNode), <.strong("Holy guacomole!"), " Check this info.")
-          )(Button(Button.Button(bsStyle = Styles.default), "Holy guacomole!"))
+            overlay = Popover.Popover(title = "Popover right": ReactNode)(
+              <.strong("Holy guacomole!"), " Check this info.")
+          )(Button.Button(bsStyle = Styles.default)("Holy guacomole!"))
         )
       )
     }).

@@ -116,7 +116,7 @@ object NavBar extends BootstrapComponent {
     }
 
     def renderToggleButton(): TagMod = {
-      if (false && P.toggleButton.isDefined) {
+      if (P.toggleButton.isDefined) {
         if (React.isValidElement(P.toggleButton))
           ReactCloneWithProps(P.toggleButton.get, Map[String, js.Any]("className" -> "navbar-toggle",
             "onClick" -> (() => B.handleToggle()) // FIXME createChainedFunction0(B.handleToggle(_), P.toggleButton.props.onClick))

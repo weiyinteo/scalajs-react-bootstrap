@@ -55,28 +55,14 @@ object Button extends BootstrapComponent {
     .render { (P, C) =>
 
     def renderNavItem(classes: Map[String, Boolean]) = {
-      if (P.onClick.isDefined)
-        <.li(^.classSet("active" -> P.active), ^.onClick ==> P.onClick.get)(renderAnchor(classes))
-      else
-        <.li(^.classSet("active" -> P.active))(renderAnchor(classes))
+      var componentClass = <.li(^.classSet("active" -> P.active))
+
+      componentClass = spreadEventHandlers(componentClass)
+      componentClass(renderAnchor(classes))
     }
 
-    def renderAnchor(classes: Map[String, Boolean]) = {
-      // TODO spread props
-      val componentClass = P.componentClass.getOrElse("a").reactTag
-      if (P.onClick.isDefined)
-        componentClass(^.href := P.href.getOrElse("#"), ^.classSet1M(P.addClasses, classes + ("disabled" -> P.disabled)), ^.role := "button", ^.onClick ==> P.onClick.get)(C)
-      else
-        componentClass(^.href := P.href.getOrElse("#"), ^.classSet1M(P.addClasses, classes + ("disabled" -> P.disabled)), ^.role := "button")(C)
-    }
-
-    def renderButton(classes: Map[String, Boolean]) = {
-      var componentClass = P.componentClass.getOrElse("button").reactTag
-
-      // TODO spread props
-      componentClass = componentClass(^.classSet1M(P.addClasses, classes), ^.tpe := P.`type`,
-        ^.value := P.value)
-
+    def spreadEventHandlers(node: ReactTag): ReactTag = {
+      var componentClass = node
       if (P.onClick.isDefined)
         componentClass = componentClass(^.onClick ==> P.onClick.get)
 
@@ -92,6 +78,29 @@ object Button extends BootstrapComponent {
       if (P.onFocus.isDefined)
         componentClass = componentClass(^.onFocus ==> P.onFocus.get)
 
+      componentClass
+    }
+
+    def renderAnchor(classes: Map[String, Boolean]) = {
+      // TODO spread props
+      var componentClass = P.componentClass.getOrElse("a").reactTag
+      componentClass = componentClass(^.href := P.href.getOrElse("#"),
+        ^.target := P.target, ^.tpe := P.`type`,
+        ^.classSet1M(P.addClasses, classes + ("disabled" -> P.disabled)),
+        ^.role := "button")
+
+      componentClass = spreadEventHandlers(componentClass)
+      componentClass(C)
+    }
+
+    def renderButton(classes: Map[String, Boolean]) = {
+      var componentClass = P.componentClass.getOrElse("button").reactTag
+
+      // TODO spread props
+      componentClass = componentClass(^.classSet1M(P.addClasses, classes), ^.tpe := P.`type`,
+        ^.value := P.value, ^.disabled := P.disabled)
+
+      componentClass = spreadEventHandlers(componentClass)
       componentClass(C)
     }
 

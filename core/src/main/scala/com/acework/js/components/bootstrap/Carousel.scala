@@ -163,7 +163,7 @@ object Carousel extends BootstrapComponent {
   }
 
   override val component = ReactComponentB[Carousel]("Carousel")
-    .initialStateP(P => State(activeIndex = if (P.defaultActiveIndex.isEmpty) 0 else P.defaultActiveIndex.get))
+    .initialStateP(P => State(activeIndex = P.defaultActiveIndex.getOrElse(0)))
     .backend(new Backend(_))
     .render((P, C, S, B) => {
 

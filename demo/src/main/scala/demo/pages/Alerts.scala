@@ -13,11 +13,11 @@ object Alerts {
 
   val exampleSource =
     """
-      |Alert(Alert.Props(bsStyle = Styles.warning, <.strong("Holy guacamole!"), " Best check yo self, you're not looking too good."))
+      |Alert.Alert(bsStyle = Styles.warning)(<.strong("Holy guacamole!"), " Best check yo self, you're not looking too good."))
     """.stripMargin
 
   def exampleContent = CodeContent.Content(exampleSource,
-    Alert(Alert.Alert(bsStyle = Styles.warning), <.strong("Holy guacamole!"), " Best check yo self, you're not looking too good."))
+    Alert.Alert(bsStyle = Styles.warning)(<.strong("Holy guacamole!"), " Best check yo self, you're not looking too good."))
 
   val closableSource =
     """
@@ -37,15 +37,15 @@ object Alerts {
       |    .render((P, C, S, B) => {
       |
       |    if (S.alertVisible)
-      |      Alert(Alert.Props(bsStyle = Styles.danger, onDismiss = () => B.handleAlertDismiss()),
+      |      Alert.Alert(bsStyle = Styles.danger, onDismiss = () => B.handleAlertDismiss())(
       |        <.h4("Oh snap! You got an error!"),
       |        <.p("Change this and that and try again. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum."),
       |        <.p(
-      |          Button(Button.Props(bsStyle = Styles.danger), "Take this action"),
+      |          Button.Button(bsStyle = Styles.danger)("Take this action"),
       |          "or",
-      |          Button(Button.Props(onClick = (e: ReactEvent) => B.handleAlertDismiss()), "Hide Alert")))
+      |          Button.Button(onClick = (e: ReactEvent) => B.handleAlertDismiss())("Hide Alert")))
       |    else
-      |      Button(Button.Props(onClick = (e: ReactEvent) => B.handleAlertShow()), "Show Alert")
+      |      Button.Button(onClick = (e: ReactEvent) => B.handleAlertShow())("Show Alert")
       |  }).buildU
       |
       |  def apply() = AlertDismissable()
@@ -76,11 +76,11 @@ object Alerts {
       |    .render((P, C, S, B) => {
       |
       |    if (S.alertVisible)
-      |      Alert(Alert.Props(bsStyle = Styles.danger, onDismiss = () => B.handleAlertDismiss(), dismissAfter = 2000),
+      |      Alert.Alert(bsStyle = Styles.danger, onDismiss = () => B.handleAlertDismiss(), dismissAfter = 2000)(
       |        <.h4("Oh snap! You got an error!"),
       |        <.p("But this will hide after 2 seconds."))
       |    else
-      |      Button(Button.Props(onClick = (e: ReactEvent) => B.handleAlertShow()), "Show Alert")
+      |      Button.Button(onClick = (e: ReactEvent) => B.handleAlertShow())("Show Alert")
       |  }).buildU
       |
       |  def apply() = AlertAutoDismissable()
@@ -94,19 +94,19 @@ object Alerts {
   val contextualSource =
     """
       |<.div(
-      |      Alert(Alert.Props(bsStyle = Styles.success), "Well done! You successfully read this important alert message."),
-      |      Alert(Alert.Props(bsStyle = Styles.info), "Heads up! This alert needs your attention, but it's not super important."),
-      |      Alert(Alert.Props(bsStyle = Styles.warning), "Warning! Better check yourself, you're not looking too good."),
-      |      Alert(Alert.Props(bsStyle = Styles.danger), "Oh snap! Change a few things up and try submitting again.")
+      |  Alert.Alert(bsStyle = Styles.success)("Well done! You successfully read this important alert message."),
+      |  Alert.Alert(bsStyle = Styles.info)("Heads up! This alert needs your attention, but it's not super important."),
+      |  Alert.Alert(bsStyle = Styles.warning)("Warning! Better check yourself, you're not looking too good."),
+      |  Alert.Alert(bsStyle = Styles.danger)("Oh snap! Change a few things up and try submitting again.")
       |)
     """.stripMargin
 
   def contextualContent = CodeContent.Content(contextualSource,
     <.div(
-      Alert(Alert.Alert(bsStyle = Styles.success), "Well done! You successfully read this important alert message."),
-      Alert(Alert.Alert(bsStyle = Styles.info), "Heads up! This alert needs your attention, but it's not super important."),
-      Alert(Alert.Alert(bsStyle = Styles.warning), "Warning! Better check yourself, you're not looking too good."),
-      Alert(Alert.Alert(bsStyle = Styles.danger), "Oh snap! Change a few things up and try submitting again.")
+      Alert.Alert(bsStyle = Styles.success)("Well done! You successfully read this important alert message."),
+      Alert.Alert(bsStyle = Styles.info)("Heads up! This alert needs your attention, but it's not super important."),
+      Alert.Alert(bsStyle = Styles.warning)("Warning! Better check yourself, you're not looking too good."),
+      Alert.Alert(bsStyle = Styles.danger)("Oh snap! Change a few things up and try submitting again.")
     )
   )
 

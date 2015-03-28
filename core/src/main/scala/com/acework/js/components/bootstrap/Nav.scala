@@ -3,7 +3,7 @@ package com.acework.js.components.bootstrap
 import com.acework.js.utils.{Mappable, Mergeable}
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
-import org.scalajs.dom.raw.HTMLUListElement
+import org.scalajs.dom.raw.{HTMLDocument, HTMLUListElement}
 
 import scala.scalajs.js
 import scala.scalajs.js.{UndefOr, undefined}
@@ -60,17 +60,17 @@ object Nav extends BootstrapComponent {
 
     def getCollapsableDOMNode: Option[TopNode] = Some(scope.getDOMNode())
 
-    def getCollapsableDimensionValue: Double = {
-      if (scope.isMounted() && scope.refs != null && scope.refs("ul") != null) {
-        val node = scope.refs("ul").asInstanceOf[TopNode]
-        val height = node.offsetHeight
-        // FIXME
-        //node.ownerDocument.defaultView.getComputedStyle(elem, null)
-        height
+    def getCollapsableDimensionValue: Int = {
+      if (scope.isMounted() && scope.refs("ul").isDefined) {
+        val node = scope.refs("ul").get.asInstanceOf[TopNode]
+        val height = node.offsetHeight.toInt
+        val computedStyles = node.ownerDocument.asInstanceOf[HTMLDocument].defaultView.getComputedStyle(node, "")
+        height + computedStyles.marginTop.toInt + computedStyles.marginBottom.toInt
       }
       else
         0
     }
+
   }
 
   val ulRef = Ref[HTMLUListElement]("ul")

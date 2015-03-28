@@ -17,22 +17,26 @@ object Affix {
 
   case class State(affixClass: String = "affix-top", affixPositionTop: Double = 0)
 
-  case class Props(offset: UndefOr[Int] = undefined,
-                   offsetTop: UndefOr[Int] = undefined,
-                   offsetBottom: UndefOr[Int] = undefined,
+  case class Affix(offset: UndefOr[Double] = undefined,
+                   offsetTop: UndefOr[Double] = undefined,
+                   offsetBottom: UndefOr[Double] = undefined,
                    role: UndefOr[String] = undefined,
                    affixed: UndefOr[String] = undefined,
-                   addClasses: String = "")
+                   addClasses: String = "") {
+    def apply(children: ReactNode*) = component(this, children)
+
+    def apply() = component(this)
+  }
 
   val affixRegexp = "(affix-top|affix-bottom|affix)".r
 
-  class Backend(val scope: BackendScope[Props, State]) {
+  class Backend(val scope: BackendScope[Affix, State]) {
     var _onWindowScrollListener: UndefOr[EventListener] = undefined
     var _onDocumentClickListener: UndefOr[EventListener] = undefined
 
 
-    var pinnedOffset: UndefOr[Int] = undefined
-    var unpin: UndefOr[Int] = undefined
+    var pinnedOffset: UndefOr[Double] = undefined
+    var unpin: UndefOr[Double] = undefined
     var affixed: UndefOr[String] = undefined
 
 
@@ -76,9 +80,9 @@ object Affix {
 
         if (offsetTop.isDefined || offsetBottom.isDefined) {
           if (!offsetTop.isDefined)
-            offsetTop = 0
+            offsetTop = 0.0
           if (!offsetBottom.isDefined)
-            offsetBottom = 0
+            offsetBottom = 0.0
         }
 
         var affix: UndefOr[String] = undefined
@@ -103,10 +107,10 @@ object Affix {
           else
             unpin = undefined
 
-          var affixPositionTop = 0
+          var affixPositionTop = 0.0
           if (affix.getOrElse("NA") == "bottom") {
             domNode.className = affixRegexp.replaceAllIn(domNode.className, "affix-bottom")
-            affixPositionTop = (scrollHeight - offsetBottom.get - domNode.offsetHeight - getOffset(domNode).top).toInt
+            affixPositionTop = scrollHeight - offsetBottom.get - domNode.offsetHeight - getOffset(domNode).top
           }
 
           scope.modState(_.copy(affixClass = affixType, affixPositionTop = affixPositionTop))
@@ -131,13 +135,13 @@ object Affix {
       }
     }
 
-    def onComponentDidUpdate(prevProps: Props, prevState: State) = {
+    def onComponentDidUpdate(prevProps: Affix, prevState: State) = {
       if (prevState.affixClass == scope.state.affixClass)
         checkPositionWithEventLoop()
     }
   }
 
-  val Affix = ReactComponentB[Props]("Affix")
+  val component = ReactComponentB[Affix]("Affix")
     .initialState(State())
     .backend(new Backend(_))
     .render((P, C, S, B) => {
@@ -151,6 +155,6 @@ object Affix {
     .componentWillUnmount(scope => scope.backend.onComponentWillUnmount())
     .build
 
-  def apply(props: Props, children: ReactNode*) = Affix(props, children)
+  def apply(props: Affix, children: ReactNode*) = component(props, children)
 
 }

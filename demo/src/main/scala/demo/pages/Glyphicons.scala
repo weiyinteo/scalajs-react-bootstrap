@@ -12,25 +12,42 @@ object Glyphicons {
 
   val defaultSource =
     """
-      |PageHeader("Example page header ", <.small("Subtext"), " for header")
+      |<.div(
+      |  ButtonToolbar(
+      |    ButtonGroup(
+      |      Button(Glyphicon.Glyphicon(glyph = "align-left")()),
+      |      Button(Glyphicon.Glyphicon(glyph = "align-center")()),
+      |      Button(Glyphicon.Glyphicon(glyph = "align-right")()),
+      |      Button(Glyphicon.Glyphicon(glyph = "align-justify")())
+      |    )
+      |  ),
+      |  ButtonToolbar(
+      |    ButtonGroup(
+      |      Button.Button(bsSize = Sizes.lg)(Glyphicon.Glyphicon(glyph = "star")(), "Star"),
+      |      Button.Button()(Glyphicon.Glyphicon(glyph = "star")(), "Star"),
+      |      Button.Button(bsSize = Sizes.sm)(Glyphicon.Glyphicon(glyph = "star")(), "Star"),
+      |      Button.Button(bsSize = Sizes.xs)(Glyphicon.Glyphicon(glyph = "star")(), "Star")
+      |    )
+      |  )
+      |)
     """.stripMargin
 
   def exampleContent = CodeContent.Content(defaultSource,
     <.div(
       ButtonToolbar(
         ButtonGroup(
-          Button(Glyphicon(Glyphicon.Glyphicon(glyph = "align-left"))),
-          Button(Glyphicon(Glyphicon.Glyphicon(glyph = "align-center"))),
-          Button(Glyphicon(Glyphicon.Glyphicon(glyph = "align-right"))),
-          Button(Glyphicon(Glyphicon.Glyphicon(glyph = "align-justify")))
+          Button(Glyphicon.Glyphicon(glyph = "align-left")()),
+          Button(Glyphicon.Glyphicon(glyph = "align-center")()),
+          Button(Glyphicon.Glyphicon(glyph = "align-right")()),
+          Button(Glyphicon.Glyphicon(glyph = "align-justify")())
         )
       ),
       ButtonToolbar(
         ButtonGroup(
-          Button(Button.Button(bsSize = Sizes.lg), Glyphicon(Glyphicon.Glyphicon(glyph = "star")), "Star"),
-          Button(Glyphicon(Glyphicon.Glyphicon(glyph = "star")), "Star"),
-          Button(Button.Button(bsSize = Sizes.sm), Glyphicon(Glyphicon.Glyphicon(glyph = "star")), "Star"),
-          Button(Button.Button(bsSize = Sizes.xs), Glyphicon(Glyphicon.Glyphicon(glyph = "star")), "Star")
+          Button.Button(bsSize = Sizes.lg)(Glyphicon.Glyphicon(glyph = "star")(), "Star"),
+          Button.Button()(Glyphicon.Glyphicon(glyph = "star")(), "Star"),
+          Button.Button(bsSize = Sizes.sm)(Glyphicon.Glyphicon(glyph = "star")(), "Star"),
+          Button.Button(bsSize = Sizes.xs)(Glyphicon.Glyphicon(glyph = "star")(), "Star")
         )
       )
     )

@@ -22,12 +22,12 @@ object Panel extends BootstrapComponent {
   override def defaultProps = Panel()
 
   case class Panel(collapsable: UndefOr[Boolean] = undefined,
-                   defaultExpanded: Boolean = false,
+                   defaultExpanded: UndefOr[Boolean] = false,
                    expanded: UndefOr[Boolean] = undefined,
                    header: UndefOr[ReactNode] = undefined,
                    footer: UndefOr[String] = undefined,
                    eventKey: UndefOr[String] = undefined,
-                   onSelect: UndefOr[(UndefOr[String]) => Unit] = undefined,
+                   onSelect: UndefOr[(ReactEvent, UndefOr[String]) => Unit] = undefined,
                    id: UndefOr[String] = undefined,
                    bsClass: UndefOr[Classes.Value] = Classes.panel,
                    bsStyle: UndefOr[Styles.Value] = Styles.default,
@@ -44,16 +44,21 @@ object Panel extends BootstrapComponent {
   }
 
   class Backend(val scope: BackendScope[Panel, CollapsableState]) extends CollapsableMixin[Panel] {
-    var _isChanging: Boolean = _
-
     def handleSelect(e: ReactEvent) = {
-      if (scope.props.onSelect.isDefined) {
-        _isChanging = true
-        scope.props.onSelect.get(scope.props.eventKey.get)
-        _isChanging = false
-      }
-      e.preventDefault()
-      scope.modState(s => s.copy(isExpended = !s.isExpended))
+      // FIXME
+      // e.selected = true
+      if (scope.props.onSelect.isDefined)
+        scope.props.onSelect.get(e, scope.props.eventKey.get)
+      else
+        e.preventDefault()
+
+      // FIXME
+      // if (e.selected)
+      handleToggle()
+    }
+
+    def handleToggle() = {
+      scope.modState(s => s.copy(expanded = !s.expanded))
     }
 
     def getCollapsableDimensionValue: Int = {
@@ -67,18 +72,24 @@ object Panel extends BootstrapComponent {
     }
 
     def getCollapsableDOMNode: Option[TopNode] = {
-      if (scope.isMounted() && scope.refs != null && scope.refs("panel") != null)
-        Some(scope.refs("panel").asInstanceOf[TopNode])
+      if (scope.isMounted() && scope.refs("panel").isDefined) {
+        Some(scope.refs("panel").get.getDOMNode().asInstanceOf[TopNode])
+      }
       else
         None
     }
   }
 
+  val panelRef = Ref[HTMLElement]("panel")
+
   override val component = ReactComponentB[Panel]("Panel")
-    .initialStateP(P => CollapsableState(collapsing = false, isExpended = P.defaultExpanded))
+    .initialStateP(P => {
+    val defaultExpanded = P.defaultExpanded.getOrElse(P.expanded.getOrElse(false))
+    CollapsableState(expanded = defaultExpanded, collapsing = false)
+  }
+    )
     .backend(new Backend(_))
     .render { (P, C, S, B) =>
-    val panelRef = Ref[HTMLElement]("panel")
 
     def renderCollapsableTitle(heading: String) = {
       <.h4(^.className := "panel-title")(renderAnchor(heading))
@@ -186,7 +197,8 @@ object Panel extends BootstrapComponent {
       renderFooter()
     )
   }
-    .shouldComponentUpdate(($, _, _) => !$.backend._isChanging)
+    .componentWillUpdate((scope, nextProps, nextState) => scope.backend.onComponentWillUpdate(nextProps, nextState))
+    .componentDidUpdate((scope, prevProps, prevState) => scope.backend.onComponentDidUpdate(prevProps, prevState))
     .build
 
 }

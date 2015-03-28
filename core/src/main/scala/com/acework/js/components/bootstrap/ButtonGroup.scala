@@ -20,7 +20,8 @@ object ButtonGroup extends BootstrapComponent {
   override def defaultProps: P = ButtonGroup()
 
   case class ButtonGroup(id: UndefOr[String] = undefined,
-                         vertical: UndefOr[Boolean] = undefined, justified: UndefOr[Boolean] = undefined,
+                         vertical: UndefOr[Boolean] = undefined,
+                         justified: UndefOr[Boolean] = undefined,
                          bsClass: UndefOr[Classes.Value] = Classes.`btn-group`,
                          bsStyle: UndefOr[Styles.Value] = undefined,
                          bsSize: UndefOr[Sizes.Value] = undefined,

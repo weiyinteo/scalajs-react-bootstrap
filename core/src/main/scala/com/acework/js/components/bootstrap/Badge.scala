@@ -4,6 +4,7 @@ import com.acework.js.components.bootstrap.Utils.ValidComponentChildren
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
 
+import scala.scalajs.js
 import scala.scalajs.js._
 
 /**
@@ -27,11 +28,17 @@ object Badge extends BootstrapComponent {
     .render { (P, C) =>
 
     def hasContent = {
-      ValidComponentChildren.hasValidComponents(C) ||
-        C.isInstanceOf[String] ||
-        C.isInstanceOf[Int]
+      var res = ValidComponentChildren.hasValidComponents(C)
+      if (!res) {
+        C.forEach { c =>
+          if (js.typeOf(c) == "string" || js.typeOf(c) == "number")
+            res = true
+        }
+      }
+      res
     }
 
+    // FIXME spread props
     <.span(^.className := P.addClasses,
       ^.classSet("pull-right" -> P.pullRight.getOrElse(false), "badge" -> hasContent))(C)
 

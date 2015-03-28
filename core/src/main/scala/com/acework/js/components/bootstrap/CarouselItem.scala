@@ -84,7 +84,7 @@ object CarouselItem extends BootstrapComponent {
     )
     .componentDidUpdate(($, previousProps, S) => {
     if (!$.props.active.getOrElse(false) && previousProps.active.getOrElse(false)) {
-      TransitionEvent.addEndEventListener($.getDOMNode(), $.backend.onAnimateOutEnd)
+      TransitionEvent.addEndEventListener($.getDOMNode(), (e: Event) => $.backend.onAnimateOutEnd(e))
     }
 
     if ($.props.active.getOrElse(false) != previousProps.active.getOrElse(false)) {
