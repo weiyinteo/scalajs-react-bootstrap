@@ -1,10 +1,10 @@
 package com.acework.js.components.bootstrap
 
 import com.acework.js.utils.TransitionEvent
+import japgolly.scalajs.react.extra.DefaultReusabilityOverlay.autoLiftHtml
 import japgolly.scalajs.react.{BackendScope, TopNode}
 import org.scalajs.dom.Event
 
-import scala.scalajs.js
 import scala.scalajs.js.UndefOr
 
 /**

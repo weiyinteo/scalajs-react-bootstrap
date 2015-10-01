@@ -25,8 +25,8 @@ object CodeContent {
     }
   }
 
-  def installSyntaxHighlighting[P, S, B] =
-    (_: ReactComponentB[P, S, B])
+  def installSyntaxHighlighting[P, S, B, N <: TopNode] =
+    (_: ReactComponentB[P, S, B, N])
       .componentDidMount(_ => applySyntaxHighlight())
       .componentDidUpdate((_, _, _) => applySyntaxHighlight())
 

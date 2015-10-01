@@ -3,10 +3,9 @@ package com.acework.js.components.bootstrap
 import com.acework.js.components.bootstrap.Utils._
 import com.acework.js.utils.{Mappable, Mergeable}
 import japgolly.scalajs.react._
+import japgolly.scalajs.react.extra.DefaultReusabilityOverlay.autoLiftHtml
 import japgolly.scalajs.react.vdom.prefix_<^._
 
-
-import scala.collection.mutable.ListBuffer
 import scala.scalajs.js
 import scala.scalajs.js.{UndefOr, undefined}
 

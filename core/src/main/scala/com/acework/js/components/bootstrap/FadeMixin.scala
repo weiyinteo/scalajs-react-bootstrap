@@ -1,7 +1,7 @@
 package com.acework.js.components.bootstrap
 
+import japgolly.scalajs.react.extra.DefaultReusabilityOverlay.autoLiftHtml
 import japgolly.scalajs.react.{BackendScope, TopNode}
-import org.scalajs.dom.raw.HTMLElement
 import org.scalajs.dom.{document, raw}
 
 import scala.scalajs.js

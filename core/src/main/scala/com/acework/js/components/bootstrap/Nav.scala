@@ -1,19 +1,18 @@
 package com.acework.js.components.bootstrap
 
+import com.acework.js.components.bootstrap.Utils._
 import com.acework.js.utils.{Mappable, Mergeable}
 import japgolly.scalajs.react._
+import japgolly.scalajs.react.extra.DefaultReusabilityOverlay.autoLiftHtml
 import japgolly.scalajs.react.vdom.prefix_<^._
 import org.scalajs.dom.raw.{HTMLDocument, HTMLUListElement}
 
 import scala.scalajs.js
 import scala.scalajs.js.{UndefOr, undefined}
-import com.acework.js.components.bootstrap.Utils._
-
 
 /**
  * Created by weiyin on 09/03/15.
  */
-
 object Nav extends BootstrapComponent {
   override type P = Nav
   override type S = CollapsableState

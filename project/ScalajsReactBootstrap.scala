@@ -8,8 +8,8 @@ import ScalaJSPlugin.autoImport._
 object Settings {
 
   object versions {
-    val scala = "2.11.5"
-    val scalajsReact = "0.8.1"
+    val scala = "2.11.7"
+    val scalajsReact = "0.9.2"
   }
 
 }
@@ -47,18 +47,18 @@ object ScalajsReactBootstrap extends Build {
       .settings(
         libraryDependencies ++= Seq(
           "com.lihaoyi" %%% "utest" % "0.3.0"
-          , "com.github.japgolly.scalajs-react" %%% "test" % "0.8.2" % "test"
+          , "com.github.japgolly.scalajs-react" %%% "test" % Settings.versions.scalajsReact % "test"
         )
         , testFrameworks += new TestFramework("utest.runner.Framework")
         , scalaJSStage in Test := FastOptStage
         , requiresDOM := true
-        , jsEnv in Test := PhantomJSEnv().value
+        , jsEnv in Test := new PhantomJS2Env(scalaJSPhantomJSClassLoader.value)
       )
 
   def useReactJs(scope: String = "compile"): Project => Project =
     _.settings(
       jsDependencies ++= Seq(
-        "org.webjars" % "react" % "0.12.1" % scope / "react-with-addons.js" commonJSName "React"
+        "org.webjars" % "react" % "0.12.2" % scope / "react-with-addons.js" commonJSName "React"
         , "org.webjars" % "jquery" % "1.11.1" / "jquery.min.js"
         , "org.webjars" % "bootstrap" % "3.3.2" / "bootstrap.min.js" dependsOn "jquery.min.js"
         , "org.webjars" % "log4javascript" % "1.4.10" / "js/log4javascript_uncompressed.js"
@@ -67,7 +67,7 @@ object ScalajsReactBootstrap extends Build {
     )
 
   lazy val root = Project("root", file("."))
-    .aggregate(core, test, demo)
+    .aggregate(core, macroSub, test, demo)
 
   lazy val macroSub = Project("macro", file("macro"))
     .configure(commonSettings, publicationSettings)

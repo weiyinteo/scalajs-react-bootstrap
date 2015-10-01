@@ -4,7 +4,7 @@ import com.acework.js.components.bootstrap._
 import demo.examples.util.CodeContent
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
-import org.scalajs.dom.raw.HTMLElement
+import org.scalajs.dom.Element
 
 import scala.scalajs.js.UndefOr._
 
@@ -107,7 +107,7 @@ object Popovers {
     """.stripMargin
 
   val scrollingContent = CodeContent.Content(positionedSource, exampleClasses = "bs-example-scroll", el = {
-    val containerRef: RefSimple[TopNode] = Ref[HTMLElement]("container")
+    val containerRef: RefSimple[TopNode] = Ref[Element]("container")
 
     class Backend(val scope: BackendScope[Unit, Unit])
 
