@@ -42,7 +42,7 @@ object PanelGroup extends BootstrapComponent {
 
 
   class Backend($: BackendScope[PanelGroup, State]) {
-    def children: js.Any = $._props.asInstanceOf[js.Dynamic].children
+    def children: js.Any = $.props.asInstanceOf[js.Dynamic].children
 
     var isChanging: Boolean = false
 

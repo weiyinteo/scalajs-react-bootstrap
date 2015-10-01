@@ -1,14 +1,13 @@
 package com.acework.js.components.bootstrap
 
 import japgolly.scalajs.react._
+import japgolly.scalajs.react.extra.DefaultReusabilityOverlay.autoLiftHtml
 import org.scalajs.dom.raw.HTMLElement
 import org.scalajs.dom.{Node, document}
-
 
 /**
  * Created by weiyin on 17/03/15.
  */
-
 trait OverlayContainer {
   // Provide `getDOMNode` fn mocking a React component API. The `document.body`
   // reference needs to be contained within this function so that it is not accessed

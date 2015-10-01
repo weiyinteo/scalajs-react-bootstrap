@@ -2,8 +2,8 @@ package com.acework.js.components.bootstrap
 
 import com.acework.js.utils.EventListener
 import japgolly.scalajs.react._
+import japgolly.scalajs.react.extra.DefaultReusabilityOverlay.autoLiftHtml
 import japgolly.scalajs.react.vdom.prefix_<^._
-import org.scalajs.dom.raw.HTMLElement
 import org.scalajs.dom.{Event, document, window}
 
 import scala.scalajs.js

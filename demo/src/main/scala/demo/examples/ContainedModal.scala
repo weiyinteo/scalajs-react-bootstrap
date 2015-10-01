@@ -1,19 +1,16 @@
 package demo.examples
 
-import com.acework.js.components.bootstrap.Modal.{N, B, S, P}
 import com.acework.js.components.bootstrap._
-import japgolly.scalajs.react.ReactComponentC.{ReqProps, ConstProps}
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
-import org.scalajs.dom.raw.HTMLElement
-import org.scalajs.dom.{Node, document}
+import org.scalajs.dom.Element
 
 /**
  * Created by weiyin on 21/03/15.
  */
 object ContainedModal {
 
-  val containerRef: RefSimple[TopNode] = Ref[HTMLElement]("container")
+  val containerRef: RefSimple[TopNode] = Ref[Element]("container")
 
   def containedModel = {
     Modal.Modal(bsStyle = Styles.primary, title = "Contained Modal": ReactNode, animation = true,
